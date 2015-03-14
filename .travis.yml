@@ -1,1 +1,10 @@
 language: java
+jdk:
+- openjdk7
+- oraclejdk8
+
+env:
+  global:
+  - secure: "x6q08u/dKFQeOxXysTB53QKM28q53MPcZ0Gell0rip2UDelxp0WsuTMP7DkLhSuiXNM/ZU9ODgeI/bgJhMKdckzj5a0UU75/CfaqG9GYASxzT1jWXvD239be6gyjYGVERDRwWis+KTWyBYy+xS//VCxAywpo334ajskhhP8TIp8="
+
+after_success: util/deploy-javadoc.sh
