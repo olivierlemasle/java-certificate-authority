@@ -14,7 +14,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.Date;
 
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
@@ -24,6 +23,7 @@ import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
+import org.joda.time.DateTime;
 
 class CertificateAuthorityCreatorImpl implements CertificateAuthorityCreator {
 
@@ -40,14 +40,13 @@ class CertificateAuthorityCreatorImpl implements CertificateAuthorityCreator {
       final SubjectPublicKeyInfo subPubKeyInfo = SubjectPublicKeyInfo.getInstance(
           pair.getPublic().getEncoded());
 
-      final Date startDate = new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000);
-      final Date endDate = new Date(System.currentTimeMillis() + 365 * 24 * 60 * 60 * 1000);
-
+      final DateTime today = DateTime.now().withTimeAtStartOfDay();
       final X500Name caName = new X500Name("CN=CA-Test");
       final X509v3CertificateBuilder certBuilder = new X509v3CertificateBuilder(
           caName,
           BigInteger.ONE,
-          startDate, endDate,
+          today.toDate(),
+          today.plusYears(1).toDate(),
           caName,
           subPubKeyInfo);
 

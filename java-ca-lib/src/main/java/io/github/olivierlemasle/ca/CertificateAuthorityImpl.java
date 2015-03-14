@@ -15,7 +15,6 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.Date;
 
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
@@ -30,6 +29,7 @@ import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.bouncycastle.pkcs.PKCS10CertificationRequest;
 import org.bouncycastle.pkcs.PKCS10CertificationRequestBuilder;
 import org.bouncycastle.pkcs.jcajce.JcaPKCS10CertificationRequestBuilder;
+import org.joda.time.DateTime;
 
 class CertificateAuthorityImpl implements CertificateAuthority {
   private final PrivateKey caPrivateKey;
@@ -87,11 +87,12 @@ class CertificateAuthorityImpl implements CertificateAuthority {
 
       final SubjectPublicKeyInfo subPubKeyInfo = inputCSR.getSubjectPublicKeyInfo();
 
+      final DateTime today = DateTime.now().withTimeAtStartOfDay();
       final X509v3CertificateBuilder myCertificateGenerator = new X509v3CertificateBuilder(
           caCertificateHolder.getSubject(),
           new BigInteger("1"),
-          new Date(System.currentTimeMillis()),
-          new Date(System.currentTimeMillis() + 30 * 365 * 24 * 60 * 60 * 1000),
+          today.toDate(),
+          today.plusYears(10).toDate(),
           inputCSR.getSubject(),
           subPubKeyInfo);
 
