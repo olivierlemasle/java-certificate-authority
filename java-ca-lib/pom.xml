@@ -20,10 +20,6 @@
       <artifactId>bcpkix-jdk15on</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.google.inject</groupId>
-      <artifactId>guice</artifactId>
-    </dependency>
-    <dependency>
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>
     </dependency>

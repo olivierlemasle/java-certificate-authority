@@ -10,9 +10,6 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-
 public class MainTest {
   @BeforeClass
   public static void setup() {
@@ -22,8 +19,7 @@ public class MainTest {
 
   @Test
   public void test() {
-    final Injector injector = Guice.createInjector(new CaModule());
-    final CertificateAuthorityCreator c = injector.getInstance(CertificateAuthorityCreator.class);
+    final CertificateAuthorityCreator c = new CertificateAuthorityCreatorImpl();
 
     final Name caName = new NameImpl("CN=CA-Test");
     final KeyStore keyStore = c.createCertificateAuthority(caName, "password".toCharArray());
