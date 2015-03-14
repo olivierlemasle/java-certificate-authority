@@ -5,14 +5,14 @@ import java.security.KeyStore;
 
 public interface CertificateAuthorityCreator {
 
-  public KeyStore createCertificateAuthority(char[] caPrivateKeyPassword);
+  public KeyStore createCertificateAuthority(Name caName, char[] caPrivateKeyPassword);
 
-  public CertificateAuthority loadCertificateAuthority(final String keystorePath,
-      final char[] password, char[] caPrivateKeyPassword);
+  public CertificateAuthority loadCertificateAuthority(String keystorePath, char[] password,
+      char[] caPrivateKeyPassword);
 
-  public CertificateAuthority loadCertificateAuthority(final File keystoreFile,
-      final char[] password, char[] caPrivateKeyPassword);
+  public CertificateAuthority loadCertificateAuthority(File keystoreFile, char[] password,
+      char[] caPrivateKeyPassword);
 
-  public CertificateAuthority loadCertificateAuthority(final KeyStore keystore,
+  public CertificateAuthority loadCertificateAuthority(KeyStore keystore,
       char[] caPrivateKeyPassword);
 }

@@ -28,7 +28,7 @@ import org.joda.time.DateTime;
 class CertificateAuthorityCreatorImpl implements CertificateAuthorityCreator {
 
   @Override
-  public KeyStore createCertificateAuthority(final char[] caPrivateKeyPassword) {
+  public KeyStore createCertificateAuthority(final Name caName, final char[] caPrivateKeyPassword) {
     try {
       final KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
       keyStore.load(null, null);
@@ -41,13 +41,13 @@ class CertificateAuthorityCreatorImpl implements CertificateAuthorityCreator {
           pair.getPublic().getEncoded());
 
       final DateTime today = DateTime.now().withTimeAtStartOfDay();
-      final X500Name caName = new X500Name("CN=CA-Test");
+      final X500Name x500Name = caName.getX500Name();
       final X509v3CertificateBuilder certBuilder = new X509v3CertificateBuilder(
-          caName,
+          x500Name,
           BigInteger.ONE,
           today.toDate(),
           today.plusYears(1).toDate(),
-          caName,
+          x500Name,
           subPubKeyInfo);
 
       final X509CertificateHolder certHolder = certBuilder.build(sigGen);
