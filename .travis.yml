@@ -18,4 +18,4 @@ addons:
     notification_email: test@example.com
     build_command_prepend: "mvn clean"
     build_command:   "mvn -DskipTests=true compile"
-    branch_pattern: master
+    branch_pattern: coverity_scan
