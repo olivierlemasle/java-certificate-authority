@@ -6,5 +6,16 @@ jdk:
 env:
   global:
   - secure: "x6q08u/dKFQeOxXysTB53QKM28q53MPcZ0Gell0rip2UDelxp0WsuTMP7DkLhSuiXNM/ZU9ODgeI/bgJhMKdckzj5a0UU75/CfaqG9GYASxzT1jWXvD239be6gyjYGVERDRwWis+KTWyBYy+xS//VCxAywpo334ajskhhP8TIp8="
+  - secure: "6Av16dhqsg1raM2uvYYjAqHwu9yC/wBROYYdcQPeNkrSPYGMjgEpSIycVF7LgXYqXr1C4J47V0KStCoX5MM8LgLiPNF053eShnnhEIJegNekQSavo/G7ZraDYaZwuhQofBaSzunaqoBk+0EsvO8IjBQe1RYh/y7zHzcsmyEFw0c="
 
 after_success: util/deploy-javadoc.sh
+
+addons:
+  coverity_scan:
+    project:
+      name: "olivierlemasle/java-certificate-authority"
+      description: "Build submitted via Travis CI"
+    notification_email: test@example.com
+    build_command_prepend: "mvn clean"
+    build_command:   "mvn -DskipTests=true compile"
+    branch_pattern: master
