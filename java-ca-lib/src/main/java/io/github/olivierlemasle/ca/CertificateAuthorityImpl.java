@@ -17,14 +17,16 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
+import org.bouncycastle.asn1.x509.Extension;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
+import org.bouncycastle.cert.CertIOException;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.X509v3CertificateBuilder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
+import org.bouncycastle.cert.jcajce.JcaX509ExtensionUtils;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
-import org.bouncycastle.pkcs.PKCS10CertificationRequest;
 import org.joda.time.DateTime;
 
 class CertificateAuthorityImpl implements CertificateAuthority {
@@ -83,22 +85,26 @@ class CertificateAuthorityImpl implements CertificateAuthority {
   }
 
   @Override
-  public X509Certificate sign(final CSR request) {
-    final PKCS10CertificationRequest inputCSR = request.getPKCS10CertificationRequest();
+  public X509Certificate sign(final CSR csr) {
     try {
       final ContentSigner sigGen = new JcaContentSignerBuilder(SIGNATURE_ALGORITHM)
           .build(caPrivateKey);
 
-      final SubjectPublicKeyInfo subPubKeyInfo = inputCSR.getSubjectPublicKeyInfo();
+      final SubjectPublicKeyInfo subPubKeyInfo = csr.getSubjectPublicKeyInfo();
 
+      final JcaX509ExtensionUtils extUtils = new JcaX509ExtensionUtils();
       final DateTime today = DateTime.now().withTimeAtStartOfDay();
       final X509v3CertificateBuilder myCertificateGenerator = new X509v3CertificateBuilder(
           caCertificateHolder.getSubject(),
           new BigInteger("1"),
           today.toDate(),
           today.plusYears(10).toDate(),
-          inputCSR.getSubject(),
-          subPubKeyInfo);
+          csr.getSubject().getX500Name(),
+          subPubKeyInfo)
+          .addExtension(Extension.authorityKeyIdentifier, false,
+              extUtils.createAuthorityKeyIdentifier(caCertificateHolder))
+          .addExtension(Extension.subjectKeyIdentifier, false,
+              extUtils.createSubjectKeyIdentifier(subPubKeyInfo));
 
       final X509CertificateHolder holder = myCertificateGenerator.build(sigGen);
       final X509Certificate cert = new JcaX509CertificateConverter()
@@ -110,7 +116,7 @@ class CertificateAuthorityImpl implements CertificateAuthority {
 
       return cert;
     } catch (final OperatorCreationException | CertificateException | InvalidKeyException
-        | NoSuchAlgorithmException | NoSuchProviderException | SignatureException e) {
+        | NoSuchAlgorithmException | NoSuchProviderException | SignatureException | CertIOException e) {
       throw new CaException(e);
     }
   }

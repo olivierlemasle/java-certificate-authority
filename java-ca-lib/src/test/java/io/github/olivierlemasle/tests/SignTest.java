@@ -28,7 +28,7 @@ public class SignTest {
   public void sign() {
     final DistinguishedName caName = CA.dn("CN=CA-Test");
     final CertificateAuthority ca = CA.init().setName(caName).build();
-    final CSR csr = CA.csr().generateRequest(CA.dn("CN=test"));
+    final CSR csr = CA.newCsr().generateRequest(CA.dn("CN=test"));
     final X509Certificate cert = ca.sign(csr);
 
     try {

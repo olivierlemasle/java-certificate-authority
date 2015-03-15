@@ -1,8 +1,11 @@
 package io.github.olivierlemasle.ca;
 
-import org.bouncycastle.pkcs.PKCS10CertificationRequest;
+import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 
 public interface CSR {
 
-  PKCS10CertificationRequest getPKCS10CertificationRequest();
+  public DistinguishedName getSubject();
+
+  public SubjectPublicKeyInfo getSubjectPublicKeyInfo();
+
 }

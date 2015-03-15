@@ -32,7 +32,7 @@ public class KeystoreExportTest {
 
     final DistinguishedName caName = CA.dn("CN=CA-Test");
     ca = CA.init().setName(caName).build();
-    csr = CA.csr().generateRequest(CA.dn("CN=test"));
+    csr = CA.newCsr().generateRequest(CA.dn("CN=test"));
     cert = ca.sign(csr);
   }
 

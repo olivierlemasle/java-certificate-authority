@@ -35,8 +35,16 @@ public final class CA {
     return CaLoader.loadCertificateAuthority(keystore, alias);
   }
 
-  public static CsrBuilder csr() {
+  public static CsrBuilder newCsr() {
     return new CsrBuilderImpl();
+  }
+
+  public static CsrLoader loadCsr(final File csrFile) {
+    return new CsrLoaderImpl(csrFile);
+  }
+
+  public static CsrLoader loadCsr(final String csrFileName) {
+    return new CsrLoaderImpl(csrFileName);
   }
 
   public static DnBuilder dn() {

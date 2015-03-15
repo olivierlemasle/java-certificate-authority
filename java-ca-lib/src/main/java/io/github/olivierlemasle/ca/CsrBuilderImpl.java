@@ -27,13 +27,7 @@ class CsrBuilderImpl implements CsrBuilder {
       final PKCS10CertificationRequestBuilder builder = new JcaPKCS10CertificationRequestBuilder(
           x500Name, publicKey);
       final PKCS10CertificationRequest csr = builder.build(signGen);
-      return new CSR() {
-
-        @Override
-        public PKCS10CertificationRequest getPKCS10CertificationRequest() {
-          return csr;
-        }
-      };
+      return new CsrImpl(csr);
     } catch (final OperatorCreationException e) {
       throw new CaException(e);
     }
