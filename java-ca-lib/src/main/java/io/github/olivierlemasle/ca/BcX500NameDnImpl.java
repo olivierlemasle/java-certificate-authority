@@ -45,4 +45,9 @@ class BcX500NameDnImpl implements DistinguishedName {
     return x500Name.toString();
   }
 
+  @Override
+  public String toString() {
+    return getName();
+  }
+
 }

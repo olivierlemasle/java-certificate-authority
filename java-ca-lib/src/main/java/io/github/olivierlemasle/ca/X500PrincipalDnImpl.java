@@ -35,4 +35,8 @@ class X500PrincipalDnImpl implements DistinguishedName {
     return x500Principal.toString();
   }
 
+  @Override
+  public String toString() {
+    return getName();
+  }
 }

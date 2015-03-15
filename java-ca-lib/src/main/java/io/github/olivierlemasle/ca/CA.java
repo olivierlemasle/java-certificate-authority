@@ -35,6 +35,10 @@ public final class CA {
     return CaLoader.loadCertificateAuthority(keystore, alias);
   }
 
+  public static DnBuilder dn() {
+    return new DnBuilderImpl();
+  }
+
   public static DistinguishedName dn(final String dirName) {
     return new BcX500NameDnImpl(dirName);
   }

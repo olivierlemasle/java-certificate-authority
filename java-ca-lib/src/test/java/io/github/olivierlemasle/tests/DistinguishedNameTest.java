@@ -32,4 +32,35 @@ public class DistinguishedNameTest {
     assertEquals(x500name, fromPrincipal.getX500Name());
   }
 
+  @Test
+  public void testBuilder() {
+    final DistinguishedName dn = CA
+        .dn("CN=test,L=Paris,St=IdF,O=test-org,OU=my-OU,C=France,STREET=random");
+
+    final DistinguishedName dn2 = CA.dn()
+        .setCn("test")
+        .setL("Paris")
+        .setSt("IdF")
+        .setO("test-org")
+        .setOu("my-OU")
+        .setC("France")
+        .setStreet("random")
+        .build();
+
+    assertEquals(dn.toString(), dn2.toString());
+    assertArrayEquals(dn.getEncoded(), dn2.getEncoded());
+
+    final DistinguishedName dn3 = CA.dn()
+        .setCommonName("test")
+        .setLocalityName("Paris")
+        .setStateOrProvinceName("IdF")
+        .setOrganizationName("test-org")
+        .setOrganizationalUnitName("my-OU")
+        .setCountryName("France")
+        .setStreet("random")
+        .build();
+
+    assertEquals(dn.toString(), dn3.toString());
+    assertArrayEquals(dn.getEncoded(), dn3.getEncoded());
+  }
 }
