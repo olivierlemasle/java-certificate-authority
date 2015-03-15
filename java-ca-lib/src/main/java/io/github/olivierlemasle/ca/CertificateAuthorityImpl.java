@@ -34,11 +34,11 @@ class CertificateAuthorityImpl implements CertificateAuthority {
   private static final String SIGNATURE_ALGORITHM = "SHA256withRSA";
   static final String KEYSTORE_TYPE = "PKCS12";
 
-  private final Certificate caCertificate;
+  private final X509Certificate caCertificate;
   private final X509CertificateHolder caCertificateHolder;
   private final PrivateKey caPrivateKey;
 
-  CertificateAuthorityImpl(final Certificate caCertificate, final PrivateKey caPrivateKey) {
+  CertificateAuthorityImpl(final X509Certificate caCertificate, final PrivateKey caPrivateKey) {
     this.caPrivateKey = caPrivateKey;
     this.caCertificate = caCertificate;
     try {
@@ -86,6 +86,11 @@ class CertificateAuthorityImpl implements CertificateAuthority {
   }
 
   @Override
+  public X509Certificate getCaCertificate() {
+    return caCertificate;
+  }
+
+  @Override
   public X509Certificate sign(final CSR csr) {
     try {
       final ContentSigner sigGen = new JcaContentSignerBuilder(SIGNATURE_ALGORITHM)
@@ -105,9 +110,9 @@ class CertificateAuthorityImpl implements CertificateAuthority {
           csr.getSubject().getX500Name(),
           subPubKeyInfo)
           .addExtension(Extension.authorityKeyIdentifier, false,
-              extUtils.createAuthorityKeyIdentifier(caCertificateHolder))
+              extUtils.createAuthorityKeyIdentifier(caCertificate.getPublicKey()))
           .addExtension(Extension.subjectKeyIdentifier, false,
-              extUtils.createSubjectKeyIdentifier(subPubKeyInfo));
+              extUtils.createSubjectKeyIdentifier(publicKey));
 
       final X509CertificateHolder holder = myCertificateGenerator.build(sigGen);
       final X509Certificate cert = new JcaX509CertificateConverter()

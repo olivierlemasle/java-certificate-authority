@@ -12,6 +12,7 @@ import java.security.PrivateKey;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 
 final class CaLoader {
   private CaLoader() {
@@ -45,7 +46,7 @@ final class CaLoader {
       final PrivateKey caPrivateKey = (PrivateKey) keystore.getKey(alias, null);
       if (caCertificate == null || caPrivateKey == null)
         throw new CaException("Keystore does not contain certificate and key for alias " + alias);
-      return new CertificateAuthorityImpl(caCertificate, caPrivateKey);
+      return new CertificateAuthorityImpl((X509Certificate) caCertificate, caPrivateKey);
     } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException e) {
       throw new CaException(e);
     }

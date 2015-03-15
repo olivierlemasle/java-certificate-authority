@@ -8,7 +8,17 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
 import org.bouncycastle.asn1.x500.X500Name;
+import org.bouncycastle.asn1.x509.BasicConstraints;
+import org.bouncycastle.asn1.x509.CRLDistPoint;
+import org.bouncycastle.asn1.x509.DistributionPoint;
+import org.bouncycastle.asn1.x509.ExtendedKeyUsage;
+import org.bouncycastle.asn1.x509.Extension;
+import org.bouncycastle.asn1.x509.GeneralName;
+import org.bouncycastle.asn1.x509.GeneralNames;
+import org.bouncycastle.asn1.x509.KeyPurposeId;
+import org.bouncycastle.asn1.x509.KeyUsage;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
+import org.bouncycastle.cert.CertIOException;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.X509v3CertificateBuilder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
@@ -71,7 +81,32 @@ class CaBuilderImpl implements CaBuilder {
           notBefore.toDate(),
           notAfter.toDate(),
           x500Name,
-          subPubKeyInfo);
+          subPubKeyInfo)
+          .addExtension(Extension.keyUsage, false, new KeyUsage(KeyUsage.keyCertSign |
+              KeyUsage.digitalSignature |
+              KeyUsage.cRLSign |
+              KeyUsage.keyEncipherment |
+              KeyUsage.dataEncipherment |
+              KeyUsage.nonRepudiation |
+              KeyUsage.keyAgreement))
+          .addExtension(
+              Extension.cRLDistributionPoints,
+              false,
+              new CRLDistPoint(
+                  new DistributionPoint[] { new DistributionPoint(null, null,
+                      new GeneralNames(
+                          new GeneralName(GeneralName.uniformResourceIdentifier,
+                              "http://test.com/crl"))
+                      ) }
+              ))
+          .addExtension(Extension.extendedKeyUsage, false, new ExtendedKeyUsage(
+              new KeyPurposeId[] {
+                  KeyPurposeId.id_kp_clientAuth,
+                  KeyPurposeId.id_kp_codeSigning,
+                  KeyPurposeId.id_kp_serverAuth,
+                  KeyPurposeId.id_kp_emailProtection
+              }))
+          .addExtension(Extension.basicConstraints, false, new BasicConstraints(true));
 
       final X509CertificateHolder certHolder = certBuilder.build(sigGen);
       final X509Certificate caCertificate = new JcaX509CertificateConverter()
@@ -79,7 +114,7 @@ class CaBuilderImpl implements CaBuilder {
           .getCertificate(certHolder);
 
       return new CertificateAuthorityImpl(caCertificate, privateKey);
-    } catch (OperatorCreationException | CertificateException e) {
+    } catch (OperatorCreationException | CertificateException | CertIOException e) {
       throw new CaException(e);
     }
   }

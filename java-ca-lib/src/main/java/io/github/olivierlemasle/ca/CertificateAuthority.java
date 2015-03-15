@@ -14,5 +14,7 @@ public interface CertificateAuthority {
   public void exportPkcs12(final File keystoreFile, final char[] keystorePassword,
       final String alias);
 
+  public X509Certificate getCaCertificate();
+
   public X509Certificate sign(final CSR request);
 }

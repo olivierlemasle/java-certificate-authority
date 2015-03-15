@@ -2,6 +2,7 @@ package io.github.olivierlemasle.ca;
 
 import java.io.File;
 import java.security.KeyStore;
+import java.security.cert.X509Certificate;
 
 import javax.security.auth.x500.X500Principal;
 
@@ -61,5 +62,9 @@ public final class CA {
 
   public static DistinguishedName dn(final X500Principal principal) {
     return new X500PrincipalDnImpl(principal);
+  }
+
+  public static CertificateExporter export(final X509Certificate certificate) {
+    return new CertificateExporterImpl(certificate);
   }
 }
