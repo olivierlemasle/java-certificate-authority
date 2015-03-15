@@ -3,6 +3,10 @@ package io.github.olivierlemasle.ca;
 import java.io.File;
 import java.security.KeyStore;
 
+import javax.security.auth.x500.X500Principal;
+
+import org.bouncycastle.asn1.x500.X500Name;
+
 public final class CA {
   /**
    * Bouncy Castle Provider
@@ -31,7 +35,15 @@ public final class CA {
     return CaLoader.loadCertificateAuthority(keystore, alias);
   }
 
-  public static Name getName(final String dirName) {
-    return new NameImpl(dirName);
+  public static DistinguishedName dn(final String dirName) {
+    return new BcX500NameDnImpl(dirName);
+  }
+
+  public static DistinguishedName dn(final X500Name name) {
+    return new BcX500NameDnImpl(name);
+  }
+
+  public static DistinguishedName dn(final X500Principal principal) {
+    return new X500PrincipalDnImpl(principal);
   }
 }

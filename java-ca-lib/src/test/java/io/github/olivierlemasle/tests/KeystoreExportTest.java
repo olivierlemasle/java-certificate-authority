@@ -6,7 +6,7 @@ import io.github.olivierlemasle.ca.CA;
 import io.github.olivierlemasle.ca.CSR;
 import io.github.olivierlemasle.ca.CaException;
 import io.github.olivierlemasle.ca.CertificateAuthority;
-import io.github.olivierlemasle.ca.Name;
+import io.github.olivierlemasle.ca.DistinguishedName;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -30,7 +30,7 @@ public class KeystoreExportTest {
     final Provider bc = new BouncyCastleProvider();
     Security.insertProviderAt(bc, 1);
 
-    final Name caName = CA.getName("CN=CA-Test");
+    final DistinguishedName caName = CA.dn("CN=CA-Test");
     ca = CA.init().setName(caName).build();
     csr = ca.generateRequest();
     cert = ca.sign(csr);

@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import io.github.olivierlemasle.ca.CA;
 import io.github.olivierlemasle.ca.CSR;
 import io.github.olivierlemasle.ca.CertificateAuthority;
-import io.github.olivierlemasle.ca.Name;
+import io.github.olivierlemasle.ca.DistinguishedName;
 
 import java.security.Provider;
 import java.security.Security;
@@ -23,7 +23,7 @@ public class SignTest {
 
   @Test
   public void sign() {
-    final Name caName = CA.getName("CN=CA-Test");
+    final DistinguishedName caName = CA.dn("CN=CA-Test");
     final CertificateAuthority ca = CA.init().setName(caName).build();
     final CSR csr = ca.generateRequest();
     final X509Certificate cert = ca.sign(csr);

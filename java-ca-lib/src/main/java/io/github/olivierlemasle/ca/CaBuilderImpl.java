@@ -19,7 +19,7 @@ import org.joda.time.DateTime;
 
 class CaBuilderImpl implements CaBuilder {
   private static final String SIGNATURE_ALGORITHM = "SHA256withRSA";
-  private Name caName;
+  private DistinguishedName caName;
   private DateTime notBefore;
   private DateTime notAfter;
 
@@ -29,7 +29,7 @@ class CaBuilderImpl implements CaBuilder {
   }
 
   @Override
-  public CaBuilderImpl setName(final Name caName) {
+  public CaBuilderImpl setName(final DistinguishedName caName) {
     this.caName = caName;
     return this;
   }
@@ -64,7 +64,6 @@ class CaBuilderImpl implements CaBuilder {
       final SubjectPublicKeyInfo subPubKeyInfo = SubjectPublicKeyInfo
           .getInstance(publicKey.getEncoded());
 
-      final DateTime today = DateTime.now().withTimeAtStartOfDay();
       final X500Name x500Name = caName.getX500Name();
       final X509v3CertificateBuilder certBuilder = new X509v3CertificateBuilder(
           x500Name,

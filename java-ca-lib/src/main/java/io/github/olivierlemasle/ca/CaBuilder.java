@@ -4,7 +4,7 @@ import org.joda.time.DateTime;
 
 public interface CaBuilder {
 
-  public CaBuilder setName(final Name caName);
+  public CaBuilder setName(final DistinguishedName caName);
 
   public CaBuilder setNotBefore(final DateTime notBefore);
 
