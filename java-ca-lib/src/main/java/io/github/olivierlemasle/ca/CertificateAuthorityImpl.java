@@ -11,6 +11,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.SignatureException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
@@ -90,7 +91,9 @@ class CertificateAuthorityImpl implements CertificateAuthority {
       final ContentSigner sigGen = new JcaContentSignerBuilder(SIGNATURE_ALGORITHM)
           .build(caPrivateKey);
 
-      final SubjectPublicKeyInfo subPubKeyInfo = csr.getSubjectPublicKeyInfo();
+      final PublicKey publicKey = csr.getPublicKey();
+      final SubjectPublicKeyInfo subPubKeyInfo = SubjectPublicKeyInfo.getInstance(
+          publicKey.getEncoded());
 
       final JcaX509ExtensionUtils extUtils = new JcaX509ExtensionUtils();
       final DateTime today = DateTime.now().withTimeAtStartOfDay();

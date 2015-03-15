@@ -1,11 +1,11 @@
 package io.github.olivierlemasle.ca;
 
-import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
+import java.security.PublicKey;
 
 public interface CSR {
 
   public DistinguishedName getSubject();
 
-  public SubjectPublicKeyInfo getSubjectPublicKeyInfo();
+  public PublicKey getPublicKey();
 
 }

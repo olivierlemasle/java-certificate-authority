@@ -38,6 +38,7 @@ public class SignTest {
     }
     assertEquals("CN=CA-Test", cert.getIssuerX500Principal().getName());
     assertEquals("CN=test", cert.getSubjectX500Principal().getName());
+    assertEquals(csr.getPublicKey(), cert.getPublicKey());
   }
 
 }

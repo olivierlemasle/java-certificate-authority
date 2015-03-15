@@ -1,6 +1,9 @@
 package io.github.olivierlemasle.ca;
 
-import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
+import java.security.PublicKey;
+
+import org.bouncycastle.openssl.PEMException;
+import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
 import org.bouncycastle.pkcs.PKCS10CertificationRequest;
 
 class CsrImpl implements CSR {
@@ -16,8 +19,12 @@ class CsrImpl implements CSR {
   }
 
   @Override
-  public SubjectPublicKeyInfo getSubjectPublicKeyInfo() {
-    return request.getSubjectPublicKeyInfo();
+  public PublicKey getPublicKey() {
+    try {
+      return (new JcaPEMKeyConverter()).getPublicKey(request.getSubjectPublicKeyInfo());
+    } catch (final PEMException e) {
+      throw new CaException(e);
+    }
   }
 
 }
