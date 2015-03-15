@@ -8,8 +8,6 @@ import java.math.BigInteger;
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyStore;
-import java.security.KeyStore.Entry;
-import java.security.KeyStore.ProtectionParameter;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -38,9 +36,7 @@ import org.joda.time.DateTime;
 
 class CertificateAuthorityImpl implements CertificateAuthority {
   private static final String SIGNATURE_ALGORITHM = "SHA256withRSA";
-
-  static final String CERTIFICATE_ALIAS = "ca";
-  static final String PRIVATE_KEY_ALIAS = "key";
+  static final String KEYSTORE_TYPE = "PKCS12";
 
   private final Certificate caCertificate;
   private final X509CertificateHolder caCertificateHolder;
@@ -57,35 +53,33 @@ class CertificateAuthorityImpl implements CertificateAuthority {
   }
 
   @Override
-  public KeyStore saveInKeystore(final char[] privateKeyPassword) {
+  public KeyStore saveInPkcs12Keystore(final String alias) {
     try {
       // init keystore
-      final KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+      final KeyStore keyStore = KeyStore.getInstance(KEYSTORE_TYPE, CA.PROVIDER_NAME);
       keyStore.load(null, null);
 
-      keyStore.setCertificateEntry(CERTIFICATE_ALIAS, caCertificate);
       final Certificate[] chain = new Certificate[] { caCertificate };
-      final Entry entry = new KeyStore.PrivateKeyEntry(caPrivateKey, chain);
-      final ProtectionParameter protParam = new KeyStore.PasswordProtection(privateKeyPassword);
-      keyStore.setEntry(PRIVATE_KEY_ALIAS, entry, protParam);
+      keyStore.setKeyEntry(alias, caPrivateKey, null, chain);
 
       return keyStore;
-    } catch (KeyStoreException | NoSuchAlgorithmException | CertificateException | IOException e) {
+    } catch (KeyStoreException | NoSuchAlgorithmException | CertificateException | IOException
+        | NoSuchProviderException e) {
       throw new CaException(e);
     }
   }
 
   @Override
-  public void saveToKeystoreFile(final String keystorePath, final char[] keystorePassword,
-      final char[] privateKeyPassword) {
+  public void exportPkcs12(final String keystorePath, final char[] keystorePassword,
+      final String alias) {
     final File file = new File(keystorePath);
-    saveToKeystoreFile(file, keystorePassword, privateKeyPassword);
+    exportPkcs12(file, keystorePassword, alias);
   }
 
   @Override
-  public void saveToKeystoreFile(final File keystoreFile, final char[] keystorePassword,
-      final char[] privateKeyPassword) {
-    final KeyStore keystore = saveInKeystore(privateKeyPassword);
+  public void exportPkcs12(final File keystoreFile, final char[] keystorePassword,
+      final String alias) {
+    final KeyStore keystore = saveInPkcs12Keystore(alias);
     try {
       try (OutputStream stream = new FileOutputStream(keystoreFile)) {
         keystore.store(stream, keystorePassword);

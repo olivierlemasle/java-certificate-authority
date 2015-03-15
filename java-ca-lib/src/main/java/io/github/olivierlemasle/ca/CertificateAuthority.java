@@ -6,13 +6,13 @@ import java.security.cert.X509Certificate;
 
 public interface CertificateAuthority {
 
-  public KeyStore saveInKeystore(final char[] privateKeyPassword);
+  public KeyStore saveInPkcs12Keystore(String alias);
 
-  public void saveToKeystoreFile(final String keystorePath, final char[] keystorePassword,
-      final char[] privateKeyPassword);
+  public void exportPkcs12(final String keystorePath, final char[] keystorePassword,
+      final String alias);
 
-  public void saveToKeystoreFile(final File keystoreFile, final char[] keystorePassword,
-      final char[] privateKeyPassword);
+  public void exportPkcs12(final File keystoreFile, final char[] keystorePassword,
+      final String alias);
 
   public CSR generateRequest();
 

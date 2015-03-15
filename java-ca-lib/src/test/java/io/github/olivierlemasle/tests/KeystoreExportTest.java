@@ -39,7 +39,7 @@ public class KeystoreExportTest {
   @After
   public void clean() {
     try {
-      Files.delete(Paths.get("test"));
+      Files.delete(Paths.get("test.p12"));
     } catch (final IOException e) {
       fail("Cannot delete keystore");
     }
@@ -47,21 +47,21 @@ public class KeystoreExportTest {
 
   @Test
   public void saveToKeystoreFileAndBack() {
-    ca.saveToKeystoreFile("test", "password".toCharArray(), "password2".toCharArray());
+    ca.exportPkcs12("test.p12", "password".toCharArray(), "ca");
 
-    final CertificateAuthority ca2 = CA.loadCertificateAuthority("test",
+    final CertificateAuthority ca2 = CA.loadCertificateAuthority("test.p12",
         "password".toCharArray(),
-        "password2".toCharArray());
+        "ca");
     final X509Certificate cert2 = ca2.sign(csr);
     assertEquals(cert, cert2);
   }
 
   @Test
   public void testInvalidKeystorePath() {
-    ca.saveToKeystoreFile("test", "password".toCharArray(), "password2".toCharArray());
+    ca.exportPkcs12("test.p12", "password".toCharArray(), "ca");
 
     try {
-      CA.loadCertificateAuthority("invalid", "password".toCharArray(), "password2".toCharArray());
+      CA.loadCertificateAuthority("invalid", "password".toCharArray(), "ca");
       fail("CaException expected");
     } catch (final CaException expected) {
     }
@@ -69,21 +69,21 @@ public class KeystoreExportTest {
 
   @Test
   public void testInvalidKeystorePassword() {
-    ca.saveToKeystoreFile("test", "password".toCharArray(), "password2".toCharArray());
+    ca.exportPkcs12("test.p12", "password".toCharArray(), "ca");
 
     try {
-      CA.loadCertificateAuthority("test", "incorrect".toCharArray(), "password2".toCharArray());
+      CA.loadCertificateAuthority("test.p12", "incorrect".toCharArray(), "ca");
       fail("CaException expected");
     } catch (final CaException expected) {
     }
   }
 
   @Test
-  public void testInvalidPrivateKeyPassword() {
-    ca.saveToKeystoreFile("test", "password".toCharArray(), "password2".toCharArray());
+  public void testInvalidAlias() {
+    ca.exportPkcs12("test.p12", "password".toCharArray(), "ca");
 
     try {
-      CA.loadCertificateAuthority("test", "password".toCharArray(), "incorrect".toCharArray());
+      CA.loadCertificateAuthority("test.p12", "password".toCharArray(), "incorrect");
       fail("CaException expected");
     } catch (final CaException expected) {
     }

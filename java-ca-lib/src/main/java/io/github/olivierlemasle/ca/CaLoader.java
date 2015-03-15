@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
@@ -17,31 +18,33 @@ final class CaLoader {
   }
 
   static CertificateAuthorityImpl loadCertificateAuthority(final String keystorePath,
-      final char[] password, final char[] privateKeyPassword) {
+      final char[] password, final String alias) {
     final File file = new File(keystorePath);
-    return loadCertificateAuthority(file, password, privateKeyPassword);
+    return loadCertificateAuthority(file, password, alias);
   }
 
   static CertificateAuthorityImpl loadCertificateAuthority(final File keystoreFile,
-      final char[] password, final char[] privateKeyPassword) {
+      final char[] password, final String alias) {
     try {
-      final KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
+      final KeyStore keystore = KeyStore.getInstance(CertificateAuthorityImpl.KEYSTORE_TYPE,
+          CA.PROVIDER_NAME);
       try (InputStream stream = new FileInputStream(keystoreFile)) {
         keystore.load(stream, password);
-        return loadCertificateAuthority(keystore, privateKeyPassword);
+        return loadCertificateAuthority(keystore, alias);
       }
-    } catch (KeyStoreException | NoSuchAlgorithmException | CertificateException | IOException e) {
+    } catch (KeyStoreException | NoSuchAlgorithmException | CertificateException | IOException
+        | NoSuchProviderException e) {
       throw new CaException(e);
     }
   }
 
   static CertificateAuthorityImpl loadCertificateAuthority(final KeyStore keystore,
-      final char[] privateKeyPassword) {
+      final String alias) {
     try {
-      final Certificate caCertificate = keystore
-          .getCertificate(CertificateAuthorityImpl.CERTIFICATE_ALIAS);
-      final PrivateKey caPrivateKey = (PrivateKey) keystore.getKey(
-          CertificateAuthorityImpl.PRIVATE_KEY_ALIAS, privateKeyPassword);
+      final Certificate caCertificate = keystore.getCertificate(alias);
+      final PrivateKey caPrivateKey = (PrivateKey) keystore.getKey(alias, null);
+      if (caCertificate == null || caPrivateKey == null)
+        throw new CaException("Keystore does not contain certificate and key for alias " + alias);
       return new CertificateAuthorityImpl(caCertificate, caPrivateKey);
     } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException e) {
       throw new CaException(e);

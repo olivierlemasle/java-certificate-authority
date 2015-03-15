@@ -17,18 +17,18 @@ public final class CA {
   }
 
   public static CertificateAuthority loadCertificateAuthority(final String keystorePath,
-      final char[] password, final char[] privateKeyPassword) {
-    return CaLoader.loadCertificateAuthority(keystorePath, password, privateKeyPassword);
+      final char[] password, final String alias) {
+    return CaLoader.loadCertificateAuthority(keystorePath, password, alias);
   }
 
   public static CertificateAuthority loadCertificateAuthority(final File keystoreFile,
-      final char[] password, final char[] privateKeyPassword) {
-    return CaLoader.loadCertificateAuthority(keystoreFile, password, privateKeyPassword);
+      final char[] password, final String alias) {
+    return CaLoader.loadCertificateAuthority(keystoreFile, password, alias);
   }
 
   public static CertificateAuthority loadCertificateAuthority(final KeyStore keystore,
-      final char[] privateKeyPassword) {
-    return CaLoader.loadCertificateAuthority(keystore, privateKeyPassword);
+      final String alias) {
+    return CaLoader.loadCertificateAuthority(keystore, alias);
   }
 
   public static Name getName(final String dirName) {
