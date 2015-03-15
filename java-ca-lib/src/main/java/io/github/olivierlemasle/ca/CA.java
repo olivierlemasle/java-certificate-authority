@@ -35,6 +35,10 @@ public final class CA {
     return CaLoader.loadCertificateAuthority(keystore, alias);
   }
 
+  public static CsrBuilder csr() {
+    return new CsrBuilderImpl();
+  }
+
   public static DnBuilder dn() {
     return new DnBuilderImpl();
   }
