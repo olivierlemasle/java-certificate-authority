@@ -20,10 +20,35 @@ import org.joda.time.DateTime;
 class CaBuilderImpl implements CaBuilder {
   private static final String SIGNATURE_ALGORITHM = "SHA256withRSA";
   private Name caName;
+  private DateTime notBefore;
+  private DateTime notAfter;
+
+  CaBuilderImpl() {
+    notBefore = DateTime.now();
+    notAfter = notBefore.plusYears(1);
+  }
 
   @Override
   public CaBuilderImpl setName(final Name caName) {
     this.caName = caName;
+    return this;
+  }
+
+  @Override
+  public CaBuilder setNotBefore(final DateTime notBefore) {
+    this.notBefore = notBefore;
+    return this;
+  }
+
+  @Override
+  public CaBuilder setNotAfter(final DateTime notAfter) {
+    this.notAfter = notAfter;
+    return this;
+  }
+
+  @Override
+  public CaBuilder validDuringYears(final int years) {
+    notAfter = notBefore.plusYears(years);
     return this;
   }
 
@@ -44,8 +69,8 @@ class CaBuilderImpl implements CaBuilder {
       final X509v3CertificateBuilder certBuilder = new X509v3CertificateBuilder(
           x500Name,
           BigInteger.ONE,
-          today.toDate(),
-          today.plusYears(1).toDate(),
+          notBefore.toDate(),
+          notAfter.toDate(),
           x500Name,
           subPubKeyInfo);
 

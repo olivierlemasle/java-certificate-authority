@@ -16,17 +16,17 @@ public final class CA {
     return new CaBuilderImpl();
   }
 
-  public static CertificateAuthorityImpl loadCertificateAuthority(final String keystorePath,
+  public static CertificateAuthority loadCertificateAuthority(final String keystorePath,
       final char[] password, final char[] privateKeyPassword) {
     return CaLoader.loadCertificateAuthority(keystorePath, password, privateKeyPassword);
   }
 
-  public static CertificateAuthorityImpl loadCertificateAuthority(final File keystoreFile,
+  public static CertificateAuthority loadCertificateAuthority(final File keystoreFile,
       final char[] password, final char[] privateKeyPassword) {
     return CaLoader.loadCertificateAuthority(keystoreFile, password, privateKeyPassword);
   }
 
-  public static CertificateAuthorityImpl loadCertificateAuthority(final KeyStore keystore,
+  public static CertificateAuthority loadCertificateAuthority(final KeyStore keystore,
       final char[] privateKeyPassword) {
     return CaLoader.loadCertificateAuthority(keystore, privateKeyPassword);
   }
