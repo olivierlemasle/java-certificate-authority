@@ -18,19 +18,13 @@ install:
         )
         [System.IO.Compression.ZipFile]::ExtractToDirectory("C:\maven-bin.zip", "C:\maven")
       }
-      (new-object System.Net.WebClient).DownloadFile(
-        'http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip',
-        'C:\jce_policy-8.zip'
-      )
-      [System.IO.Compression.ZipFile]::ExtractToDirectory("C:\jce_policy-8.zip", "C:\jce_policy-8")
-      mv "C:\jce_policy-8\UnlimitedJCEPolicyJDK8\*" %JAVA_HOME%\jre\lib\security
   - cmd: SET PATH=C:\maven\apache-maven-3.3.1\bin;%JAVA_HOME%\bin;%PATH%
   - cmd: SET MAVEN_OPTS=-XX:MaxPermSize=2g -Xmx4g
   - cmd: SET JAVA_OPTS=-XX:MaxPermSize=2g -Xmx4g
 build_script:
-  - mvn clean package -DskipTest
+  - mvn clean package -Dskip.surefire.tests
 test_script:
-  - mvn clean install
+  - mvn clean install -Dskip.surefire.tests
 cache:
   - C:\maven\
   - C:\Users\appveyor\.m2
