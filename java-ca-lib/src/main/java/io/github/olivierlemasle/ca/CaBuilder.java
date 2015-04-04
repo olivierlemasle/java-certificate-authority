@@ -11,6 +11,8 @@ public interface CaBuilder {
   public CaBuilder setNotAfter(final DateTime notAfter);
 
   public CaBuilder validDuringYears(final int years);
+  
+  public CaBuilder setCrlUri(final String crlUri);
 
   public CertificateAuthority build();
 

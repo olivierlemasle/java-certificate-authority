@@ -30,13 +30,9 @@ import org.joda.time.DateTime;
 class CaBuilderImpl implements CaBuilder {
   private static final String SIGNATURE_ALGORITHM = "SHA256withRSA";
   private DistinguishedName caName;
-  private DateTime notBefore;
-  private DateTime notAfter;
-
-  CaBuilderImpl() {
-    notBefore = DateTime.now();
-    notAfter = notBefore.plusYears(1);
-  }
+  private DateTime notBefore = DateTime.now();
+  private DateTime notAfter = notBefore.plusYears(1);
+  private String crlUri = null;
 
   @Override
   public CaBuilderImpl setName(final DistinguishedName caName) {
@@ -59,6 +55,12 @@ class CaBuilderImpl implements CaBuilder {
   @Override
   public CaBuilder validDuringYears(final int years) {
     notAfter = notBefore.plusYears(years);
+    return this;
+  }
+
+  @Override
+  public CaBuilder setCrlUri(final String crlUri) {
+    this.crlUri = crlUri;
     return this;
   }
 
@@ -88,24 +90,27 @@ class CaBuilderImpl implements CaBuilder {
               KeyUsage.keyEncipherment |
               KeyUsage.dataEncipherment |
               KeyUsage.nonRepudiation |
-              KeyUsage.keyAgreement))
-          .addExtension(
-              Extension.cRLDistributionPoints,
-              false,
-              new CRLDistPoint(
-                  new DistributionPoint[] { new DistributionPoint(null, null,
-                      new GeneralNames(
-                          new GeneralName(GeneralName.uniformResourceIdentifier,
-                              "http://test.com/crl"))
-                      ) }
-              ))
-          .addExtension(Extension.extendedKeyUsage, false, new ExtendedKeyUsage(
-              new KeyPurposeId[] {
-                  KeyPurposeId.id_kp_clientAuth,
-                  KeyPurposeId.id_kp_codeSigning,
-                  KeyPurposeId.id_kp_serverAuth,
-                  KeyPurposeId.id_kp_emailProtection
-              }))
+              KeyUsage.keyAgreement));
+
+      if (crlUri != null) {
+        certBuilder.addExtension(
+            Extension.cRLDistributionPoints,
+            false,
+            new CRLDistPoint(
+                new DistributionPoint[] { new DistributionPoint(null, null,
+                    new GeneralNames(
+                        new GeneralName(GeneralName.uniformResourceIdentifier, crlUri))
+                    ) }
+            ));
+      }
+
+      certBuilder.addExtension(Extension.extendedKeyUsage, false, new ExtendedKeyUsage(
+          new KeyPurposeId[] {
+              KeyPurposeId.id_kp_clientAuth,
+              KeyPurposeId.id_kp_codeSigning,
+              KeyPurposeId.id_kp_serverAuth,
+              KeyPurposeId.id_kp_emailProtection
+          }))
           .addExtension(Extension.basicConstraints, false, new BasicConstraints(true));
 
       final X509CertificateHolder certHolder = certBuilder.build(sigGen);
