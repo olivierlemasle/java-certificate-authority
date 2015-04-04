@@ -143,7 +143,7 @@ public class WindowsIT {
    * @throws InterruptedException
    */
   private void acceptCert() throws IOException, InterruptedException {
-    final Process process = new ProcessBuilder("certreq", "-accept cert.cer")
+    final Process process = new ProcessBuilder("certreq", "-accept", "cert.cer")
         .redirectError(Redirect.INHERIT)
         .redirectOutput(Redirect.INHERIT)
         .start();
