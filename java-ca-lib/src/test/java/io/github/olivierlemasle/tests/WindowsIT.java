@@ -53,7 +53,8 @@ public class WindowsIT {
     installCert("cert.cer", "MY");
     final String certThumbprint = getThumbPrint(cert);
     configureSsl(certThumbprint, UUID.randomUUID().toString());
-    addHttpsBinding();
+
+    // NB: https binding has been set in appveyor.yml
 
     final URL url = new URL("https://127.0.0.1/");
     final URLConnection connection = url.openConnection();
@@ -83,17 +84,6 @@ public class WindowsIT {
     final String appidParam = "appid={" + appId + "}";
     final Process process = new ProcessBuilder("netsh", "http", "add", "sslcert",
         "ipport=0.0.0.0:443", "certstorename=MY", certhashParam, appidParam)
-        .redirectError(Redirect.INHERIT)
-        .redirectOutput(Redirect.INHERIT)
-        .start();
-
-    process.waitFor();
-  }
-
-  private void addHttpsBinding() throws IOException, InterruptedException {
-    final Process process = new ProcessBuilder(
-        "powershell",
-        "Import-Module \"WebAdministration\"; New-WebBinding -Name \"Default Web Site\" -IP \"*\" -Port 443 -Protocol https")
         .redirectError(Redirect.INHERIT)
         .redirectOutput(Redirect.INHERIT)
         .start();
