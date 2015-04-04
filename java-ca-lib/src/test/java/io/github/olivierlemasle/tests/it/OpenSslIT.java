@@ -70,7 +70,7 @@ public class OpenSslIT {
    */
   private void generateCsr() throws IOException, InterruptedException {
     final Process process = new ProcessBuilder("openssl", "req", "-nodes", "-newkey", "rsa:2048",
-        "-keyout", "private.key", "-out", "CSR.csr", "-subj", "'/CN=localhost'")
+        "-keyout", "private.key", "-out", "CSR.csr", "-subj", "/CN=localhost")
         .redirectError(Redirect.INHERIT)
         .redirectOutput(Redirect.INHERIT)
         .start();
