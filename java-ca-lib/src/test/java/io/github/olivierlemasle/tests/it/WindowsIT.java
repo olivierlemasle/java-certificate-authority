@@ -95,6 +95,7 @@ public class WindowsIT {
     keystore.setCertificateEntry("cert", caCert);
     final SSLContext sslContext = SSLContexts.custom().loadTrustMaterial(keystore, null).build();
     // Test the HTTPS connection
+    System.out.println("Test https://localhost/");
     try (CloseableHttpClient httpClient = HttpClients.custom().setSslcontext(sslContext).build();
         CloseableHttpResponse response = httpClient.execute(new HttpGet("https://localhost/"))) {
       final HttpEntity entity = response.getEntity();

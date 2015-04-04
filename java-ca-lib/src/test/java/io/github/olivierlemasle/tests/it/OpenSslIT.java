@@ -1,5 +1,6 @@
 package io.github.olivierlemasle.tests.it;
 
+import static org.junit.Assume.assumeFalse;
 import static org.junit.Assume.assumeTrue;
 import io.github.olivierlemasle.ca.CA;
 import io.github.olivierlemasle.ca.CSR;
@@ -35,6 +36,7 @@ public class OpenSslIT {
 
   @Before
   public void checkPlatform() {
+    assumeFalse(TestUtils.isWindows());
     assumeTrue(TestUtils.opensslExists());
   }
 
@@ -60,6 +62,10 @@ public class OpenSslIT {
     final X509Certificate cert = ca.sign(csr);
     CA.export(cert).saveCertificate("cert.cer");
     System.out.println("CSR signed. Certificate saved to \"cert.cer\".");
+
+    // Reload Apache2 server
+    System.out.println("Reload Apache2 server");
+    apache2ServerReload();
   }
 
   /**
@@ -71,6 +77,21 @@ public class OpenSslIT {
   private void generateCsr() throws IOException, InterruptedException {
     final Process process = new ProcessBuilder("openssl", "req", "-nodes", "-newkey", "rsa:2048",
         "-keyout", "private.key", "-out", "CSR.csr", "-subj", "/CN=localhost")
+        .redirectError(Redirect.INHERIT)
+        .redirectOutput(Redirect.INHERIT)
+        .start();
+
+    process.waitFor();
+  }
+
+  /**
+   * {@code sudo service apache2 reload}
+   * 
+   * @throws IOException
+   * @throws InterruptedException
+   */
+  private void apache2ServerReload() throws IOException, InterruptedException {
+    final Process process = new ProcessBuilder("sudo", "service", "apache2", "reload")
         .redirectError(Redirect.INHERIT)
         .redirectOutput(Redirect.INHERIT)
         .start();
