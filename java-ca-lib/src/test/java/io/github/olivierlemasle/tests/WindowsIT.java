@@ -30,6 +30,8 @@ public class WindowsIT {
   public static void clean() {
     final File caCertPath = new File("ca.cer");
     caCertPath.delete();
+    final File reqPath = new File("cert.req");
+    reqPath.delete();
     final File certPath = new File("cert.cer");
     certPath.delete();
   }
@@ -44,19 +46,22 @@ public class WindowsIT {
     final X509Certificate caCert = ca.getCaCertificate();
     CA.export(caCert).saveCertificate("ca.cer");
 
-    installCert("ca.cer", "ROOT");
+    installTrustedCert("ca.cer");
 
-    final CSR csr = CA.newCsr().generateRequest(CA.dn("CN=test"));
+    // Generate CSR using Windows utilities
+    generateCsr();
+
+    final CSR csr = CA.loadCsr("cert.req").getCsr();
     final X509Certificate cert = ca.sign(csr);
     CA.export(cert).saveCertificate("cert.cer");
 
-    installCert("cert.cer", "MY");
+    acceptCert("cert.cer");
     final String certThumbprint = getThumbPrint(cert);
     configureSsl(certThumbprint, UUID.randomUUID().toString());
 
     // NB: https binding has been set in appveyor.yml
 
-    final URL url = new URL("https://127.0.0.1/");
+    final URL url = new URL("https://localhost/");
     final URLConnection connection = url.openConnection();
     try (InputStream in = connection.getInputStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
@@ -68,9 +73,30 @@ public class WindowsIT {
 
   }
 
-  private void installCert(final String certFileName, final String store) throws IOException,
+  private void installTrustedCert(final String certFileName) throws IOException,
       InterruptedException {
-    final Process process = new ProcessBuilder("certutil", "-addstore", store, certFileName)
+    final Process process = new ProcessBuilder("certutil", "-enterprise", "-addstore", "ROOT",
+        certFileName)
+        .redirectError(Redirect.INHERIT)
+        .redirectOutput(Redirect.INHERIT)
+        .start();
+
+    process.waitFor();
+  }
+
+  private void generateCsr() throws IOException, InterruptedException {
+    final Process process = new ProcessBuilder("certreq", "-new",
+        "src\\test\\resources\\csr_template.inf", "cert.req")
+        .redirectError(Redirect.INHERIT)
+        .redirectOutput(Redirect.INHERIT)
+        .start();
+
+    process.waitFor();
+  }
+
+  private void acceptCert(final String certFileName) throws IOException,
+      InterruptedException {
+    final Process process = new ProcessBuilder("certeq", "-accept", certFileName)
         .redirectError(Redirect.INHERIT)
         .redirectOutput(Redirect.INHERIT)
         .start();

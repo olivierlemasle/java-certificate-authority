@@ -1,0 +1,3 @@
+[NewRequest] 
+Subject = "CN=localhost"
+MachineKeySet = TRUE
