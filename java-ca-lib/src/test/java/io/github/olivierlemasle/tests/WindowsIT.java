@@ -96,7 +96,7 @@ public class WindowsIT {
 
   private void acceptCert(final String certFileName) throws IOException,
       InterruptedException {
-    final Process process = new ProcessBuilder("certeq", "-accept", certFileName)
+    final Process process = new ProcessBuilder("certreq", "-accept", certFileName)
         .redirectError(Redirect.INHERIT)
         .redirectOutput(Redirect.INHERIT)
         .start();
