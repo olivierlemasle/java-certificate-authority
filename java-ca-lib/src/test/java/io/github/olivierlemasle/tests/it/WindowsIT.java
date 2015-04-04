@@ -1,5 +1,7 @@
-package io.github.olivierlemasle.tests;
+package io.github.olivierlemasle.tests.it;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeTrue;
 import io.github.olivierlemasle.ca.CA;
 import io.github.olivierlemasle.ca.CSR;
 import io.github.olivierlemasle.ca.CertificateAuthority;
@@ -28,6 +30,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContexts;
 import org.apache.http.util.EntityUtils;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -44,57 +47,72 @@ public class WindowsIT {
     certPath.delete();
   }
 
+  @Before
+  public void checkPlatform() {
+    assumeTrue(TestUtils.isWindows());
+    assumeTrue(TestUtils.isWindowsAdministrator());
+  }
+
   @Test
-  public void test() throws IOException, InterruptedException, NoSuchAlgorithmException,
+  public void completeTest() throws IOException, InterruptedException, NoSuchAlgorithmException,
       KeyStoreException, KeyManagementException, CertificateException {
     // Create a CA
+    System.out.println("Generate CA...");
     final DistinguishedName caName = CA.dn("CN=CA-Test");
     final CertificateAuthority ca = CA.init().setName(caName).build();
     // Export the CA certificate
     final X509Certificate caCert = ca.getCaCertificate();
     CA.export(caCert).saveCertificate("ca.cer");
-
-    // On Windows, install the CA certificate as a trusted certificate
-    // certutil -enterprise -addstore ROOT ca.cer
-    installTrustedCert("ca.cer");
+    System.out.println("CA ready. CA certificate saved to \"ca.cer\".");
 
     // Generate CSR using Windows utilities
-    // certreq -new src\test\resources\csr_template.inf cert.req
+    System.out.println("Generate CSR with \"cert.req\"...");
     generateCsr();
 
     // Load the generated CSR, sign it and export the resulting certificate
+    System.out.println("Sign CSR...");
     final CSR csr = CA.loadCsr("cert.req").getCsr();
     final X509Certificate cert = ca.sign(csr);
     CA.export(cert).saveCertificate("cert.cer");
+    System.out.println("CSR signed. Certificate saved to \"cert.cer\".");
 
-    // On Windows, install the resulting certificate, with its private key
-    // certreq -accept cert.cer
-    acceptCert("cert.cer");
+    // On Windows, install the CA certificate as a trusted certificate
+    System.out.println("Install \"ca.cer\" as a trusted certificate authority.");
+    installTrustedCaCert();
+    // On Windows, install the "cert.cer" certificate, with its private key
+    System.out.println("Install \"cert.cer\" from the CSR (with private key).");
+    acceptCert();
 
     // Configure SSL
+    System.out.println("Configure SSL");
     final String certThumbprint = getThumbPrint(cert);
-    // netsh http add sslcert ipport=0.0.0.0:443 certhash=... appid={...}
     configureSsl(certThumbprint, UUID.randomUUID().toString());
-
     // NB: https binding has been set in appveyor.yml
 
-    // Test the HTTPS connection
+    // Add the CA certificate to a truststore
     final KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
     keystore.load(null, null);
     keystore.setCertificateEntry("cert", caCert);
     final SSLContext sslContext = SSLContexts.custom().loadTrustMaterial(keystore, null).build();
+    // Test the HTTPS connection
     try (CloseableHttpClient httpClient = HttpClients.custom().setSslcontext(sslContext).build();
         CloseableHttpResponse response = httpClient.execute(new HttpGet("https://localhost/"))) {
       final HttpEntity entity = response.getEntity();
-      System.out.println(EntityUtils.toString(entity));
+      final String content = EntityUtils.toString(entity);
+      assertTrue(content.contains("<title>IIS Windows Server</title>"));
     }
 
   }
 
-  private void installTrustedCert(final String certFileName) throws IOException,
-      InterruptedException {
+  /**
+   * {@code certutil -enterprise -addstore ROOT ca.cer}
+   * 
+   * @throws IOException
+   * @throws InterruptedException
+   */
+  private void installTrustedCaCert() throws IOException, InterruptedException {
     final Process process = new ProcessBuilder("certutil", "-enterprise", "-addstore", "ROOT",
-        certFileName)
+        "ca.cer")
         .redirectError(Redirect.INHERIT)
         .redirectOutput(Redirect.INHERIT)
         .start();
@@ -102,6 +120,12 @@ public class WindowsIT {
     process.waitFor();
   }
 
+  /**
+   * {@code certreq -new src\test\resources\csr_template.inf cert.req}
+   * 
+   * @throws IOException
+   * @throws InterruptedException
+   */
   private void generateCsr() throws IOException, InterruptedException {
     final Process process = new ProcessBuilder("certreq", "-new",
         "src\\test\\resources\\csr_template.inf", "cert.req")
@@ -112,9 +136,14 @@ public class WindowsIT {
     process.waitFor();
   }
 
-  private void acceptCert(final String certFileName) throws IOException,
-      InterruptedException {
-    final Process process = new ProcessBuilder("certreq", "-accept", certFileName)
+  /**
+   * {@code certreq -accept cert.cer}
+   * 
+   * @throws IOException
+   * @throws InterruptedException
+   */
+  private void acceptCert() throws IOException, InterruptedException {
+    final Process process = new ProcessBuilder("certreq", "-accept cert.cer")
         .redirectError(Redirect.INHERIT)
         .redirectOutput(Redirect.INHERIT)
         .start();
@@ -122,6 +151,14 @@ public class WindowsIT {
     process.waitFor();
   }
 
+  /**
+   * {@code netsh http add sslcert ipport=0.0.0.0:443 certhash=... appid=...}
+   * 
+   * @param certHash
+   * @param appId
+   * @throws IOException
+   * @throws InterruptedException
+   */
   private void configureSsl(final String certHash, final String appId) throws IOException,
       InterruptedException {
     final String certhashParam = "certhash=" + certHash;
