@@ -39,8 +39,10 @@ public class OpenSslIT {
   public static void clean() {
     final File caCertPath = new File("ca.cer");
     caCertPath.delete();
-    final File reqPath = new File("cert.req");
+    final File reqPath = new File("CSR.csr");
     reqPath.delete();
+    final File keyPath = new File("private.key");
+    keyPath.delete();
     final File certPath = new File("cert.cer");
     certPath.delete();
   }
