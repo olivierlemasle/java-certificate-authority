@@ -3,6 +3,7 @@ jdk:
 - openjdk7
 - oraclejdk8
 before_install:
+  - sudo apt-get update -qq
   - sudo apt-get install -y apache2
   - sudo a2enmod ssl
 script: mvn verify -B
