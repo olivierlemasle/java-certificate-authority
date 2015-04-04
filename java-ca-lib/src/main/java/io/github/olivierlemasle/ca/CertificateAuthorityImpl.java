@@ -52,15 +52,14 @@ class CertificateAuthorityImpl implements CertificateAuthority {
   public KeyStore saveInPkcs12Keystore(final String alias) {
     try {
       // init keystore
-      final KeyStore keyStore = KeyStore.getInstance(KEYSTORE_TYPE, CA.PROVIDER_NAME);
+      final KeyStore keyStore = KeyStore.getInstance(KEYSTORE_TYPE);
       keyStore.load(null, null);
 
       final Certificate[] chain = new Certificate[] { caCertificate };
       keyStore.setKeyEntry(alias, caPrivateKey, null, chain);
 
       return keyStore;
-    } catch (KeyStoreException | NoSuchAlgorithmException | CertificateException | IOException
-        | NoSuchProviderException e) {
+    } catch (KeyStoreException | NoSuchAlgorithmException | CertificateException | IOException e) {
       throw new CaException(e);
     }
   }
@@ -116,7 +115,6 @@ class CertificateAuthorityImpl implements CertificateAuthority {
 
       final X509CertificateHolder holder = myCertificateGenerator.build(sigGen);
       final X509Certificate cert = new JcaX509CertificateConverter()
-          .setProvider(CA.PROVIDER_NAME)
           .getCertificate(holder);
 
       cert.checkValidity();

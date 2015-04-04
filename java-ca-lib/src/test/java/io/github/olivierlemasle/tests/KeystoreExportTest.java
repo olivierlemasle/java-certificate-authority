@@ -11,11 +11,8 @@ import io.github.olivierlemasle.ca.DistinguishedName;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.Provider;
-import java.security.Security;
 import java.security.cert.X509Certificate;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -27,9 +24,6 @@ public class KeystoreExportTest {
 
   @BeforeClass
   public static void setup() {
-    final Provider bc = new BouncyCastleProvider();
-    Security.insertProviderAt(bc, 1);
-
     final DistinguishedName caName = CA.dn("CN=CA-Test");
     ca = CA.init().setName(caName).build();
     csr = CA.newCsr().generateRequest(CA.dn("CN=test"));

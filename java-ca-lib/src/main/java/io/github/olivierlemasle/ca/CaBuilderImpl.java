@@ -110,7 +110,6 @@ class CaBuilderImpl implements CaBuilder {
 
       final X509CertificateHolder certHolder = certBuilder.build(sigGen);
       final X509Certificate caCertificate = new JcaX509CertificateConverter()
-          .setProvider(CA.PROVIDER_NAME)
           .getCertificate(certHolder);
 
       return new CertificateAuthorityImpl(caCertificate, privateKey);

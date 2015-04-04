@@ -5,23 +5,12 @@ import static org.junit.Assert.assertEquals;
 import io.github.olivierlemasle.ca.CA;
 import io.github.olivierlemasle.ca.DistinguishedName;
 
-import java.security.Provider;
-import java.security.Security;
-
 import javax.security.auth.x500.X500Principal;
 
 import org.bouncycastle.asn1.x500.X500Name;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class DistinguishedNameTest {
-
-  @BeforeClass
-  public static void setup() {
-    final Provider bc = new BouncyCastleProvider();
-    Security.insertProviderAt(bc, 1);
-  }
 
   @Test
   public void testImplementations() {

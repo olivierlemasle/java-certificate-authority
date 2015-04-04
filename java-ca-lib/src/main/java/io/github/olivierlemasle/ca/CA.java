@@ -9,10 +9,6 @@ import javax.security.auth.x500.X500Principal;
 import org.bouncycastle.asn1.x500.X500Name;
 
 public final class CA {
-  /**
-   * Bouncy Castle Provider
-   */
-  static final String PROVIDER_NAME = "BC";
 
   private CA() {
   }

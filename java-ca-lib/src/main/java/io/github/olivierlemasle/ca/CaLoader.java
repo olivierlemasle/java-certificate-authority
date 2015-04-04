@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
@@ -27,14 +26,12 @@ final class CaLoader {
   static CertificateAuthorityImpl loadCertificateAuthority(final File keystoreFile,
       final char[] password, final String alias) {
     try {
-      final KeyStore keystore = KeyStore.getInstance(CertificateAuthorityImpl.KEYSTORE_TYPE,
-          CA.PROVIDER_NAME);
+      final KeyStore keystore = KeyStore.getInstance(CertificateAuthorityImpl.KEYSTORE_TYPE);
       try (InputStream stream = new FileInputStream(keystoreFile)) {
         keystore.load(stream, password);
         return loadCertificateAuthority(keystore, alias);
       }
-    } catch (KeyStoreException | NoSuchAlgorithmException | CertificateException | IOException
-        | NoSuchProviderException e) {
+    } catch (KeyStoreException | NoSuchAlgorithmException | CertificateException | IOException e) {
       throw new CaException(e);
     }
   }

@@ -4,7 +4,6 @@ import java.security.InvalidParameterException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 
 final class KeysUtil {
   private static final String ALGORITHM = "RSA";
@@ -19,10 +18,10 @@ final class KeysUtil {
 
   static KeyPair generateKeyPair(final int keySize) {
     try {
-      final KeyPairGenerator gen = KeyPairGenerator.getInstance(ALGORITHM, CA.PROVIDER_NAME);
+      final KeyPairGenerator gen = KeyPairGenerator.getInstance(ALGORITHM);
       gen.initialize(keySize);
       return gen.generateKeyPair();
-    } catch (final NoSuchAlgorithmException | InvalidParameterException | NoSuchProviderException e) {
+    } catch (final NoSuchAlgorithmException | InvalidParameterException e) {
       throw new CaException(e);
     }
   }

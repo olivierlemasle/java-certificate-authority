@@ -8,21 +8,13 @@ import io.github.olivierlemasle.ca.DistinguishedName;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ProcessBuilder.Redirect;
-import java.security.Provider;
-import java.security.Security;
 import java.security.cert.X509Certificate;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class WindowsIT {
-  @BeforeClass
-  public static void setup() {
-    final Provider bc = new BouncyCastleProvider();
-    Security.insertProviderAt(bc, 1);
-  }
 
   @BeforeClass
   @AfterClass

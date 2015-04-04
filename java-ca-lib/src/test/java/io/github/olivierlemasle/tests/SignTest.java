@@ -7,22 +7,13 @@ import io.github.olivierlemasle.ca.CSR;
 import io.github.olivierlemasle.ca.CertificateAuthority;
 import io.github.olivierlemasle.ca.DistinguishedName;
 
-import java.security.Provider;
-import java.security.Security;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class SignTest {
-  @BeforeClass
-  public static void setup() {
-    final Provider bc = new BouncyCastleProvider();
-    Security.insertProviderAt(bc, 1);
-  }
 
   @Test
   public void sign() {
