@@ -91,8 +91,9 @@ public class WindowsIT {
   }
 
   private void addHttpsBinding() throws IOException, InterruptedException {
-    final Process process = new ProcessBuilder("appcmd", "set", "site", "\"Default Web Site\"",
-        "/+bindings.[protocol='https', bindingInformation='*:443:'")
+    final Process process = new ProcessBuilder(
+        "powershell",
+        "Import-Module \"WebAdministration\"; New-WebBinding -Name \"Default Web Site\" -IP \"*\" -Port 443 -Protocol https")
         .redirectError(Redirect.INHERIT)
         .redirectOutput(Redirect.INHERIT)
         .start();
