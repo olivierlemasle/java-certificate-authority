@@ -6,9 +6,7 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -y apache2
   - sudo a2enmod ssl
-  - echo "127.0.0.1 localhost-test" | sudo tee -a /etc/hosts
-  - wget http://localhost-test/
-  - cat index.html
+  - sudo service apache2 restart
 script: mvn verify -B -Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.SimpleLog -Dorg.apache.commons.logging.simplelog.showdatetime=true -Dorg.apache.commons.logging.simplelog.log.org.apache.http=DEBUG
 
 env:

@@ -86,9 +86,9 @@ public class OpenSslIT {
     keystore.setCertificateEntry("cert", caCert);
     final SSLContext sslContext = SSLContexts.custom().loadTrustMaterial(keystore, null).build();
     // Test the HTTPS connection
-    System.out.println("Test https://localhost-test/");
+    System.out.println("Test https://localhost/");
     try (CloseableHttpClient httpClient = HttpClients.custom().setSslcontext(sslContext).build();
-        CloseableHttpResponse response = httpClient.execute(new HttpGet("https://localhost-test/"))) {
+        CloseableHttpResponse response = httpClient.execute(new HttpGet("https://localhost/"))) {
       final HttpEntity entity = response.getEntity();
       final String content = EntityUtils.toString(entity);
       assertTrue(content.contains("It works"));
@@ -96,14 +96,14 @@ public class OpenSslIT {
   }
 
   /**
-   * {@code openssl req -nodes -newkey rsa:2048 -keyout private.key -out CSR.csr -subj "/CN=localhost-test"}
+   * {@code openssl req -nodes -newkey rsa:2048 -keyout private.key -out CSR.csr -subj "/CN=localhost"}
    * 
    * @throws IOException
    * @throws InterruptedException
    */
   private void generateCsr() throws IOException, InterruptedException {
     final Process process = new ProcessBuilder("openssl", "req", "-nodes", "-newkey", "rsa:2048",
-        "-keyout", "private.key", "-out", "CSR.csr", "-subj", "/CN=localhost-test")
+        "-keyout", "private.key", "-out", "CSR.csr", "-subj", "/CN=localhost")
         .redirectError(Redirect.INHERIT)
         .redirectOutput(Redirect.INHERIT)
         .start();
