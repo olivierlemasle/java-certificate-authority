@@ -6,7 +6,7 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -y apache2
   - sudo a2enmod ssl
-script: mvn verify -B
+script: mvn verify -B -Djava.net.preferIPv4Stack=true
 
 env:
   global:

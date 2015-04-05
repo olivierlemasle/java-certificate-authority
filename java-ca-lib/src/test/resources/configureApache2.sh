@@ -1,7 +1,7 @@
 #!/bin/bash
 
 sudo echo "<VirtualHost *:443>
-	DocumentRoot /var/www/html/
+	DocumentRoot /var/www/
 
 	SSLEngine on
 	SSLCertificateFile /etc/apache2/server.crt
