@@ -9,7 +9,7 @@ before_install:
   - echo "127.0.0.1 localhost-test" | sudo tee -a /etc/hosts
   - wget http://localhost-test/
   - cat index.html
-script: mvn verify -B
+script: mvn verify -B -Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.SimpleLog -Dorg.apache.commons.logging.simplelog.showdatetime=true -Dorg.apache.commons.logging.simplelog.log.org.apache.http=DEBUG
 
 env:
   global:
