@@ -86,9 +86,9 @@ public class OpenSslIT {
     keystore.setCertificateEntry("cert", caCert);
     final SSLContext sslContext = SSLContexts.custom().loadTrustMaterial(keystore, null).build();
     // Test the HTTPS connection
-    System.out.println("Test https://localhost-test/");
+    System.out.println("Test http://localhost-test/");
     try (CloseableHttpClient httpClient = HttpClients.custom().setSslcontext(sslContext).build();
-        CloseableHttpResponse response = httpClient.execute(new HttpGet("https://localhost-test/"))) {
+        CloseableHttpResponse response = httpClient.execute(new HttpGet("http://localhost-test/"))) {
       final HttpEntity entity = response.getEntity();
       final String content = EntityUtils.toString(entity);
       assertTrue(content.contains("It works"));
