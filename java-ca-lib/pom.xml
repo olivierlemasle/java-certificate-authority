@@ -47,6 +47,9 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <argLine>-Djava.net.preferIPv4Stack=true</argLine>
+        </configuration>
       </plugin>
     </plugins>
   </build>
