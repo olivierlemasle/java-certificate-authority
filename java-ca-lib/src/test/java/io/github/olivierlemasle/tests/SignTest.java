@@ -1,8 +1,8 @@
 package io.github.olivierlemasle.tests;
 
 import static io.github.olivierlemasle.ca.CA.createCertificateAuthority;
+import static io.github.olivierlemasle.ca.CA.createCsr;
 import static io.github.olivierlemasle.ca.CA.dn;
-import static io.github.olivierlemasle.ca.CA.newCsr;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import io.github.olivierlemasle.ca.CSR;
@@ -21,7 +21,7 @@ public class SignTest {
   public void sign() {
     final DistinguishedName caName = dn("CN=CA-Test");
     final CertificateAuthority ca = createCertificateAuthority(caName).build();
-    final CSR csr = newCsr().generateRequest(dn("CN=test"));
+    final CSR csr = createCsr().generateRequest(dn("CN=test"));
     final X509Certificate cert = ca.sign(csr)
         .setRandomSerialNumber()
         .sign();

@@ -13,8 +13,8 @@ class BcX500NameDnImpl implements DistinguishedName {
     this.x500Name = name;
   }
 
-  BcX500NameDnImpl(final String dirName) {
-    this.x500Name = new X500Name(dirName);
+  BcX500NameDnImpl(final String name) {
+    this.x500Name = new X500Name(name);
   }
 
   @Override

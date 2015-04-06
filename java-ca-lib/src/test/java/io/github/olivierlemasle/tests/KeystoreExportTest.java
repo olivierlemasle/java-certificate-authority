@@ -1,9 +1,9 @@
 package io.github.olivierlemasle.tests;
 
 import static io.github.olivierlemasle.ca.CA.createCertificateAuthority;
+import static io.github.olivierlemasle.ca.CA.createCsr;
 import static io.github.olivierlemasle.ca.CA.dn;
 import static io.github.olivierlemasle.ca.CA.loadCertificateAuthority;
-import static io.github.olivierlemasle.ca.CA.newCsr;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import io.github.olivierlemasle.ca.CSR;
@@ -31,7 +31,7 @@ public class KeystoreExportTest {
   public static void setup() {
     final DistinguishedName caName = dn("CN=CA-Test");
     ca = createCertificateAuthority(caName).build();
-    csr = newCsr().generateRequest(dn("CN=Test"));
+    csr = createCsr().generateRequest(dn("CN=Test"));
     serialNumber = ca.generateRandomSerialNumber();
     cert = ca.sign(csr)
         .setSerialNumber(serialNumber)
