@@ -33,6 +33,42 @@ And add the java-ca-lib dependency:
 
 ## Usage ##
 
+The best is to browse the [Javadoc](http://olivierlemasle.github.io/java-certificate-authority/javadoc/).
+
+Example:
+
 ```java
+import static io.github.olivierlemasle.ca.CA.*;
+import io.github.olivierlemasle.ca.*;
+import java.security.cert.X509Certificate;
+
+public class Main {
+
+  public static void main(final String[] args) {
+    final DistinguishedName root = dn("CN=Root-Test, O=My Org");
+    final CertificateAuthority ca = createCertificateAuthority(root)
+        .validDuringYears(10)
+        .build();
+
+    final CSR csr = createCsr().generateRequest(
+        dn()
+            .setCn("John Doe")
+            .setO("World Company")
+            .setOu("IT dep.")
+            .setSt("CA")
+            .setC("US")
+            .build()
+        );
+
+    final X509Certificate cert = ca.sign(csr)
+        .setRandomSerialNumber()
+        .sign();
+
+    System.out.println("Subject: " + cert.getSubjectDN());
+    System.out.println("Issuer: " + cert.getIssuerDN());
+
+    System.out.println(export(cert).printCertificate());
+  }
+}
 
 ```
