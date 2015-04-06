@@ -1,6 +1,7 @@
 package io.github.olivierlemasle.ca;
 
 import java.io.File;
+import java.math.BigInteger;
 import java.security.KeyStore;
 import java.security.cert.X509Certificate;
 
@@ -16,5 +17,17 @@ public interface CertificateAuthority {
 
   public X509Certificate getCaCertificate();
 
-  public X509Certificate sign(final CSR request);
+  public BigInteger generateRandomSerialNumber();
+
+  public Signer sign(final CSR request);
+
+  public static interface Signer {
+    public SignerWithSerial setSerialNumber(final BigInteger serialNumber);
+
+    public SignerWithSerial setRandomSerialNumber();
+  }
+
+  public static interface SignerWithSerial {
+    public X509Certificate sign();
+  }
 }

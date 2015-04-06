@@ -93,43 +93,74 @@ class CertificateAuthorityImpl implements CertificateAuthority {
   }
 
   @Override
-  public X509Certificate sign(final CSR csr) {
-    try {
-      final ContentSigner sigGen = new JcaContentSignerBuilder(SIGNATURE_ALGORITHM)
-          .build(caPrivateKey);
+  public BigInteger generateRandomSerialNumber() {
+    return new BigInteger(SERIAL_LENGTH, random);
+  }
 
-      final PublicKey publicKey = csr.getPublicKey();
-      final SubjectPublicKeyInfo subPubKeyInfo = SubjectPublicKeyInfo.getInstance(
-          publicKey.getEncoded());
+  @Override
+  public Signer sign(final CSR request) {
+    return new SignerImpl(request);
+  }
 
-      final BigInteger serial = new BigInteger(SERIAL_LENGTH, random);
+  class SignerImpl implements Signer, SignerWithSerial {
+    private final CSR csr;
+    private BigInteger serialNumber;
 
-      final JcaX509ExtensionUtils extUtils = new JcaX509ExtensionUtils();
-      final DateTime today = DateTime.now().withTimeAtStartOfDay();
-      final X509v3CertificateBuilder myCertificateGenerator = new X509v3CertificateBuilder(
-          caCertificateHolder.getSubject(),
-          serial,
-          today.toDate(),
-          today.plusYears(10).toDate(),
-          csr.getSubject().getX500Name(),
-          subPubKeyInfo)
-          .addExtension(Extension.authorityKeyIdentifier, false,
-              extUtils.createAuthorityKeyIdentifier(caCertificate.getPublicKey()))
-          .addExtension(Extension.subjectKeyIdentifier, false,
-              extUtils.createSubjectKeyIdentifier(publicKey));
-
-      final X509CertificateHolder holder = myCertificateGenerator.build(sigGen);
-      final X509Certificate cert = new JcaX509CertificateConverter()
-          .getCertificate(holder);
-
-      cert.checkValidity();
-      cert.verify(caCertificate.getPublicKey());
-
-      return cert;
-    } catch (final OperatorCreationException | CertificateException | InvalidKeyException
-        | NoSuchAlgorithmException | NoSuchProviderException | SignatureException | CertIOException e) {
-      throw new CaException(e);
+    SignerImpl(final CSR csr) {
+      this.csr = csr;
     }
+
+    @Override
+    public SignerWithSerial setSerialNumber(final BigInteger serialNumber) {
+      this.serialNumber = serialNumber;
+      return this;
+    }
+
+    @Override
+    public SignerWithSerial setRandomSerialNumber() {
+      this.serialNumber = generateRandomSerialNumber();
+      return this;
+    }
+
+    @Override
+    public X509Certificate sign() {
+      try {
+        final ContentSigner sigGen = new JcaContentSignerBuilder(SIGNATURE_ALGORITHM)
+            .build(caPrivateKey);
+
+        final PublicKey publicKey = csr.getPublicKey();
+        final SubjectPublicKeyInfo subPubKeyInfo = SubjectPublicKeyInfo.getInstance(
+            publicKey.getEncoded());
+
+        final JcaX509ExtensionUtils extUtils = new JcaX509ExtensionUtils();
+        final DateTime today = DateTime.now().withTimeAtStartOfDay();
+        final X509v3CertificateBuilder myCertificateGenerator = new X509v3CertificateBuilder(
+            caCertificateHolder.getSubject(),
+            serialNumber,
+            today.toDate(),
+            today.plusYears(10).toDate(),
+            csr.getSubject().getX500Name(),
+            subPubKeyInfo)
+            .addExtension(Extension.authorityKeyIdentifier, false,
+                extUtils.createAuthorityKeyIdentifier(caCertificate.getPublicKey()))
+            .addExtension(Extension.subjectKeyIdentifier, false,
+                extUtils.createSubjectKeyIdentifier(publicKey));
+
+        final X509CertificateHolder holder = myCertificateGenerator.build(sigGen);
+        final X509Certificate cert = new JcaX509CertificateConverter()
+            .getCertificate(holder);
+
+        cert.checkValidity();
+        cert.verify(caCertificate.getPublicKey());
+
+        return cert;
+      } catch (final OperatorCreationException | CertificateException | InvalidKeyException
+          | NoSuchAlgorithmException | NoSuchProviderException | SignatureException
+          | CertIOException e) {
+        throw new CaException(e);
+      }
+    }
+
   }
 
 }

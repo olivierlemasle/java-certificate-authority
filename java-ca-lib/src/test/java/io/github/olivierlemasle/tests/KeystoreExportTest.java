@@ -3,15 +3,19 @@ package io.github.olivierlemasle.tests;
 import static io.github.olivierlemasle.ca.CA.createCertificateAuthority;
 import static io.github.olivierlemasle.ca.CA.dn;
 import static io.github.olivierlemasle.ca.CA.loadCertificateAuthority;
+import static io.github.olivierlemasle.ca.CA.newCsr;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+import io.github.olivierlemasle.ca.CSR;
 import io.github.olivierlemasle.ca.CaException;
 import io.github.olivierlemasle.ca.CertificateAuthority;
 import io.github.olivierlemasle.ca.DistinguishedName;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.cert.X509Certificate;
 
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -19,11 +23,19 @@ import org.junit.Test;
 
 public class KeystoreExportTest {
   private static CertificateAuthority ca;
+  private static CSR csr;
+  private static BigInteger serialNumber;
+  private static X509Certificate cert;
 
   @BeforeClass
   public static void setup() {
     final DistinguishedName caName = dn("CN=CA-Test");
     ca = createCertificateAuthority(caName).build();
+    csr = newCsr().generateRequest(dn("CN=Test"));
+    serialNumber = ca.generateRandomSerialNumber();
+    cert = ca.sign(csr)
+        .setSerialNumber(serialNumber)
+        .sign();
   }
 
   @After
@@ -39,9 +51,14 @@ public class KeystoreExportTest {
   public void saveToKeystoreFileAndBack() {
     ca.exportPkcs12("test.p12", "password".toCharArray(), "ca");
 
-    final CertificateAuthority ca2 = loadCertificateAuthority("test.p12", "password".toCharArray(),
-        "ca");
+    final CertificateAuthority ca2 = loadCertificateAuthority("test.p12",
+        "password".toCharArray(), "ca");
     assertEquals(ca.getCaCertificate(), ca2.getCaCertificate());
+
+    final X509Certificate cert2 = ca2.sign(csr)
+        .setSerialNumber(serialNumber)
+        .sign();
+    assertEquals(cert, cert2);
   }
 
   @Test
