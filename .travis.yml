@@ -13,8 +13,12 @@ env:
   global:
   - secure: "x6q08u/dKFQeOxXysTB53QKM28q53MPcZ0Gell0rip2UDelxp0WsuTMP7DkLhSuiXNM/ZU9ODgeI/bgJhMKdckzj5a0UU75/CfaqG9GYASxzT1jWXvD239be6gyjYGVERDRwWis+KTWyBYy+xS//VCxAywpo334ajskhhP8TIp8="
   - secure: "6Av16dhqsg1raM2uvYYjAqHwu9yC/wBROYYdcQPeNkrSPYGMjgEpSIycVF7LgXYqXr1C4J47V0KStCoX5MM8LgLiPNF053eShnnhEIJegNekQSavo/G7ZraDYaZwuhQofBaSzunaqoBk+0EsvO8IjBQe1RYh/y7zHzcsmyEFw0c="
+  - secure: "r7y0mBf8SAWHlaQmOwX3D4bhy3+6NljN5oBtmqFrIF3SwSGLEZcUUXaPQjeIzTfpSoV3VVx83C3Dn9ASn/lowaxo4tWKwC2G8LI0BFMWpU34PacBu6dJIhwXBKKteSEqG94UNXa7d2qSHj7yf2J6L7t3ayp7C5G/4+P3LrmDI2c="
+  - secure: "nLqo0u9s4iQbMrufKX4Mohy7LgizSs8/eKZ3pl59gbajx/PBEwZhiJQbPcpjMPNvwjh8kNnvqpFaRWmIzrfL7ZDrDM1F+DfSmNmdfk38mtbPpjaJFq5rEZISUbIrD8s9sDmz0l0zgkzUTVqegaw4a5VYzRjg6qtWBvJyb5M7W4o="
 
-after_success: util/deploy-javadoc.sh
+after_success:
+  - util/deploy-javadoc.sh
+  - util/publish-snapshot-on-commit.sh
 
 addons:
   coverity_scan:
