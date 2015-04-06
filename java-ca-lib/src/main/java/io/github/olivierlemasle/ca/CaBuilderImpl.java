@@ -29,15 +29,13 @@ import org.joda.time.DateTime;
 
 class CaBuilderImpl implements CaBuilder {
   private static final String SIGNATURE_ALGORITHM = "SHA256withRSA";
-  private DistinguishedName caName;
+  private final DistinguishedName caName;
   private DateTime notBefore = DateTime.now();
   private DateTime notAfter = notBefore.plusYears(1);
   private String crlUri = null;
 
-  @Override
-  public CaBuilderImpl setName(final DistinguishedName caName) {
+  CaBuilderImpl(final DistinguishedName caName) {
     this.caName = caName;
-    return this;
   }
 
   @Override

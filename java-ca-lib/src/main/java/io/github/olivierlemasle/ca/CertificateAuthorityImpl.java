@@ -12,6 +12,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.SecureRandom;
 import java.security.SignatureException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
@@ -33,10 +34,12 @@ import org.joda.time.DateTime;
 class CertificateAuthorityImpl implements CertificateAuthority {
   private static final String SIGNATURE_ALGORITHM = "SHA256withRSA";
   static final String KEYSTORE_TYPE = "PKCS12";
+  private static final int SERIAL_LENGTH = 128;
 
   private final X509Certificate caCertificate;
   private final X509CertificateHolder caCertificateHolder;
   private final PrivateKey caPrivateKey;
+  private final SecureRandom random = new SecureRandom();
 
   CertificateAuthorityImpl(final X509Certificate caCertificate, final PrivateKey caPrivateKey) {
     this.caPrivateKey = caPrivateKey;
@@ -99,11 +102,13 @@ class CertificateAuthorityImpl implements CertificateAuthority {
       final SubjectPublicKeyInfo subPubKeyInfo = SubjectPublicKeyInfo.getInstance(
           publicKey.getEncoded());
 
+      final BigInteger serial = new BigInteger(SERIAL_LENGTH, random);
+
       final JcaX509ExtensionUtils extUtils = new JcaX509ExtensionUtils();
       final DateTime today = DateTime.now().withTimeAtStartOfDay();
       final X509v3CertificateBuilder myCertificateGenerator = new X509v3CertificateBuilder(
           caCertificateHolder.getSubject(),
-          new BigInteger("1"),
+          serial,
           today.toDate(),
           today.plusYears(10).toDate(),
           csr.getSubject().getX500Name(),

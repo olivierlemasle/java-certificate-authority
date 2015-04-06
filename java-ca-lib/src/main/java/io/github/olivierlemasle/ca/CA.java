@@ -13,8 +13,8 @@ public final class CA {
   private CA() {
   }
 
-  public static CaBuilder init() {
-    return new CaBuilderImpl();
+  public static CaBuilder createCertificateAuthority(final DistinguishedName caName) {
+    return new CaBuilderImpl(caName);
   }
 
   public static CertificateAuthority loadCertificateAuthority(final String keystorePath,

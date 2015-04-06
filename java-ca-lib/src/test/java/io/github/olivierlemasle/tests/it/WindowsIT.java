@@ -1,8 +1,11 @@
 package io.github.olivierlemasle.tests.it;
 
+import static io.github.olivierlemasle.ca.CA.createCertificateAuthority;
+import static io.github.olivierlemasle.ca.CA.dn;
+import static io.github.olivierlemasle.ca.CA.export;
+import static io.github.olivierlemasle.ca.CA.loadCsr;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
-import io.github.olivierlemasle.ca.CA;
 import io.github.olivierlemasle.ca.CSR;
 import io.github.olivierlemasle.ca.CertificateAuthority;
 import io.github.olivierlemasle.ca.DistinguishedName;
@@ -57,12 +60,12 @@ public class WindowsIT {
   public void completeTest() throws IOException, InterruptedException, NoSuchAlgorithmException,
       KeyStoreException, KeyManagementException, CertificateException {
     // Create a CA
-    System.out.println("Generate CA...");
-    final DistinguishedName caName = CA.dn("CN=CA-Test");
-    final CertificateAuthority ca = CA.init().setName(caName).build();
+    System.out.println("Generate ..");
+    final DistinguishedName caName = dn("CN=CA-Test");
+    final CertificateAuthority ca = createCertificateAuthority(caName).build();
     // Export the CA certificate
     final X509Certificate caCert = ca.getCaCertificate();
-    CA.export(caCert).saveCertificate("ca.cer");
+    export(caCert).saveCertificate("ca.cer");
     System.out.println("CA ready. CA certificate saved to \"ca.cer\".");
 
     // Generate CSR using Windows utilities
@@ -71,9 +74,9 @@ public class WindowsIT {
 
     // Load the generated CSR, sign it and export the resulting certificate
     System.out.println("Sign CSR...");
-    final CSR csr = CA.loadCsr("cert.req").getCsr();
+    final CSR csr = loadCsr("cert.req").getCsr();
     final X509Certificate cert = ca.sign(csr);
-    CA.export(cert).saveCertificate("cert.cer");
+    export(cert).saveCertificate("cert.cer");
     System.out.println("CSR signed. Certificate saved to \"cert.cer\".");
 
     // On Windows, install the CA certificate as a trusted certificate

@@ -1,9 +1,10 @@
 package io.github.olivierlemasle.tests;
 
+import static io.github.olivierlemasle.ca.CA.createCertificateAuthority;
+import static io.github.olivierlemasle.ca.CA.dn;
+import static io.github.olivierlemasle.ca.CA.loadCertificateAuthority;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import io.github.olivierlemasle.ca.CA;
-import io.github.olivierlemasle.ca.CSR;
 import io.github.olivierlemasle.ca.CaException;
 import io.github.olivierlemasle.ca.CertificateAuthority;
 import io.github.olivierlemasle.ca.DistinguishedName;
@@ -11,7 +12,6 @@ import io.github.olivierlemasle.ca.DistinguishedName;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.cert.X509Certificate;
 
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -19,15 +19,11 @@ import org.junit.Test;
 
 public class KeystoreExportTest {
   private static CertificateAuthority ca;
-  private static CSR csr;
-  private static X509Certificate cert;
 
   @BeforeClass
   public static void setup() {
-    final DistinguishedName caName = CA.dn("CN=CA-Test");
-    ca = CA.init().setName(caName).build();
-    csr = CA.newCsr().generateRequest(CA.dn("CN=test"));
-    cert = ca.sign(csr);
+    final DistinguishedName caName = dn("CN=CA-Test");
+    ca = createCertificateAuthority(caName).build();
   }
 
   @After
@@ -43,11 +39,9 @@ public class KeystoreExportTest {
   public void saveToKeystoreFileAndBack() {
     ca.exportPkcs12("test.p12", "password".toCharArray(), "ca");
 
-    final CertificateAuthority ca2 = CA.loadCertificateAuthority("test.p12",
-        "password".toCharArray(),
+    final CertificateAuthority ca2 = loadCertificateAuthority("test.p12", "password".toCharArray(),
         "ca");
-    final X509Certificate cert2 = ca2.sign(csr);
-    assertEquals(cert, cert2);
+    assertEquals(ca.getCaCertificate(), ca2.getCaCertificate());
   }
 
   @Test
@@ -55,7 +49,7 @@ public class KeystoreExportTest {
     ca.exportPkcs12("test.p12", "password".toCharArray(), "ca");
 
     try {
-      CA.loadCertificateAuthority("invalid", "password".toCharArray(), "ca");
+      loadCertificateAuthority("invalid", "password".toCharArray(), "ca");
       fail("CaException expected");
     } catch (final CaException expected) {
     }
@@ -66,7 +60,7 @@ public class KeystoreExportTest {
     ca.exportPkcs12("test.p12", "password".toCharArray(), "ca");
 
     try {
-      CA.loadCertificateAuthority("test.p12", "incorrect".toCharArray(), "ca");
+      loadCertificateAuthority("test.p12", "incorrect".toCharArray(), "ca");
       fail("CaException expected");
     } catch (final CaException expected) {
     }
@@ -77,7 +71,7 @@ public class KeystoreExportTest {
     ca.exportPkcs12("test.p12", "password".toCharArray(), "ca");
 
     try {
-      CA.loadCertificateAuthority("test.p12", "password".toCharArray(), "incorrect");
+      loadCertificateAuthority("test.p12", "password".toCharArray(), "incorrect");
       fail("CaException expected");
     } catch (final CaException expected) {
     }
