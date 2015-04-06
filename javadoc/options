@@ -15,10 +15,10 @@
 -docencoding
 'UTF-8'
 -doctitle
-'java-certificate-authority 0.0.1-SNAPSHOT API'
+'io.github.olivierlemasle:java-certificate-authority 0.0.1-SNAPSHOT API'
 -linkoffline
 'http://docs.oracle.com/javase/7/docs/api' '/home/travis/build/olivierlemasle/java-certificate-authority/target/javadoc-bundle-options'
 -use
 -version
 -windowtitle
-'java-certificate-authority 0.0.1-SNAPSHOT API'
+'io.github.olivierlemasle:java-certificate-authority 0.0.1-SNAPSHOT API'
