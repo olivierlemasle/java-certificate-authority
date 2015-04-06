@@ -7,7 +7,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>java-ca-lib</artifactId>
-  <name>java-ca-lib</name>
+  <name>${project.groupId}:${project.artifactId}</name>
   <description>A Java Certificate Authority library</description>
 
   <dependencies>
