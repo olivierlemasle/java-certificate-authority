@@ -5,34 +5,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigInteger;
-import java.security.InvalidKeyException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.security.SecureRandom;
-import java.security.SignatureException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-import org.bouncycastle.asn1.x509.Extension;
-import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
-import org.bouncycastle.cert.CertIOException;
 import org.bouncycastle.cert.X509CertificateHolder;
-import org.bouncycastle.cert.X509v3CertificateBuilder;
-import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
-import org.bouncycastle.cert.jcajce.JcaX509ExtensionUtils;
-import org.bouncycastle.operator.ContentSigner;
-import org.bouncycastle.operator.OperatorCreationException;
-import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
-import org.joda.time.DateTime;
 
 class CertificateAuthorityImpl implements CertificateAuthority {
-  private static final String SIGNATURE_ALGORITHM = "SHA256withRSA";
   static final String KEYSTORE_TYPE = "PKCS12";
   private static final int SERIAL_LENGTH = 128;
 
@@ -99,68 +84,8 @@ class CertificateAuthorityImpl implements CertificateAuthority {
 
   @Override
   public Signer signCsr(final CSR request) {
-    return new SignerImpl(request);
-  }
-
-  class SignerImpl implements Signer, SignerWithSerial {
-    private final CSR csr;
-    private BigInteger serialNumber;
-
-    SignerImpl(final CSR csr) {
-      this.csr = csr;
-    }
-
-    @Override
-    public SignerWithSerial setSerialNumber(final BigInteger serialNumber) {
-      this.serialNumber = serialNumber;
-      return this;
-    }
-
-    @Override
-    public SignerWithSerial setRandomSerialNumber() {
-      this.serialNumber = generateRandomSerialNumber();
-      return this;
-    }
-
-    @Override
-    public X509Certificate sign() {
-      try {
-        final ContentSigner sigGen = new JcaContentSignerBuilder(SIGNATURE_ALGORITHM)
-            .build(caPrivateKey);
-
-        final PublicKey publicKey = csr.getPublicKey();
-        final SubjectPublicKeyInfo subPubKeyInfo = SubjectPublicKeyInfo.getInstance(
-            publicKey.getEncoded());
-
-        final JcaX509ExtensionUtils extUtils = new JcaX509ExtensionUtils();
-        final DateTime today = DateTime.now().withTimeAtStartOfDay();
-        final X509v3CertificateBuilder myCertificateGenerator = new X509v3CertificateBuilder(
-            caCertificateHolder.getSubject(),
-            serialNumber,
-            today.toDate(),
-            today.plusYears(10).toDate(),
-            csr.getSubject().getX500Name(),
-            subPubKeyInfo)
-            .addExtension(Extension.authorityKeyIdentifier, false,
-                extUtils.createAuthorityKeyIdentifier(caCertificate.getPublicKey()))
-            .addExtension(Extension.subjectKeyIdentifier, false,
-                extUtils.createSubjectKeyIdentifier(publicKey));
-
-        final X509CertificateHolder holder = myCertificateGenerator.build(sigGen);
-        final X509Certificate cert = new JcaX509CertificateConverter()
-            .getCertificate(holder);
-
-        cert.checkValidity();
-        cert.verify(caCertificate.getPublicKey());
-
-        return cert;
-      } catch (final OperatorCreationException | CertificateException | InvalidKeyException
-          | NoSuchAlgorithmException | NoSuchProviderException | SignatureException
-          | CertIOException e) {
-        throw new CaException(e);
-      }
-    }
-
+    return new SignerImpl(this, caCertificate, caCertificateHolder, caPrivateKey,
+        request.getPublicKey(), request.getSubject());
   }
 
 }
