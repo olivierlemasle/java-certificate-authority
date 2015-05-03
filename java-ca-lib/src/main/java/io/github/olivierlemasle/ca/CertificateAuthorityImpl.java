@@ -1,10 +1,13 @@
 package io.github.olivierlemasle.ca;
 
+import static io.github.olivierlemasle.ca.CA.dn;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigInteger;
+import java.security.KeyPair;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -84,8 +87,9 @@ class CertificateAuthorityImpl implements CertificateAuthority {
 
   @Override
   public Signer signCsr(final CSR request) {
-    return new SignerImpl(this, caCertificate, caCertificateHolder, caPrivateKey,
-        request.getPublicKey(), request.getSubject());
+    final KeyPair pair = new KeyPair(caCertificate.getPublicKey(), caPrivateKey);
+    final DistinguishedName signerSubject = dn(caCertificateHolder.getSubject());
+    return new SignerImpl(this, pair, signerSubject, request.getPublicKey(), request.getSubject());
   }
 
 }

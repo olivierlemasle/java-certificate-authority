@@ -62,6 +62,7 @@ public class Main {
 
     final X509Certificate cert = ca.signCsr(csr)
         .setRandomSerialNumber()
+        .validDuringYears(2)
         .sign();
 
     System.out.println("Subject: " + cert.getSubjectDN());
