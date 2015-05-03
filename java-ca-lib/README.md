@@ -60,7 +60,7 @@ public class Main {
             .build()
         );
 
-    final X509Certificate cert = ca.sign(csr)
+    final X509Certificate cert = ca.signCsr(csr)
         .setRandomSerialNumber()
         .sign();
 

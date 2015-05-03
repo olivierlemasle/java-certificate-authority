@@ -33,7 +33,7 @@ public class KeystoreExportTest {
     ca = createCertificateAuthority(caName).build();
     csr = createCsr().generateRequest(dn("CN=Test"));
     serialNumber = ca.generateRandomSerialNumber();
-    cert = ca.sign(csr)
+    cert = ca.signCsr(csr)
         .setSerialNumber(serialNumber)
         .sign();
   }
@@ -55,7 +55,7 @@ public class KeystoreExportTest {
         "password".toCharArray(), "ca");
     assertEquals(ca.getCaCertificate(), ca2.getCaCertificate());
 
-    final X509Certificate cert2 = ca2.sign(csr)
+    final X509Certificate cert2 = ca2.signCsr(csr)
         .setSerialNumber(serialNumber)
         .sign();
     assertEquals(cert, cert2);

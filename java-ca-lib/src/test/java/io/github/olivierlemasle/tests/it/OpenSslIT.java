@@ -75,7 +75,7 @@ public class OpenSslIT {
     // Load the generated CSR, sign it and export the resulting certificate
     System.out.println("Sign CSR...");
     final CSR csr = loadCsr("CSR.csr").getCsr();
-    final X509Certificate cert = ca.sign(csr)
+    final X509Certificate cert = ca.signCsr(csr)
         .setRandomSerialNumber()
         .sign();
     export(cert).saveCertificate("cert.cer");

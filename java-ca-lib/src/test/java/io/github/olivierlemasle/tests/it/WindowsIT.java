@@ -75,7 +75,7 @@ public class WindowsIT {
     // Load the generated CSR, sign it and export the resulting certificate
     System.out.println("Sign CSR...");
     final CSR csr = loadCsr("cert.req").getCsr();
-    final X509Certificate cert = ca.sign(csr)
+    final X509Certificate cert = ca.signCsr(csr)
         .setRandomSerialNumber()
         .sign();
     export(cert).saveCertificate("cert.cer");

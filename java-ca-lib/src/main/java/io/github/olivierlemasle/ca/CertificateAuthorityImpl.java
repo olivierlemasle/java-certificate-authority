@@ -98,7 +98,7 @@ class CertificateAuthorityImpl implements CertificateAuthority {
   }
 
   @Override
-  public Signer sign(final CSR request) {
+  public Signer signCsr(final CSR request) {
     return new SignerImpl(request);
   }
 

@@ -19,7 +19,7 @@ public interface CertificateAuthority {
 
   public BigInteger generateRandomSerialNumber();
 
-  public Signer sign(final CSR request);
+  public Signer signCsr(final CSR request);
 
   public static interface Signer {
     public SignerWithSerial setSerialNumber(final BigInteger serialNumber);
