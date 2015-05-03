@@ -35,7 +35,7 @@ class SignerImpl implements Signer, SignerWithSerial {
   private final DistinguishedName dn;
 
   private BigInteger serialNumber;
-  private DateTime notBefore = DateTime.now();
+  private DateTime notBefore = DateTime.now().withTimeAtStartOfDay();
   private DateTime notAfter = notBefore.plusYears(1);
 
   SignerImpl(final SerialNumberGenerator snGen, final X509Certificate signerCertificate,

@@ -30,7 +30,7 @@ import org.joda.time.DateTime;
 class CaBuilderImpl implements CaBuilder {
   private static final String SIGNATURE_ALGORITHM = "SHA256withRSA";
   private final DistinguishedName caName;
-  private DateTime notBefore = DateTime.now();
+  private DateTime notBefore = DateTime.now().withTimeAtStartOfDay();
   private DateTime notAfter = notBefore.plusYears(1);
   private String crlUri = null;
 
