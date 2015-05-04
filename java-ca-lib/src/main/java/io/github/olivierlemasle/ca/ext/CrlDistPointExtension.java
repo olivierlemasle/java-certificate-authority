@@ -1,26 +1,59 @@
 package io.github.olivierlemasle.ca.ext;
 
-import io.github.olivierlemasle.ca.ext.Names.NameType;
-
 import org.bouncycastle.asn1.x509.CRLDistPoint;
 import org.bouncycastle.asn1.x509.DistributionPoint;
+import org.bouncycastle.asn1.x509.DistributionPointName;
 import org.bouncycastle.asn1.x509.Extension;
+import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.asn1.x509.GeneralNames;
+import org.bouncycastle.asn1.x509.ReasonFlags;
 
+/**
+ * CRL Distribution Points
+ */
 public class CrlDistPointExtension extends CertExtension {
 
   CrlDistPointExtension(final DistributionPoint... points) {
     super(Extension.cRLDistributionPoints, false, new CRLDistPoint(points));
   }
 
+  /**
+   * Creates a {@link CrlDistPointExtension} with only a {@code cRLIssuer} URI
+   * (no {@code reasons}, no {@code distributionPoint} specified).
+   */
   public static CrlDistPointExtension create(final String uri) {
     return create(NameType.URI, uri);
   }
 
+  /**
+   * Creates a {@link CrlDistPointExtension} with only a {@code cRLIssuer}
+   * {@link GeneralName} (no {@code reasons}, no {@code distributionPoint}
+   * specified).
+   */
   public static CrlDistPointExtension create(final NameType type, final String name) {
-    final GeneralNames crl = type.generalNames(name);
-    final DistributionPoint p = new DistributionPoint(null, null, crl);
-    return new CrlDistPointExtension(p);
+    return create(null, null, type, name, null);
+  }
+
+  public static CrlDistPointExtension create(final NameType distribPointNameType,
+      final String distribPointName,
+      final NameType crlIssuerNameType,
+      final String crlIssuer,
+      final ReasonFlags reasons) {
+    final DistributionPointName dp = new DistributionPointName(
+        distribPointNameType.generalNames(distribPointName));
+    final GeneralNames crl = crlIssuerNameType.generalNames(crlIssuer);
+    return create(dp, reasons, crl);
+  }
+
+  public static CrlDistPointExtension create(final DistributionPointName distributionPoint,
+      final ReasonFlags reasons,
+      final GeneralNames cRLIssuer) {
+    final DistributionPoint p = new DistributionPoint(distributionPoint, reasons, cRLIssuer);
+    return create(p);
+  }
+
+  public static CrlDistPointExtension create(final DistributionPoint... points) {
+    return new CrlDistPointExtension(points);
   }
 
 }
