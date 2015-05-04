@@ -1,5 +1,7 @@
 package io.github.olivierlemasle.ca;
 
+import io.github.olivierlemasle.ca.ext.CertExtension;
+
 import java.math.BigInteger;
 import java.security.cert.X509Certificate;
 
@@ -25,30 +27,5 @@ public interface Signer {
 
     public SignerWithSerial addExtension(ASN1ObjectIdentifier oid, boolean isCritical,
         ASN1Encodable value);
-  }
-
-  public static class CertExtension {
-    private final ASN1ObjectIdentifier oid;
-    private final boolean isCritical;
-    private final ASN1Encodable value;
-
-    public CertExtension(final ASN1ObjectIdentifier oid, final boolean isCritical,
-        final ASN1Encodable value) {
-      this.oid = oid;
-      this.isCritical = isCritical;
-      this.value = value;
-    }
-
-    public ASN1ObjectIdentifier getOid() {
-      return oid;
-    }
-
-    public boolean isCritical() {
-      return isCritical;
-    }
-
-    public ASN1Encodable getValue() {
-      return value;
-    }
   }
 }

@@ -1,6 +1,7 @@
 package io.github.olivierlemasle.ca;
 
 import io.github.olivierlemasle.ca.Signer.SignerWithSerial;
+import io.github.olivierlemasle.ca.ext.CertExtension;
 
 import java.math.BigInteger;
 import java.security.InvalidKeyException;

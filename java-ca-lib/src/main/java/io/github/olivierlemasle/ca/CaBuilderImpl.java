@@ -1,6 +1,10 @@
 package io.github.olivierlemasle.ca;
 
 import io.github.olivierlemasle.ca.Signer.SignerWithSerial;
+import io.github.olivierlemasle.ca.ext.CrlDistPointExtension;
+import io.github.olivierlemasle.ca.ext.ExtKeyUsageExtension;
+import io.github.olivierlemasle.ca.ext.KeyUsageExtension;
+import io.github.olivierlemasle.ca.ext.KeyUsageExtension.KeyUsage;
 
 import java.math.BigInteger;
 import java.security.KeyPair;
@@ -8,14 +12,8 @@ import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 
 import org.bouncycastle.asn1.x509.BasicConstraints;
-import org.bouncycastle.asn1.x509.CRLDistPoint;
-import org.bouncycastle.asn1.x509.DistributionPoint;
-import org.bouncycastle.asn1.x509.ExtendedKeyUsage;
 import org.bouncycastle.asn1.x509.Extension;
-import org.bouncycastle.asn1.x509.GeneralName;
-import org.bouncycastle.asn1.x509.GeneralNames;
 import org.bouncycastle.asn1.x509.KeyPurposeId;
-import org.bouncycastle.asn1.x509.KeyUsage;
 import org.joda.time.DateTime;
 
 class CaBuilderImpl implements CaBuilder, SerialNumberGenerator {
@@ -64,34 +62,29 @@ class CaBuilderImpl implements CaBuilder, SerialNumberGenerator {
 
   @Override
   public CertificateAuthority build() {
-    signer.addExtension(Extension.keyUsage, false, new KeyUsage(KeyUsage.keyCertSign |
-        KeyUsage.digitalSignature |
-        KeyUsage.cRLSign |
-        KeyUsage.keyEncipherment |
-        KeyUsage.dataEncipherment |
-        KeyUsage.nonRepudiation |
-        KeyUsage.keyAgreement));
+    signer.addExtension(KeyUsageExtension.create(
+        KeyUsage.KEY_CERT_SIGN,
+        KeyUsage.DIGITAL_SIGNATURE,
+        KeyUsage.CRL_SIGN,
+        KeyUsage.KEY_ENCIPHERMENT,
+        KeyUsage.KEY_AGREEMENT,
+        KeyUsage.DATA_ENCIPHERMENT,
+        KeyUsage.NON_REPUDIATION)
+        );
 
     if (crlUri != null) {
-      signer.addExtension(
-          Extension.cRLDistributionPoints,
-          false,
-          new CRLDistPoint(
-              new DistributionPoint[] { new DistributionPoint(null, null,
-                  new GeneralNames(
-                      new GeneralName(GeneralName.uniformResourceIdentifier, crlUri))
-                  ) }
-          ));
+      signer.addExtension(CrlDistPointExtension.create(crlUri));
     }
 
-    signer.addExtension(Extension.extendedKeyUsage, false, new ExtendedKeyUsage(
-        new KeyPurposeId[] {
-            KeyPurposeId.id_kp_clientAuth,
-            KeyPurposeId.id_kp_codeSigning,
-            KeyPurposeId.id_kp_serverAuth,
-            KeyPurposeId.id_kp_emailProtection
-        }))
-        .addExtension(Extension.basicConstraints, false, new BasicConstraints(true));
+    signer.addExtension(ExtKeyUsageExtension.create(
+        KeyPurposeId.id_kp_clientAuth,
+        KeyPurposeId.id_kp_codeSigning,
+        KeyPurposeId.id_kp_serverAuth,
+        KeyPurposeId.id_kp_emailProtection)
+        );
+
+    // This is a CA
+    signer.addExtension(Extension.basicConstraints, false, new BasicConstraints(true));
 
     final X509Certificate caCertificate = signer.sign();
 
