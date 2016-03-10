@@ -9,12 +9,6 @@
   <url>https://github.com/olivierlemasle/java-certificate-authority/</url>
   <description>A Java Certificate Authority (CA), with web GUI and CLI</description>
 
-  <parent>
-    <groupId>org.sonatype.oss</groupId>
-    <artifactId>oss-parent</artifactId>
-    <version>7</version>
-  </parent>
-
   <licenses>
     <license>
       <name>The Apache License, Version 2.0</name>
@@ -44,6 +38,32 @@
     </developer>
   </developers>
 
+  <repositories>
+    <repository>
+      <id>sonatype-nexus-snapshots</id>
+      <name>Sonatype Nexus Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+      	<enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+  <distributionManagement>
+    <repository>
+      <id>sonatype-nexus-staging</id>
+      <name>Nexus Release Repository</name>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+    <snapshotRepository>
+      <id>sonatype-nexus-snapshots</id>
+      <name>Sonatype Nexus Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
+  
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -95,6 +115,17 @@
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>2.10.1</version>
         </plugin>
+        <plugin>
+		  <groupId>org.apache.maven.plugins</groupId>
+		  <artifactId>maven-release-plugin</artifactId>
+		  <version>2.5</version>
+		  <configuration>
+		    <autoVersionSubmodules>true</autoVersionSubmodules>
+		    <useReleaseProfile>false</useReleaseProfile>
+		    <releaseProfiles>release</releaseProfiles>
+		    <goals>deploy</goals>
+		  </configuration>
+		</plugin>
       </plugins>
     </pluginManagement>
   </build>
