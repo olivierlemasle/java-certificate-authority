@@ -1,5 +1,5 @@
 -classpath
-'/home/travis/build/olivierlemasle/java-certificate-authority/java-ca-lib/target/classes:/home/travis/.m2/repository/joda-time/joda-time/2.7/joda-time-2.7.jar:/home/travis/.m2/repository/org/bouncycastle/bcpkix-jdk15on/1.52/bcpkix-jdk15on-1.52.jar:/home/travis/.m2/repository/org/bouncycastle/bcprov-jdk15on/1.52/bcprov-jdk15on-1.52.jar'
+'/home/travis/build/olivierlemasle/java-certificate-authority/java-ca-lib/target/classes:/home/travis/.m2/repository/org/bouncycastle/bcpkix-jdk15on/1.54/bcpkix-jdk15on-1.54.jar:/home/travis/.m2/repository/org/bouncycastle/bcprov-jdk15on/1.54/bcprov-jdk15on-1.54.jar'
 -encoding
 'UTF-8'
 -protected
@@ -17,7 +17,7 @@
 -doctitle
 'io.github.olivierlemasle:java-certificate-authority 0.0.1-SNAPSHOT API'
 -linkoffline
-'http://docs.oracle.com/javase/7/docs/api' '/home/travis/build/olivierlemasle/java-certificate-authority/target/javadoc-bundle-options'
+'http://docs.oracle.com/javase/8/docs/api' '/home/travis/build/olivierlemasle/java-certificate-authority/target/javadoc-bundle-options'
 -use
 -version
 -windowtitle
