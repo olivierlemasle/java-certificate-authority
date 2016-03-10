@@ -1,12 +1,12 @@
 package io.github.olivierlemasle.ca;
 
-import org.joda.time.DateTime;
+import java.time.ZonedDateTime;
 
 public interface CaBuilder {
 
-  public CaBuilder setNotBefore(final DateTime notBefore);
+  public CaBuilder setNotBefore(final ZonedDateTime notBefore);
 
-  public CaBuilder setNotAfter(final DateTime notAfter);
+  public CaBuilder setNotAfter(final ZonedDateTime notAfter);
 
   public CaBuilder validDuringYears(final int years);
 

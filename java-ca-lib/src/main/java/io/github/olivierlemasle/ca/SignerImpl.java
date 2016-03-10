@@ -12,7 +12,9 @@ import java.security.PublicKey;
 import java.security.SignatureException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.bouncycastle.asn1.ASN1Encodable;
@@ -27,7 +29,6 @@ import org.bouncycastle.cert.jcajce.JcaX509ExtensionUtils;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
-import org.joda.time.DateTime;
 
 class SignerImpl implements Signer, SignerWithSerial {
   private static final String SIGNATURE_ALGORITHM = "SHA256withRSA";
@@ -40,8 +41,8 @@ class SignerImpl implements Signer, SignerWithSerial {
   private final List<CertExtension> extensions = new ArrayList<>();
 
   private BigInteger serialNumber;
-  private DateTime notBefore = DateTime.now().withTimeAtStartOfDay();
-  private DateTime notAfter = notBefore.plusYears(1);
+  private ZonedDateTime notBefore = ZonedDateTime.now();
+  private ZonedDateTime notAfter = notBefore.plusYears(1);
 
   SignerImpl(final SerialNumberGenerator snGen, final KeyPair signerKeyPair,
       final DistinguishedName signerDn, final PublicKey publicKey, final DistinguishedName dn) {
@@ -65,13 +66,13 @@ class SignerImpl implements Signer, SignerWithSerial {
   }
 
   @Override
-  public SignerWithSerial setNotBefore(final DateTime notBefore) {
+  public SignerWithSerial setNotBefore(final ZonedDateTime notBefore) {
     this.notBefore = notBefore;
     return this;
   }
 
   @Override
-  public SignerWithSerial setNotAfter(final DateTime notAfter) {
+  public SignerWithSerial setNotAfter(final ZonedDateTime notAfter) {
     this.notAfter = notAfter;
     return this;
   }
@@ -108,8 +109,8 @@ class SignerImpl implements Signer, SignerWithSerial {
       final X509v3CertificateBuilder certBuilder = new X509v3CertificateBuilder(
           signerDn.getX500Name(),
           serialNumber,
-          notBefore.toDate(),
-          notAfter.toDate(),
+          Date.from(notBefore.toInstant()),
+          Date.from(notAfter.toInstant()),
           dn.getX500Name(),
           subPubKeyInfo)
           .addExtension(Extension.authorityKeyIdentifier, false,

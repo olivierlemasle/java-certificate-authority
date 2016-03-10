@@ -10,11 +10,11 @@ import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
+import java.time.ZonedDateTime;
 
 import org.bouncycastle.asn1.x509.BasicConstraints;
 import org.bouncycastle.asn1.x509.Extension;
 import org.bouncycastle.asn1.x509.KeyPurposeId;
-import org.joda.time.DateTime;
 
 class CaBuilderImpl implements CaBuilder, SerialNumberGenerator {
   private static final int SERIAL_LENGTH = 128;
@@ -32,13 +32,13 @@ class CaBuilderImpl implements CaBuilder, SerialNumberGenerator {
   }
 
   @Override
-  public CaBuilder setNotBefore(final DateTime notBefore) {
+  public CaBuilder setNotBefore(final ZonedDateTime notBefore) {
     signer.setNotBefore(notBefore);
     return this;
   }
 
   @Override
-  public CaBuilder setNotAfter(final DateTime notAfter) {
+  public CaBuilder setNotAfter(final ZonedDateTime notAfter) {
     signer.setNotAfter(notAfter);
     return this;
   }

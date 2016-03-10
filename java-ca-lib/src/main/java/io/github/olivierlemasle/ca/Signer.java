@@ -4,10 +4,10 @@ import io.github.olivierlemasle.ca.ext.CertExtension;
 
 import java.math.BigInteger;
 import java.security.cert.X509Certificate;
+import java.time.ZonedDateTime;
 
 import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
-import org.joda.time.DateTime;
 
 public interface Signer {
   public SignerWithSerial setSerialNumber(final BigInteger serialNumber);
@@ -17,9 +17,9 @@ public interface Signer {
   public static interface SignerWithSerial {
     public X509Certificate sign();
 
-    public SignerWithSerial setNotBefore(final DateTime notBefore);
+    public SignerWithSerial setNotBefore(final ZonedDateTime notBefore);
 
-    public SignerWithSerial setNotAfter(final DateTime notAfter);
+    public SignerWithSerial setNotAfter(final ZonedDateTime notAfter);
 
     public SignerWithSerial validDuringYears(final int years);
 
