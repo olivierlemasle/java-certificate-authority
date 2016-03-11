@@ -22,11 +22,15 @@
     
   <modules>
     <module>java-ca-lib</module>
+    <module>ca-api</module>
   </modules>
 
   <properties>
     <!-- In order to have a system-independent compilation -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    
+    <!-- Versions -->
+    <dropwizard.version>1.0.0-SNAPSHOT</dropwizard.version>
   </properties>
 
   <scm>
@@ -71,9 +75,19 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+      	<groupId>${project.groupId}</groupId>
+      	<artifactId>java-ca-lib</artifactId>
+      	<version>${project.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.bouncycastle</groupId>
         <artifactId>bcpkix-jdk15on</artifactId>
         <version>1.54</version>
+      </dependency>
+      <dependency>
+        <groupId>io.dropwizard</groupId>
+        <artifactId>dropwizard-core</artifactId>
+        <version>${dropwizard.version}</version>
       </dependency>
 
       <!-- Test -->
