@@ -16,6 +16,7 @@ import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.cert.X509Certificate;
+import java.time.ZonedDateTime;
 
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -23,6 +24,7 @@ import org.junit.Test;
 
 public class KeystoreExportTest {
   private static CertificateAuthority ca;
+  private static ZonedDateTime time = ZonedDateTime.now();
   private static CSR csr;
   private static BigInteger serialNumber;
   private static X509Certificate cert;
@@ -35,6 +37,8 @@ public class KeystoreExportTest {
     serialNumber = ca.generateRandomSerialNumber();
     cert = ca.signCsr(csr)
         .setSerialNumber(serialNumber)
+        .setNotBefore(time)
+        .validDuringYears(1)
         .sign();
   }
 
@@ -57,6 +61,8 @@ public class KeystoreExportTest {
 
     final X509Certificate cert2 = ca2.signCsr(csr)
         .setSerialNumber(serialNumber)
+        .setNotBefore(time)
+        .validDuringYears(1)
         .sign();
     assertEquals(cert, cert2);
   }
