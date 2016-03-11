@@ -6,9 +6,6 @@ import static io.github.olivierlemasle.ca.CA.export;
 import static io.github.olivierlemasle.ca.CA.loadCsr;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
-import io.github.olivierlemasle.ca.CSR;
-import io.github.olivierlemasle.ca.CertificateAuthority;
-import io.github.olivierlemasle.ca.DistinguishedName;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,6 +33,10 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import io.github.olivierlemasle.ca.CSR;
+import io.github.olivierlemasle.ca.CertificateAuthority;
+import io.github.olivierlemasle.ca.DistinguishedName;
 
 public class WindowsIT {
 
@@ -119,9 +120,9 @@ public class WindowsIT {
   private void installTrustedCaCert() throws IOException, InterruptedException {
     final Process process = new ProcessBuilder("certutil", "-enterprise", "-addstore", "ROOT",
         "ca.cer")
-        .redirectError(Redirect.INHERIT)
-        .redirectOutput(Redirect.INHERIT)
-        .start();
+            .redirectError(Redirect.INHERIT)
+            .redirectOutput(Redirect.INHERIT)
+            .start();
 
     process.waitFor();
   }
@@ -135,9 +136,9 @@ public class WindowsIT {
   private void generateCsr() throws IOException, InterruptedException {
     final Process process = new ProcessBuilder("certreq", "-new",
         "src\\test\\resources\\csr_template.inf", "cert.req")
-        .redirectError(Redirect.INHERIT)
-        .redirectOutput(Redirect.INHERIT)
-        .start();
+            .redirectError(Redirect.INHERIT)
+            .redirectOutput(Redirect.INHERIT)
+            .start();
 
     process.waitFor();
   }
@@ -171,9 +172,9 @@ public class WindowsIT {
     final String appidParam = "appid={" + appId + "}";
     final Process process = new ProcessBuilder("netsh", "http", "add", "sslcert",
         "ipport=0.0.0.0:443", "certstorename=MY", certhashParam, appidParam)
-        .redirectError(Redirect.INHERIT)
-        .redirectOutput(Redirect.INHERIT)
-        .start();
+            .redirectError(Redirect.INHERIT)
+            .redirectOutput(Redirect.INHERIT)
+            .start();
 
     process.waitFor();
   }

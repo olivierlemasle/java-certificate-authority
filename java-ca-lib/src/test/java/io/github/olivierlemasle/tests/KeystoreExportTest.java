@@ -6,10 +6,6 @@ import static io.github.olivierlemasle.ca.CA.dn;
 import static io.github.olivierlemasle.ca.CA.loadCertificateAuthority;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import io.github.olivierlemasle.ca.CSR;
-import io.github.olivierlemasle.ca.CaException;
-import io.github.olivierlemasle.ca.CertificateAuthority;
-import io.github.olivierlemasle.ca.DistinguishedName;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -21,6 +17,11 @@ import java.time.ZonedDateTime;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import io.github.olivierlemasle.ca.CSR;
+import io.github.olivierlemasle.ca.CaException;
+import io.github.olivierlemasle.ca.CertificateAuthority;
+import io.github.olivierlemasle.ca.DistinguishedName;
 
 public class KeystoreExportTest {
   private static CertificateAuthority ca;

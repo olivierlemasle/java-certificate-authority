@@ -1,13 +1,13 @@
 package io.github.olivierlemasle.ca;
 
-import io.github.olivierlemasle.ca.ext.CertExtension;
-
 import java.math.BigInteger;
 import java.security.cert.X509Certificate;
 import java.time.ZonedDateTime;
 
 import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+
+import io.github.olivierlemasle.ca.ext.CertExtension;
 
 public interface Signer {
   public SignerWithSerial setSerialNumber(final BigInteger serialNumber);

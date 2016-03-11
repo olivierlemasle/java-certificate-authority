@@ -39,8 +39,7 @@ public final class CA {
   }
 
   /**
-   * Loads an existing {@link CertificateAuthority} from a {@code PKCS12}
-   * keystore.
+   * Loads an existing {@link CertificateAuthority} from a {@code PKCS12} keystore.
    * 
    * @param keystorePath
    *          path of the PKCS12 keystore
@@ -56,8 +55,7 @@ public final class CA {
   }
 
   /**
-   * Loads an existing {@link CertificateAuthority} from a {@code PKCS12}
-   * keystore.
+   * Loads an existing {@link CertificateAuthority} from a {@code PKCS12} keystore.
    * 
    * @param keystoreFile
    *          PKCS12 keystore file
@@ -73,8 +71,7 @@ public final class CA {
   }
 
   /**
-   * Loads an existing {@link CertificateAuthority} from a {@code PKCS12}
-   * keystore.
+   * Loads an existing {@link CertificateAuthority} from a {@code PKCS12} keystore.
    * 
    * @param keystoreFile
    *          PKCS12 keystore, already "loaded"
@@ -88,8 +85,7 @@ public final class CA {
   }
 
   /**
-   * Creates a builder object used to create a new {@link CSR} (Certificate
-   * Signing Request).
+   * Creates a builder object used to create a new {@link CSR} (Certificate Signing Request).
    * 
    * @return a builder object
    * @see CSR
@@ -141,8 +137,7 @@ public final class CA {
   }
 
   /**
-   * Builds a {@link DistinguishedName} from a Bouncy Castle {@link X500Name}
-   * object.
+   * Builds a {@link DistinguishedName} from a Bouncy Castle {@link X500Name} object.
    * 
    * @param name
    * @return the {@link DistinguishedName} object
@@ -152,8 +147,7 @@ public final class CA {
   }
 
   /**
-   * Builds a {@link DistinguishedName} from a
-   * {@link javax.security.auth.x500.X500Principal}.
+   * Builds a {@link DistinguishedName} from a {@link javax.security.auth.x500.X500Principal}.
    * 
    * @param name
    * @return the {@link DistinguishedName} object
@@ -163,8 +157,7 @@ public final class CA {
   }
 
   /**
-   * Returns a utility object used to export a {@link X509Certificate} to the
-   * PEM format.
+   * Returns a utility object used to export a {@link X509Certificate} to the PEM format.
    * 
    * @param certificate
    * @return a utility object

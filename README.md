@@ -11,7 +11,7 @@ A Java Certificate Authority (CA), with web GUI and CLI
 
 ## Requirements ##
 
-This project requires Java 7 or higher.
+This project requires Java 8 or higher.
 
 ## Modules ##
 

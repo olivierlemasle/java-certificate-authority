@@ -5,15 +5,16 @@ import static io.github.olivierlemasle.ca.CA.createCsr;
 import static io.github.olivierlemasle.ca.CA.dn;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import io.github.olivierlemasle.ca.CSR;
-import io.github.olivierlemasle.ca.CertificateAuthority;
-import io.github.olivierlemasle.ca.DistinguishedName;
 
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
 
 import org.junit.Test;
+
+import io.github.olivierlemasle.ca.CSR;
+import io.github.olivierlemasle.ca.CertificateAuthority;
+import io.github.olivierlemasle.ca.DistinguishedName;
 
 public class SignTest {
 

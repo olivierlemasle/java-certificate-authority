@@ -7,9 +7,6 @@ import static io.github.olivierlemasle.ca.CA.loadCsr;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeFalse;
 import static org.junit.Assume.assumeTrue;
-import io.github.olivierlemasle.ca.CSR;
-import io.github.olivierlemasle.ca.CertificateAuthority;
-import io.github.olivierlemasle.ca.DistinguishedName;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,6 +31,10 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import io.github.olivierlemasle.ca.CSR;
+import io.github.olivierlemasle.ca.CertificateAuthority;
+import io.github.olivierlemasle.ca.DistinguishedName;
 
 public class OpenSslIT {
 
@@ -109,9 +110,9 @@ public class OpenSslIT {
   private void generateCsr() throws IOException, InterruptedException {
     final Process process = new ProcessBuilder("openssl", "req", "-nodes", "-newkey", "rsa:2048",
         "-keyout", "private.key", "-out", "CSR.csr", "-subj", "/CN=localhost")
-        .redirectError(Redirect.INHERIT)
-        .redirectOutput(Redirect.INHERIT)
-        .start();
+            .redirectError(Redirect.INHERIT)
+            .redirectOutput(Redirect.INHERIT)
+            .start();
 
     process.waitFor();
   }

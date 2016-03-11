@@ -62,8 +62,7 @@ class CaBuilderImpl implements CaBuilder, SerialNumberGenerator {
   public CertificateAuthority build() {
     signer.addExtension(KeyUsageExtension.create(
         KeyUsage.KEY_CERT_SIGN,
-        KeyUsage.CRL_SIGN)
-        );
+        KeyUsage.CRL_SIGN));
 
     if (crlUri != null) {
       signer.addExtension(CrlDistPointExtension.create(crlUri));

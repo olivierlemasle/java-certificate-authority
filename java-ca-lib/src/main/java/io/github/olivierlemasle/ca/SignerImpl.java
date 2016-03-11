@@ -1,8 +1,5 @@
 package io.github.olivierlemasle.ca;
 
-import io.github.olivierlemasle.ca.Signer.SignerWithSerial;
-import io.github.olivierlemasle.ca.ext.CertExtension;
-
 import java.math.BigInteger;
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
@@ -29,6 +26,9 @@ import org.bouncycastle.cert.jcajce.JcaX509ExtensionUtils;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
+
+import io.github.olivierlemasle.ca.Signer.SignerWithSerial;
+import io.github.olivierlemasle.ca.ext.CertExtension;
 
 class SignerImpl implements Signer, SignerWithSerial {
   private static final String SIGNATURE_ALGORITHM = "SHA256withRSA";
@@ -113,10 +113,10 @@ class SignerImpl implements Signer, SignerWithSerial {
           Date.from(notAfter.toInstant()),
           dn.getX500Name(),
           subPubKeyInfo)
-          .addExtension(Extension.authorityKeyIdentifier, false,
-              extUtils.createAuthorityKeyIdentifier(signerKeyPair.getPublic()))
-          .addExtension(Extension.subjectKeyIdentifier, false,
-              extUtils.createSubjectKeyIdentifier(publicKey));
+              .addExtension(Extension.authorityKeyIdentifier, false,
+                  extUtils.createAuthorityKeyIdentifier(signerKeyPair.getPublic()))
+              .addExtension(Extension.subjectKeyIdentifier, false,
+                  extUtils.createSubjectKeyIdentifier(publicKey));
 
       for (final CertExtension e : extensions) {
         certBuilder.addExtension(e.getOid(), e.isCritical(), e.getValue());

@@ -3,12 +3,13 @@ package io.github.olivierlemasle.tests;
 import static io.github.olivierlemasle.ca.CA.dn;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import io.github.olivierlemasle.ca.DistinguishedName;
 
 import javax.security.auth.x500.X500Principal;
 
 import org.bouncycastle.asn1.x500.X500Name;
 import org.junit.Test;
+
+import io.github.olivierlemasle.ca.DistinguishedName;
 
 public class DistinguishedNameTest {
 
@@ -34,7 +35,8 @@ public class DistinguishedNameTest {
 
   @Test
   public void testBuilder() {
-    final DistinguishedName dn = dn("CN=test,L=Paris,St=IdF,O=test-org,OU=my-OU,C=France,STREET=random");
+    final DistinguishedName dn = dn(
+        "CN=test,L=Paris,St=IdF,O=test-org,OU=my-OU,C=France,STREET=random");
 
     final DistinguishedName dn2 = dn()
         .setCn("test")
