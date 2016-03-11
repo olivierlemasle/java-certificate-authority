@@ -22,7 +22,7 @@
     
   <modules>
     <module>java-ca-lib</module>
-    <module>ca-api</module>
+    <module>ca-web</module>
   </modules>
 
   <properties>
