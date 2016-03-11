@@ -18,20 +18,20 @@ public class CrlDistPointExtension extends CertExtension {
   }
 
   /**
-   * Creates a {@link CrlDistPointExtension} with only a {@code cRLIssuer} URI
-   * (no {@code reasons}, no {@code distributionPoint} specified).
+   * Creates a {@link CrlDistPointExtension} with only a {@code distributionPoint} URI
+   * (no {@code reasons}, no {@code cRLIssuer} specified).
    */
   public static CrlDistPointExtension create(final String uri) {
     return create(NameType.URI, uri);
   }
 
   /**
-   * Creates a {@link CrlDistPointExtension} with only a {@code cRLIssuer}
-   * {@link GeneralName} (no {@code reasons}, no {@code distributionPoint}
+   * Creates a {@link CrlDistPointExtension} with only a {@code distributionPoint}
+   * {@link GeneralName} (no {@code reasons}, no {@code cRLIssuer}
    * specified).
    */
   public static CrlDistPointExtension create(final NameType type, final String name) {
-    return create(null, null, type, name, null);
+    return create(type, name, null, null, null);
   }
 
   public static CrlDistPointExtension create(final NameType distribPointNameType,
@@ -41,7 +41,12 @@ public class CrlDistPointExtension extends CertExtension {
       final ReasonFlags reasons) {
     final DistributionPointName dp = new DistributionPointName(
         distribPointNameType.generalNames(distribPointName));
-    final GeneralNames crl = crlIssuerNameType.generalNames(crlIssuer);
+    final GeneralNames crl;
+    if (crlIssuerNameType != null && crlIssuer != null) {
+        crl = crlIssuerNameType.generalNames(crlIssuer);
+    } else {
+        crl = null;
+    }
     return create(dp, reasons, crl);
   }
 

@@ -1,11 +1,5 @@
 package io.github.olivierlemasle.ca;
 
-import io.github.olivierlemasle.ca.Signer.SignerWithSerial;
-import io.github.olivierlemasle.ca.ext.CrlDistPointExtension;
-import io.github.olivierlemasle.ca.ext.ExtKeyUsageExtension;
-import io.github.olivierlemasle.ca.ext.KeyUsageExtension;
-import io.github.olivierlemasle.ca.ext.KeyUsageExtension.KeyUsage;
-
 import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.SecureRandom;
@@ -14,7 +8,11 @@ import java.time.ZonedDateTime;
 
 import org.bouncycastle.asn1.x509.BasicConstraints;
 import org.bouncycastle.asn1.x509.Extension;
-import org.bouncycastle.asn1.x509.KeyPurposeId;
+
+import io.github.olivierlemasle.ca.Signer.SignerWithSerial;
+import io.github.olivierlemasle.ca.ext.CrlDistPointExtension;
+import io.github.olivierlemasle.ca.ext.KeyUsageExtension;
+import io.github.olivierlemasle.ca.ext.KeyUsageExtension.KeyUsage;
 
 class CaBuilderImpl implements CaBuilder, SerialNumberGenerator {
   private static final int SERIAL_LENGTH = 128;
@@ -64,24 +62,12 @@ class CaBuilderImpl implements CaBuilder, SerialNumberGenerator {
   public CertificateAuthority build() {
     signer.addExtension(KeyUsageExtension.create(
         KeyUsage.KEY_CERT_SIGN,
-        KeyUsage.DIGITAL_SIGNATURE,
-        KeyUsage.CRL_SIGN,
-        KeyUsage.KEY_ENCIPHERMENT,
-        KeyUsage.KEY_AGREEMENT,
-        KeyUsage.DATA_ENCIPHERMENT,
-        KeyUsage.NON_REPUDIATION)
+        KeyUsage.CRL_SIGN)
         );
 
     if (crlUri != null) {
       signer.addExtension(CrlDistPointExtension.create(crlUri));
     }
-
-    signer.addExtension(ExtKeyUsageExtension.create(
-        KeyPurposeId.id_kp_clientAuth,
-        KeyPurposeId.id_kp_codeSigning,
-        KeyPurposeId.id_kp_serverAuth,
-        KeyPurposeId.id_kp_emailProtection)
-        );
 
     // This is a CA
     signer.addExtension(Extension.basicConstraints, false, new BasicConstraints(true));
