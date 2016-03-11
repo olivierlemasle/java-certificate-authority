@@ -1,5 +1,7 @@
 package io.github.olivierlemasle.ca;
 
+import static io.github.olivierlemasle.ca.CA.generateRandomSerialNumber;
+
 import java.math.BigInteger;
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
@@ -33,7 +35,6 @@ import io.github.olivierlemasle.ca.ext.CertExtension;
 class SignerImpl implements Signer, SignerWithSerial {
   private static final String SIGNATURE_ALGORITHM = "SHA256withRSA";
 
-  private final SerialNumberGenerator snGen;
   private final KeyPair signerKeyPair;
   private final DistinguishedName signerDn;
   private final PublicKey publicKey;
@@ -44,9 +45,8 @@ class SignerImpl implements Signer, SignerWithSerial {
   private ZonedDateTime notBefore = ZonedDateTime.now();
   private ZonedDateTime notAfter = notBefore.plusYears(1);
 
-  SignerImpl(final SerialNumberGenerator snGen, final KeyPair signerKeyPair,
-      final DistinguishedName signerDn, final PublicKey publicKey, final DistinguishedName dn) {
-    this.snGen = snGen;
+  SignerImpl(final KeyPair signerKeyPair, final DistinguishedName signerDn,
+      final PublicKey publicKey, final DistinguishedName dn) {
     this.signerKeyPair = signerKeyPair;
     this.signerDn = signerDn;
     this.publicKey = publicKey;
@@ -61,7 +61,7 @@ class SignerImpl implements Signer, SignerWithSerial {
 
   @Override
   public SignerWithSerial setRandomSerialNumber() {
-    this.serialNumber = snGen.generateRandomSerialNumber();
+    this.serialNumber = generateRandomSerialNumber();
     return this;
   }
 
@@ -97,7 +97,7 @@ class SignerImpl implements Signer, SignerWithSerial {
   }
 
   @Override
-  public X509Certificate sign() {
+  public Certificate sign() {
     try {
       final ContentSigner sigGen = new JcaContentSignerBuilder(SIGNATURE_ALGORITHM)
           .build(signerKeyPair.getPrivate());
@@ -129,7 +129,7 @@ class SignerImpl implements Signer, SignerWithSerial {
       cert.checkValidity();
       cert.verify(signerKeyPair.getPublic());
 
-      return cert;
+      return new CertificateImpl(cert);
     } catch (final OperatorCreationException | CertificateException | InvalidKeyException
         | NoSuchAlgorithmException | NoSuchProviderException | SignatureException
         | CertIOException e) {

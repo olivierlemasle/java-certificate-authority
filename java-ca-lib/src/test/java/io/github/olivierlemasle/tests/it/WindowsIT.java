@@ -1,8 +1,7 @@
 package io.github.olivierlemasle.tests.it;
 
-import static io.github.olivierlemasle.ca.CA.createCertificateAuthority;
+import static io.github.olivierlemasle.ca.CA.createSelfSignedCertificate;
 import static io.github.olivierlemasle.ca.CA.dn;
-import static io.github.olivierlemasle.ca.CA.export;
 import static io.github.olivierlemasle.ca.CA.loadCsr;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
@@ -35,8 +34,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import io.github.olivierlemasle.ca.CSR;
-import io.github.olivierlemasle.ca.CertificateAuthority;
+import io.github.olivierlemasle.ca.Certificate;
 import io.github.olivierlemasle.ca.DistinguishedName;
+import io.github.olivierlemasle.ca.RootCertificate;
 
 public class WindowsIT {
 
@@ -60,13 +60,12 @@ public class WindowsIT {
   @Test
   public void completeTest() throws IOException, InterruptedException, NoSuchAlgorithmException,
       KeyStoreException, KeyManagementException, CertificateException {
-    // Create a CA
+    // Create a self-signed root certificate
     System.out.println("Generate ..");
-    final DistinguishedName caName = dn("CN=CA-Test");
-    final CertificateAuthority ca = createCertificateAuthority(caName).build();
-    // Export the CA certificate
-    final X509Certificate caCert = ca.getCaCertificate();
-    export(caCert).saveCertificate("ca.cer");
+    final DistinguishedName rootDn = dn("CN=CA-Test");
+    final RootCertificate root = createSelfSignedCertificate(rootDn).build();
+    // Export the root certificate
+    root.save("ca.cer");
     System.out.println("CA ready. CA certificate saved to \"ca.cer\".");
 
     // Generate CSR using Windows utilities
@@ -76,10 +75,10 @@ public class WindowsIT {
     // Load the generated CSR, sign it and export the resulting certificate
     System.out.println("Sign CSR...");
     final CSR csr = loadCsr("cert.req").getCsr();
-    final X509Certificate cert = ca.signCsr(csr)
+    final Certificate cert = root.signCsr(csr)
         .setRandomSerialNumber()
         .sign();
-    export(cert).saveCertificate("cert.cer");
+    cert.save("cert.cer");
     System.out.println("CSR signed. Certificate saved to \"cert.cer\".");
 
     // On Windows, install the CA certificate as a trusted certificate
@@ -91,14 +90,14 @@ public class WindowsIT {
 
     // Configure SSL
     System.out.println("Configure SSL");
-    final String certThumbprint = getThumbPrint(cert);
+    final String certThumbprint = getThumbPrint(cert.getX509Certificate());
     configureSsl(certThumbprint, UUID.randomUUID().toString());
     // NB: https binding has been set in appveyor.yml
 
     // Add the CA certificate to a truststore
     final KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
     keystore.load(null, null);
-    keystore.setCertificateEntry("cert", caCert);
+    keystore.setCertificateEntry("cert", root.getX509Certificate());
     final SSLContext sslContext = SSLContexts.custom().loadTrustMaterial(keystore, null).build();
     // Test the HTTPS connection
     System.out.println("Test https://localhost/");

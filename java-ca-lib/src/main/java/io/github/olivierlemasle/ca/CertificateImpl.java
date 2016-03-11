@@ -11,15 +11,20 @@ import java.security.cert.X509Certificate;
 
 import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
 
-class CertificateExporterImpl implements CertificateExporter {
+class CertificateImpl implements Certificate {
   private final X509Certificate certificate;
 
-  CertificateExporterImpl(final X509Certificate certificate) {
+  CertificateImpl(final X509Certificate certificate) {
     this.certificate = certificate;
   }
 
   @Override
-  public String printCertificate() {
+  public X509Certificate getX509Certificate() {
+    return certificate;
+  }
+
+  @Override
+  public String print() {
     final StringWriter sw = new StringWriter();
     try {
       try (JcaPEMWriter writer = new JcaPEMWriter(sw)) {
@@ -33,7 +38,7 @@ class CertificateExporterImpl implements CertificateExporter {
   }
 
   @Override
-  public void saveCertificate(final File file) {
+  public void save(final File file) {
     try {
       try (BufferedWriter fw = Files.newBufferedWriter(file.toPath(), StandardCharsets.UTF_8,
           StandardOpenOption.CREATE)) {
@@ -48,9 +53,9 @@ class CertificateExporterImpl implements CertificateExporter {
   }
 
   @Override
-  public void saveCertificate(final String fileName) {
+  public void save(final String fileName) {
     final File file = new File(fileName);
-    saveCertificate(file);
+    save(file);
   }
 
 }

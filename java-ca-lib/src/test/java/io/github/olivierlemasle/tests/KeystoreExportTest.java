@@ -1,9 +1,10 @@
 package io.github.olivierlemasle.tests;
 
-import static io.github.olivierlemasle.ca.CA.createCertificateAuthority;
 import static io.github.olivierlemasle.ca.CA.createCsr;
+import static io.github.olivierlemasle.ca.CA.createSelfSignedCertificate;
 import static io.github.olivierlemasle.ca.CA.dn;
-import static io.github.olivierlemasle.ca.CA.loadCertificateAuthority;
+import static io.github.olivierlemasle.ca.CA.generateRandomSerialNumber;
+import static io.github.olivierlemasle.ca.CA.loadRootCertificate;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -20,11 +21,11 @@ import org.junit.Test;
 
 import io.github.olivierlemasle.ca.CSR;
 import io.github.olivierlemasle.ca.CaException;
-import io.github.olivierlemasle.ca.CertificateAuthority;
 import io.github.olivierlemasle.ca.DistinguishedName;
+import io.github.olivierlemasle.ca.RootCertificate;
 
 public class KeystoreExportTest {
-  private static CertificateAuthority ca;
+  private static RootCertificate ca;
   private static ZonedDateTime time = ZonedDateTime.now();
   private static CSR csr;
   private static BigInteger serialNumber;
@@ -33,14 +34,15 @@ public class KeystoreExportTest {
   @BeforeClass
   public static void setup() {
     final DistinguishedName caName = dn("CN=CA-Test");
-    ca = createCertificateAuthority(caName).build();
+    ca = createSelfSignedCertificate(caName).build();
     csr = createCsr().generateRequest(dn("CN=Test"));
-    serialNumber = ca.generateRandomSerialNumber();
+    serialNumber = generateRandomSerialNumber();
     cert = ca.signCsr(csr)
         .setSerialNumber(serialNumber)
         .setNotBefore(time)
         .validDuringYears(1)
-        .sign();
+        .sign()
+        .getX509Certificate();
   }
 
   @After
@@ -56,15 +58,16 @@ public class KeystoreExportTest {
   public void saveToKeystoreFileAndBack() {
     ca.exportPkcs12("test.p12", "password".toCharArray(), "ca");
 
-    final CertificateAuthority ca2 = loadCertificateAuthority("test.p12",
+    final RootCertificate ca2 = loadRootCertificate("test.p12",
         "password".toCharArray(), "ca");
-    assertEquals(ca.getCaCertificate(), ca2.getCaCertificate());
+    assertEquals(ca.getX509Certificate(), ca2.getX509Certificate());
 
     final X509Certificate cert2 = ca2.signCsr(csr)
         .setSerialNumber(serialNumber)
         .setNotBefore(time)
         .validDuringYears(1)
-        .sign();
+        .sign()
+        .getX509Certificate();
     assertEquals(cert, cert2);
   }
 
@@ -73,7 +76,7 @@ public class KeystoreExportTest {
     ca.exportPkcs12("test.p12", "password".toCharArray(), "ca");
 
     try {
-      loadCertificateAuthority("invalid", "password".toCharArray(), "ca");
+      loadRootCertificate("invalid", "password".toCharArray(), "ca");
       fail("CaException expected");
     } catch (final CaException expected) {
     }
@@ -84,7 +87,7 @@ public class KeystoreExportTest {
     ca.exportPkcs12("test.p12", "password".toCharArray(), "ca");
 
     try {
-      loadCertificateAuthority("test.p12", "incorrect".toCharArray(), "ca");
+      loadRootCertificate("test.p12", "incorrect".toCharArray(), "ca");
       fail("CaException expected");
     } catch (final CaException expected) {
     }
@@ -95,7 +98,7 @@ public class KeystoreExportTest {
     ca.exportPkcs12("test.p12", "password".toCharArray(), "ca");
 
     try {
-      loadCertificateAuthority("test.p12", "password".toCharArray(), "incorrect");
+      loadRootCertificate("test.p12", "password".toCharArray(), "incorrect");
       fail("CaException expected");
     } catch (final CaException expected) {
     }

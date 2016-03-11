@@ -46,7 +46,7 @@ public class Main {
 
   public static void main(final String[] args) {
     final DistinguishedName root = dn("CN=Root-Test, O=My Org");
-    final CertificateAuthority ca = createCertificateAuthority(root)
+    final RootCertificate ca = createSelfSignedCertificate(root)
         .validDuringYears(10)
         .build();
 
@@ -57,18 +57,17 @@ public class Main {
             .setOu("IT dep.")
             .setSt("CA")
             .setC("US")
-            .build()
-        );
+            .build());
 
-    final X509Certificate cert = ca.signCsr(csr)
+    final Certificate cert = ca.signCsr(csr)
         .setRandomSerialNumber()
         .validDuringYears(2)
         .sign();
 
-    System.out.println("Subject: " + cert.getSubjectDN());
-    System.out.println("Issuer: " + cert.getIssuerDN());
+    System.out.println("Subject: " + cert.getX509Certificate().getSubjectDN());
+    System.out.println("Issuer: " + cert.getX509Certificate().getIssuerDN());
 
-    System.out.println(export(cert).printCertificate());
+    System.out.println(cert.print());
   }
 }
 

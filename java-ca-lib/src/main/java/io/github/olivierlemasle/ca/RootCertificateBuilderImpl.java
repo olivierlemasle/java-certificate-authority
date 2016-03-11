@@ -1,8 +1,6 @@
 package io.github.olivierlemasle.ca;
 
-import java.math.BigInteger;
 import java.security.KeyPair;
-import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.time.ZonedDateTime;
 
@@ -14,52 +12,45 @@ import io.github.olivierlemasle.ca.ext.CrlDistPointExtension;
 import io.github.olivierlemasle.ca.ext.KeyUsageExtension;
 import io.github.olivierlemasle.ca.ext.KeyUsageExtension.KeyUsage;
 
-class CaBuilderImpl implements CaBuilder, SerialNumberGenerator {
-  private static final int SERIAL_LENGTH = 128;
+class RootCertificateBuilderImpl implements RootCertificateBuilder {
 
   private String crlUri = null;
 
   private final KeyPair pair;
   private final SignerWithSerial signer;
-  private final SecureRandom random = new SecureRandom();
 
-  CaBuilderImpl(final DistinguishedName caName) {
+  RootCertificateBuilderImpl(final DistinguishedName subject) {
     pair = KeysUtil.generateKeyPair();
-    signer = new SignerImpl(this, pair, caName, pair.getPublic(), caName)
+    signer = new SignerImpl(pair, subject, pair.getPublic(), subject)
         .setRandomSerialNumber();
   }
 
   @Override
-  public CaBuilder setNotBefore(final ZonedDateTime notBefore) {
+  public RootCertificateBuilder setNotBefore(final ZonedDateTime notBefore) {
     signer.setNotBefore(notBefore);
     return this;
   }
 
   @Override
-  public CaBuilder setNotAfter(final ZonedDateTime notAfter) {
+  public RootCertificateBuilder setNotAfter(final ZonedDateTime notAfter) {
     signer.setNotAfter(notAfter);
     return this;
   }
 
   @Override
-  public CaBuilder validDuringYears(final int years) {
+  public RootCertificateBuilder validDuringYears(final int years) {
     signer.validDuringYears(years);
     return this;
   }
 
   @Override
-  public CaBuilder setCrlUri(final String crlUri) {
+  public RootCertificateBuilder setCrlUri(final String crlUri) {
     this.crlUri = crlUri;
     return this;
   }
 
   @Override
-  public BigInteger generateRandomSerialNumber() {
-    return new BigInteger(SERIAL_LENGTH, random);
-  }
-
-  @Override
-  public CertificateAuthority build() {
+  public RootCertificate build() {
     signer.addExtension(KeyUsageExtension.create(
         KeyUsage.KEY_CERT_SIGN,
         KeyUsage.CRL_SIGN));
@@ -71,9 +62,9 @@ class CaBuilderImpl implements CaBuilder, SerialNumberGenerator {
     // This is a CA
     signer.addExtension(Extension.basicConstraints, false, new BasicConstraints(true));
 
-    final X509Certificate caCertificate = signer.sign();
+    final X509Certificate rootCertificate = signer.sign().getX509Certificate();
 
-    return new CertificateAuthorityImpl(caCertificate, pair.getPrivate());
+    return new RootCertificateImpl(rootCertificate, pair.getPrivate());
   }
 
 }

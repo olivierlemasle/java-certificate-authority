@@ -1,8 +1,8 @@
 package io.github.olivierlemasle.ca;
 
 import java.io.File;
+import java.math.BigInteger;
 import java.security.KeyStore;
-import java.security.cert.X509Certificate;
 
 import javax.security.auth.x500.X500Principal;
 
@@ -27,61 +27,61 @@ public final class CA {
   }
 
   /**
-   * Creates a builder object used to create a new {@link CertificateAuthority}.
+   * Creates a builder object used to create a new self-signed root certificate.
    * 
-   * @param caName
-   *          Distinguished Name of the authority certificate
+   * @param subject
+   *          Subject's Distinguished Name
    * @return a builder object
-   * @see CertificateAuthority
    */
-  public static CaBuilder createCertificateAuthority(final DistinguishedName caName) {
-    return new CaBuilderImpl(caName);
+  public static RootCertificateBuilder createSelfSignedCertificate(
+      final DistinguishedName subject) {
+    return new RootCertificateBuilderImpl(subject);
   }
 
   /**
-   * Loads an existing {@link CertificateAuthority} from a {@code PKCS12} keystore.
+   * Loads an existing {@link RootCertificate} from a {@code PKCS12} keystore.
    * 
    * @param keystorePath
    *          path of the PKCS12 keystore
    * @param password
    *          password of the keystore
    * @param alias
-   *          CA certificate alias in the keystore
-   * @return the loaded {@link CertificateAuthority}
+   *          Root certificate alias in the keystore
+   * @return the loaded {@link RootCertificate}
    */
-  public static CertificateAuthority loadCertificateAuthority(final String keystorePath,
+  public static RootCertificate loadRootCertificate(final String keystorePath,
       final char[] password, final String alias) {
-    return CaLoader.loadCertificateAuthority(keystorePath, password, alias);
+    return RootCertificateLoader.loadRootCertificate(keystorePath, password, alias);
   }
 
   /**
-   * Loads an existing {@link CertificateAuthority} from a {@code PKCS12} keystore.
+   * Loads an existing {@link RootCertificate} from a {@code PKCS12} keystore.
    * 
    * @param keystoreFile
    *          PKCS12 keystore file
    * @param password
    *          password of the keystore
    * @param alias
-   *          CA certificate alias in the keystore
-   * @return the loaded {@link CertificateAuthority}
+   *          Root certificate alias in the keystore
+   * @return the loaded {@link RootCertificate}
    */
-  public static CertificateAuthority loadCertificateAuthority(final File keystoreFile,
+  public static RootCertificate loadRootCertificate(final File keystoreFile,
       final char[] password, final String alias) {
-    return CaLoader.loadCertificateAuthority(keystoreFile, password, alias);
+    return RootCertificateLoader.loadRootCertificate(keystoreFile, password, alias);
   }
 
   /**
-   * Loads an existing {@link CertificateAuthority} from a {@code PKCS12} keystore.
+   * Loads an existing {@link RootCertificate} from a {@code PKCS12} keystore.
    * 
    * @param keystoreFile
    *          PKCS12 keystore, already "loaded"
    * @param alias
-   *          CA certificate alias in the keystore
-   * @return the loaded {@link CertificateAuthority}
+   *          Root certificate alias in the keystore
+   * @return the loaded {@link RootCertificate}
    */
-  public static CertificateAuthority loadCertificateAuthority(final KeyStore keystore,
+  public static RootCertificate loadRootCertificate(final KeyStore keystore,
       final String alias) {
-    return CaLoader.loadCertificateAuthority(keystore, alias);
+    return RootCertificateLoader.loadRootCertificate(keystore, alias);
   }
 
   /**
@@ -156,13 +156,8 @@ public final class CA {
     return new X500PrincipalDnImpl(principal);
   }
 
-  /**
-   * Returns a utility object used to export a {@link X509Certificate} to the PEM format.
-   * 
-   * @param certificate
-   * @return a utility object
-   */
-  public static CertificateExporter export(final X509Certificate certificate) {
-    return new CertificateExporterImpl(certificate);
+  public static BigInteger generateRandomSerialNumber() {
+    return SerialNumberGenerator.instance.generateRandomSerialNumber();
   }
+
 }

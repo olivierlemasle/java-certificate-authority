@@ -2,9 +2,8 @@ package io.github.olivierlemasle.ca;
 
 import java.io.File;
 import java.security.KeyStore;
-import java.security.cert.X509Certificate;
 
-public interface CertificateAuthority extends SerialNumberGenerator {
+public interface CertificateWithPrivateKey extends Certificate {
 
   public KeyStore saveInPkcs12Keystore(String alias);
 
@@ -13,9 +12,4 @@ public interface CertificateAuthority extends SerialNumberGenerator {
 
   public void exportPkcs12(final File keystoreFile, final char[] keystorePassword,
       final String alias);
-
-  public X509Certificate getCaCertificate();
-
-  public Signer signCsr(final CSR request);
-
 }

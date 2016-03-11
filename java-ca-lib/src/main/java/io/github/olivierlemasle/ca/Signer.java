@@ -1,7 +1,6 @@
 package io.github.olivierlemasle.ca;
 
 import java.math.BigInteger;
-import java.security.cert.X509Certificate;
 import java.time.ZonedDateTime;
 
 import org.bouncycastle.asn1.ASN1Encodable;
@@ -15,7 +14,7 @@ public interface Signer {
   public SignerWithSerial setRandomSerialNumber();
 
   public static interface SignerWithSerial {
-    public X509Certificate sign();
+    public Certificate sign();
 
     public SignerWithSerial setNotBefore(final ZonedDateTime notBefore);
 
