@@ -13,7 +13,7 @@ class CsrImpl implements CSR {
   public CsrImpl(final PKCS10CertificationRequest request) {
     dn = new BcX500NameDnImpl(request.getSubject());
     try {
-      publicKey = (new JcaPEMKeyConverter()).getPublicKey(request.getSubjectPublicKeyInfo());
+      publicKey = new JcaPEMKeyConverter().getPublicKey(request.getSubjectPublicKeyInfo());
     } catch (final PEMException e) {
       throw new CaException(e);
     }

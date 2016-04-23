@@ -2,8 +2,10 @@ package io.github.olivierlemasle.ca;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
@@ -29,6 +31,18 @@ class CertificateWithPrivateKeyImpl extends CertificateImpl implements Certifica
     this.privateKey = privateKey;
   }
 
+  @Override
+  public KeyStore addToKeystore(KeyStore keyStore, String alias) {
+    try {
+      final X509Certificate certificate = getX509Certificate();
+      final Certificate[] chain = new Certificate[] { certificate };
+      keyStore.setKeyEntry(alias, privateKey, null, chain);
+
+      return keyStore;
+    } catch (final KeyStoreException e) {
+      throw new CaException(e);
+    }
+  }
 
   @Override
   public KeyStore saveInPkcs12Keystore(final String alias) {
@@ -37,9 +51,7 @@ class CertificateWithPrivateKeyImpl extends CertificateImpl implements Certifica
       final KeyStore keyStore = KeyStore.getInstance(KEYSTORE_TYPE);
       keyStore.load(null, null);
 
-      final X509Certificate certificate = getX509Certificate();
-      final Certificate[] chain = new Certificate[] { certificate };
-      keyStore.setKeyEntry(alias, privateKey, null, chain);
+      addToKeystore(keyStore, alias);
 
       return keyStore;
     } catch (KeyStoreException | NoSuchAlgorithmException | CertificateException | IOException e) {
@@ -57,22 +69,30 @@ class CertificateWithPrivateKeyImpl extends CertificateImpl implements Certifica
   @Override
   public void exportPkcs12(final File keystoreFile, final char[] keystorePassword,
       final String alias) {
-    final KeyStore keystore = saveInPkcs12Keystore(alias);
     try {
+      final KeyStore keyStore;
+      if (keystoreFile.exists() && keystoreFile.isFile()) {
+        // Load existing keystore
+        keyStore = KeyStore.getInstance(KEYSTORE_TYPE);
+        try (InputStream stream = new FileInputStream(keystoreFile)) {
+          keyStore.load(stream, keystorePassword);
+        }
+        addToKeystore(keyStore, alias);
+      } else {
+        keyStore = saveInPkcs12Keystore(alias);
+      }
       try (OutputStream stream = new FileOutputStream(keystoreFile)) {
-        keystore.store(stream, keystorePassword);
+        keyStore.store(stream, keystorePassword);
       }
     } catch (KeyStoreException | IOException | CertificateException | NoSuchAlgorithmException e) {
       throw new CaException(e);
     }
   }
 
-
   @Override
   public PrivateKey getPrivateKey() {
     return privateKey;
   }
-
 
   @Override
   public String printKey() {
@@ -88,7 +108,6 @@ class CertificateWithPrivateKeyImpl extends CertificateImpl implements Certifica
     }
   }
 
-
   @Override
   public void saveKey(File file) {
     try {
@@ -101,14 +120,13 @@ class CertificateWithPrivateKeyImpl extends CertificateImpl implements Certifica
       }
     } catch (final IOException e) {
       throw new CaException(e);
-    }    
+    }
   }
-
 
   @Override
   public void saveKey(String fileName) {
     final File file = new File(fileName);
-    saveKey(file);    
+    saveKey(file);
   }
 
 }

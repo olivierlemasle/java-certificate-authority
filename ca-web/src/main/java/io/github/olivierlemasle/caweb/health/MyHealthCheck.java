@@ -9,6 +9,6 @@ public class MyHealthCheck extends HealthCheck {
 
   @Override
   protected Result check() throws Exception {
-    return Result.healthy();
+    return Result.healthy("foo");
   }
 }

@@ -6,6 +6,8 @@ import java.security.PrivateKey;
 
 public interface CertificateWithPrivateKey extends Certificate {
 
+  public KeyStore addToKeystore(KeyStore keyStore, String alias);
+
   public KeyStore saveInPkcs12Keystore(String alias);
 
   public void exportPkcs12(final String keystorePath, final char[] keystorePassword,

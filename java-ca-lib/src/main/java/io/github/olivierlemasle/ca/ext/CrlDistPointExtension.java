@@ -18,16 +18,16 @@ public class CrlDistPointExtension extends CertExtension {
   }
 
   /**
-   * Creates a {@link CrlDistPointExtension} with only a {@code distributionPoint} URI (no
-   * {@code reasons}, no {@code cRLIssuer} specified).
+   * Creates a {@link CrlDistPointExtension} with only a {@code distributionPoint} URI (no {@code reasons}, no
+   * {@code cRLIssuer} specified).
    */
   public static CrlDistPointExtension create(final String uri) {
     return create(NameType.URI, uri);
   }
 
   /**
-   * Creates a {@link CrlDistPointExtension} with only a {@code distributionPoint}
-   * {@link GeneralName} (no {@code reasons}, no {@code cRLIssuer} specified).
+   * Creates a {@link CrlDistPointExtension} with only a {@code distributionPoint} {@link GeneralName} (no
+   * {@code reasons}, no {@code cRLIssuer} specified).
    */
   public static CrlDistPointExtension create(final NameType type, final String name) {
     return create(type, name, null, null, null);

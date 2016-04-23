@@ -10,7 +10,7 @@ import org.bouncycastle.asn1.x500.X500Name;
 
 /**
  * Root of the <i>Certification Authority</i> DSL.
- * 
+ *
  * <p>
  * All methods in this class are static. They should be statically imported:
  * </p>
@@ -28,7 +28,7 @@ public final class CA {
 
   /**
    * Creates a builder object used to create a new self-signed root certificate.
-   * 
+   *
    * @param subject
    *          Subject's Distinguished Name
    * @return a builder object
@@ -40,7 +40,7 @@ public final class CA {
 
   /**
    * Loads an existing {@link RootCertificate} from a {@code PKCS12} keystore.
-   * 
+   *
    * @param keystorePath
    *          path of the PKCS12 keystore
    * @param password
@@ -56,7 +56,7 @@ public final class CA {
 
   /**
    * Loads an existing {@link RootCertificate} from a {@code PKCS12} keystore.
-   * 
+   *
    * @param keystoreFile
    *          PKCS12 keystore file
    * @param password
@@ -72,7 +72,7 @@ public final class CA {
 
   /**
    * Loads an existing {@link RootCertificate} from a {@code PKCS12} keystore.
-   * 
+   *
    * @param keystoreFile
    *          PKCS12 keystore, already "loaded"
    * @param alias
@@ -86,7 +86,7 @@ public final class CA {
 
   /**
    * Creates a builder object used to create a new {@link CSR} (Certificate Signing Request).
-   * 
+   *
    * @return a builder object
    * @see CSR
    */
@@ -96,7 +96,7 @@ public final class CA {
 
   /**
    * Loads a {@link CSR} (Certificate Signing Request) from a file.
-   * 
+   *
    * @param csrFile
    *          CSR file
    * @return the CSR object
@@ -107,7 +107,7 @@ public final class CA {
 
   /**
    * Loads a {@link CSR} (Certificate Signing Request) from a file.
-   * 
+   *
    * @param csrFileName
    *          CSR file path
    * @return the CSR object
@@ -118,7 +118,7 @@ public final class CA {
 
   /**
    * Creates a builder object used to build a {@link DistinguishedName}.
-   * 
+   *
    * @return a builder object
    * @see DistinguishedName
    */
@@ -128,7 +128,7 @@ public final class CA {
 
   /**
    * Builds a {@link DistinguishedName} from a {@link String}.
-   * 
+   *
    * @param name
    * @return the {@link DistinguishedName} object
    */
@@ -138,7 +138,7 @@ public final class CA {
 
   /**
    * Builds a {@link DistinguishedName} from a Bouncy Castle {@link X500Name} object.
-   * 
+   *
    * @param name
    * @return the {@link DistinguishedName} object
    */
@@ -148,7 +148,7 @@ public final class CA {
 
   /**
    * Builds a {@link DistinguishedName} from a {@link javax.security.auth.x500.X500Principal}.
-   * 
+   *
    * @param name
    * @return the {@link DistinguishedName} object
    */

@@ -101,7 +101,7 @@ public class OpenSslIT {
 
   /**
    * {@code openssl req -nodes -newkey rsa:2048 -keyout private.key -out CSR.csr -subj "/CN=localhost"}
-   * 
+   *
    * @throws IOException
    * @throws InterruptedException
    */
@@ -117,7 +117,7 @@ public class OpenSslIT {
 
   /**
    * {@code sudo service apache2 reload}
-   * 
+   *
    * @throws IOException
    * @throws InterruptedException
    */

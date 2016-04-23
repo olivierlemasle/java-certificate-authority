@@ -112,7 +112,7 @@ public class WindowsIT {
 
   /**
    * {@code certutil -enterprise -addstore ROOT ca.cer}
-   * 
+   *
    * @throws IOException
    * @throws InterruptedException
    */
@@ -128,7 +128,7 @@ public class WindowsIT {
 
   /**
    * {@code certreq -new src\test\resources\csr_template.inf cert.req}
-   * 
+   *
    * @throws IOException
    * @throws InterruptedException
    */
@@ -144,7 +144,7 @@ public class WindowsIT {
 
   /**
    * {@code certreq -accept cert.cer}
-   * 
+   *
    * @throws IOException
    * @throws InterruptedException
    */
@@ -159,7 +159,7 @@ public class WindowsIT {
 
   /**
    * {@code netsh http add sslcert ipport=0.0.0.0:443 certhash=... appid=...}
-   * 
+   *
    * @param certHash
    * @param appId
    * @throws IOException
@@ -192,9 +192,9 @@ public class WindowsIT {
         'd', 'e', 'f' };
 
     final StringBuilder buf = new StringBuilder(bytes.length * 2);
-    for (int i = 0; i < bytes.length; ++i) {
-      buf.append(hexDigits[(bytes[i] & 0xf0) >> 4]);
-      buf.append(hexDigits[bytes[i] & 0x0f]);
+    for (final byte b : bytes) {
+      buf.append(hexDigits[(b & 0xf0) >> 4]);
+      buf.append(hexDigits[b & 0x0f]);
     }
     return buf.toString();
   }
