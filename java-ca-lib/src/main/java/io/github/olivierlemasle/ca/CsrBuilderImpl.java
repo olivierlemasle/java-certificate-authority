@@ -16,7 +16,7 @@ class CsrBuilderImpl implements CsrBuilder {
   private static final String SIGNATURE_ALGORITHM = "SHA256withRSA";
 
   @Override
-  public CSR generateRequest(final DistinguishedName dn) {
+  public CsrWithPrivateKey generateRequest(final DistinguishedName dn) {
     final KeyPair pair = KeysUtil.generateKeyPair();
     try {
       final PrivateKey privateKey = pair.getPrivate();
@@ -27,7 +27,7 @@ class CsrBuilderImpl implements CsrBuilder {
       final PKCS10CertificationRequestBuilder builder = new JcaPKCS10CertificationRequestBuilder(
           x500Name, publicKey);
       final PKCS10CertificationRequest csr = builder.build(signGen);
-      return new CsrImpl(csr);
+      return new CsrWithPrivateKeyImpl(csr, privateKey);
     } catch (final OperatorCreationException e) {
       throw new CaException(e);
     }

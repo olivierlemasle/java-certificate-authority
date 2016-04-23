@@ -7,6 +7,7 @@ import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
+import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 
 import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
@@ -56,6 +57,11 @@ class CertificateImpl implements Certificate {
   public void save(final String fileName) {
     final File file = new File(fileName);
     save(file);
+  }
+
+  @Override
+  public CertificateWithPrivateKey attachPrivateKey(PrivateKey privateKey) {
+    return new CertificateWithPrivateKeyImpl(certificate, privateKey);
   }
 
 }

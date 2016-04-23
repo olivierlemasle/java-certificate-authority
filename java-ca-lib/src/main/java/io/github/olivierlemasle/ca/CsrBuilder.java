@@ -2,6 +2,6 @@ package io.github.olivierlemasle.ca;
 
 public interface CsrBuilder {
 
-  public CSR generateRequest(DistinguishedName name);
+  public CsrWithPrivateKey generateRequest(DistinguishedName name);
 
 }
