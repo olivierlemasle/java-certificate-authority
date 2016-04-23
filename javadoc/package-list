@@ -2,5 +2,7 @@ io.github.olivierlemasle.ca
 io.github.olivierlemasle.ca.ext
 io.github.olivierlemasle.caweb
 io.github.olivierlemasle.caweb.api
+io.github.olivierlemasle.caweb.cli
 io.github.olivierlemasle.caweb.health
+io.github.olivierlemasle.caweb.json
 io.github.olivierlemasle.caweb.resources
