@@ -83,6 +83,10 @@ public final class CA {
       final String alias) {
     return RootCertificateLoader.loadRootCertificate(keystore, alias);
   }
+  
+  public static KeyStoreReader readKeystore() {
+    return new KeyStoreReaderImpl();
+  }
 
   /**
    * Creates a builder object used to create a new {@link CSR} (Certificate Signing Request).

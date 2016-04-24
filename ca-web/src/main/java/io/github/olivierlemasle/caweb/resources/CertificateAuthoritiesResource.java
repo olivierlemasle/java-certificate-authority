@@ -3,6 +3,7 @@ package io.github.olivierlemasle.caweb.resources;
 import static io.github.olivierlemasle.ca.CA.createSelfSignedCertificate;
 import static io.github.olivierlemasle.ca.CA.dn;
 import static io.github.olivierlemasle.ca.CA.loadRootCertificate;
+import static io.github.olivierlemasle.ca.CA.readKeystore;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +20,6 @@ import javax.ws.rs.core.MediaType;
 import com.codahale.metrics.annotation.Timed;
 
 import io.github.olivierlemasle.ca.DistinguishedName;
-import io.github.olivierlemasle.ca.KeyStoreReader;
 import io.github.olivierlemasle.ca.RootCertificate;
 import io.github.olivierlemasle.caweb.CaConfiguration.Keystore;
 import io.github.olivierlemasle.caweb.api.CertificateAuthority;
@@ -36,7 +36,7 @@ public class CertificateAuthoritiesResource {
     this.keystorePassword = keystore.getPassword().toCharArray();
     this.cas = new HashMap<>();
 
-    final List<String> aliases = new KeyStoreReader().listAliases(keystorePath, keystorePassword);
+    final List<String> aliases = readKeystore().listAliases(keystorePath, keystorePassword);
     for (final String alias : aliases) {
       final RootCertificate rootCert = loadRootCertificate(keystorePath, keystorePassword, alias);
       final CertificateAuthority ca = new CertificateAuthority(rootCert);
