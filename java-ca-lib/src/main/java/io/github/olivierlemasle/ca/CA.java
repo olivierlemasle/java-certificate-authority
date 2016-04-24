@@ -83,7 +83,7 @@ public final class CA {
       final String alias) {
     return RootCertificateLoader.loadRootCertificate(keystore, alias);
   }
-  
+
   public static KeyStoreReader readKeystore() {
     return new KeyStoreReaderImpl();
   }
@@ -157,7 +157,7 @@ public final class CA {
    * @return the {@link DistinguishedName} object
    */
   public static DistinguishedName dn(final X500Principal principal) {
-    return new X500PrincipalDnImpl(principal);
+    return new BcX500NameDnImpl(principal);
   }
 
   public static BigInteger generateRandomSerialNumber() {

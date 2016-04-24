@@ -2,10 +2,13 @@ import { Component, OnInit } from "angular2/core";
 
 import {Authority} from "./authority";
 import {CaService} from "./ca.service";
+import { DnComponent } from "./dn.component";
+
 
 @Component({
   selector: "authorities",
-  templateUrl: "app/authorities.component.html"
+  templateUrl: "app/authorities.component.html",
+  directives: [DnComponent]
 })
 export class AuthoritiesComponent implements OnInit {
 

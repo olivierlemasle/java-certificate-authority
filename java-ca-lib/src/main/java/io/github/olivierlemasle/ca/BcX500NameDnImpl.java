@@ -16,6 +16,10 @@ class BcX500NameDnImpl implements DistinguishedName {
   BcX500NameDnImpl(final String name) {
     this.x500Name = new X500Name(name);
   }
+  
+  BcX500NameDnImpl(final X500Principal principal) {
+    this.x500Name = X500Name.getInstance(principal.getEncoded());
+  }
 
   @Override
   public X500Name getX500Name() {

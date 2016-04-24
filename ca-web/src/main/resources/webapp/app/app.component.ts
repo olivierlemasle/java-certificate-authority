@@ -3,7 +3,7 @@ import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from "angular2/route
 import { HTTP_PROVIDERS } from "angular2/http";
 
 import { AuthoritiesComponent } from "./authorities.component";
-import {CaService} from "./ca.service";
+import { CaService } from "./ca.service";
 
 @Component({
   selector: "ca-app",
@@ -14,8 +14,7 @@ import {CaService} from "./ca.service";
     </nav>
     <router-outlet></router-outlet>
   `,
-  // styleUrls: ["app/app.component.css"],
-  directives: [ROUTER_DIRECTIVES],
+  directives: [ ROUTER_DIRECTIVES ],
   providers: [
     ROUTER_PROVIDERS,
     HTTP_PROVIDERS,

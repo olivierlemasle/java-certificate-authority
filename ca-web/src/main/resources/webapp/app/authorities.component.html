@@ -4,9 +4,11 @@
     {{ ca.subject }}
   </li>
 </ul>
-New Certificate Authority:
-<input #newCa />
-<button (click)="addCa(newCa.value); newCa.value=''">
+
+<p>New Certificate Authority:</p>
+<!-- <input #newCa /> -->
+<dn-editor #newCa></dn-editor>
+<button (click)="addCa(newCa.getDn()); newCa.value=''">
   Add Certificate Authority
 </button>
 <div class="error" *ngIf="errorMessage">{{errorMessage}}</div>

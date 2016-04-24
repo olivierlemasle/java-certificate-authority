@@ -5,7 +5,6 @@ import static io.github.olivierlemasle.ca.CA.dn;
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -23,14 +22,13 @@ class DnDeserializer extends StdDeserializer<DistinguishedName> {
   }
 
   @Override
-  public DistinguishedName deserialize(final JsonParser p, final DeserializationContext ctxt)
-      throws IOException, JsonProcessingException {
+  public DistinguishedName deserialize(final JsonParser p, final DeserializationContext ctxt) throws IOException {
     if (p.getCurrentToken() == JsonToken.START_OBJECT) {
 
       DnBuilder dnBuilder = dn();
       for (JsonToken t = p.nextToken(); t != JsonToken.END_OBJECT; t = p.nextToken()) {
         if (t != JsonToken.FIELD_NAME)
-          throw new JsonMappingException("Expecting " + JsonToken.FIELD_NAME);
+          throw JsonMappingException.from(p, "Expecting " + JsonToken.FIELD_NAME);
 
         final String fieldName = p.getCurrentName();
 
