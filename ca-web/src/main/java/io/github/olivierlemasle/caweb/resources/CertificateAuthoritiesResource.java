@@ -5,6 +5,7 @@ import static io.github.olivierlemasle.ca.CA.dn;
 import static io.github.olivierlemasle.ca.CA.loadRootCertificate;
 import static io.github.olivierlemasle.ca.CA.readKeystore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,8 +48,8 @@ public class CertificateAuthoritiesResource {
 
   @GET
   @Timed
-  public Map<String, CertificateAuthority> get() {
-    return cas;
+  public List<CertificateAuthority> get() {
+    return new ArrayList<>(cas.values());
   }
 
   @GET

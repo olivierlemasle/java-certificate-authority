@@ -27,4 +27,4 @@ It comes with its own abstraction layer, and uses both [Bouncy Castle](http://ww
 
 This will be a web application frontend to manage a Certificate Authority.
 It will use [Dropwizard](http://www.dropwizard.io/) on the server side, and
-[AngularJS](https://angularjs.org/) on the client side.
+[Angular 2](https://angular.io/) on the client side.
