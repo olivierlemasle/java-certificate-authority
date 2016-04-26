@@ -6,9 +6,5 @@
 </ul>
 
 <p>New Certificate Authority:</p>
-<!-- <input #newCa /> -->
-<dn-editor #newCa></dn-editor>
-<button (click)="addCa(newCa.getDn()); newCa.value=''">
-  Add Certificate Authority
-</button>
+<dn-form #dnForm (submit)="addCa(dnForm.model)"></dn-form>
 <div class="error" *ngIf="errorMessage">{{errorMessage}}</div>

@@ -1,8 +1,9 @@
-import {Injectable} from "angular2/core";
-import {Http, Response, Headers, RequestOptions} from "angular2/http";
-import {Observable} from "rxjs/Observable";
+import { Injectable } from "angular2/core";
+import { Http, Response, Headers, RequestOptions } from "angular2/http";
+import { Observable } from "rxjs/Observable";
 
-import {Authority} from "./authority";
+import { Authority } from "./authority";
+import { DnBuilder } from "./dn-builder";
 
 @Injectable()
 export class CaService {
@@ -16,12 +17,12 @@ export class CaService {
                     .catch(this.handleError);
   }
 
-  addCa (subject: string): Observable<Authority>  {
+  addCa (subject: DnBuilder): Observable<Authority>  {
     let headers = new Headers({ "Content-Type": "application/json" });
     let options = new RequestOptions({ headers: headers });
-    let url = this._caUrl + "/" + subject;
+    let data = JSON.stringify(subject);
 
-    return this.http.post(url, null, options)
+    return this.http.post(this._caUrl, data, options)
                     .map(this.extractData)
                     .catch(this.handleError);
   }

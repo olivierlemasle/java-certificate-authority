@@ -21,6 +21,7 @@ import javax.ws.rs.core.MediaType;
 import com.codahale.metrics.annotation.Timed;
 
 import io.github.olivierlemasle.ca.DistinguishedName;
+import io.github.olivierlemasle.ca.DnBuilder;
 import io.github.olivierlemasle.ca.RootCertificate;
 import io.github.olivierlemasle.caweb.CaConfiguration.Keystore;
 import io.github.olivierlemasle.caweb.api.CertificateAuthority;
@@ -63,14 +64,12 @@ public class CertificateAuthoritiesResource {
   }
 
   @POST
-  @Path("/{dn}")
   @Timed
-  public CertificateAuthority create(@PathParam("dn") final String subject) {
-    final DistinguishedName dn = dn(subject);
+  public CertificateAuthority create(DistinguishedName dn) {
     final RootCertificate caCertificate = createSelfSignedCertificate(dn).build();
     final CertificateAuthority ca = new CertificateAuthority(caCertificate);
     cas.put(dn.toString(), ca);
-    caCertificate.exportPkcs12(keystorePath, keystorePassword, subject);
+    caCertificate.exportPkcs12(keystorePath, keystorePassword, dn.toString());
     return ca;
   }
 
