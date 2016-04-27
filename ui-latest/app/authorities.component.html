@@ -1,0 +1,10 @@
+<h3>Authorities:</h3>
+<ul>
+  <li *ngFor="#ca of cas">
+    {{ ca.subject }}
+  </li>
+</ul>
+
+<p>New Certificate Authority:</p>
+<dn-form #dnForm (submit)="addCa(dnForm.model)"></dn-form>
+<div class="error" *ngIf="errorMessage">{{errorMessage}}</div>
