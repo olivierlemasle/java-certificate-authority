@@ -9,6 +9,7 @@ if [ "$TRAVIS_REPO_SLUG" == "olivierlemasle/java-certificate-authority" ] && \
    cd ui
    npm install
    node_modules/.bin/gulp
+   mkdir -P $HOME/ui-latest/ui
    cp -R dist $HOME/ui-latest/ui
    cp ui-dockerfile $HOME/ui-latest/Dockerfile
    cd $HOME
