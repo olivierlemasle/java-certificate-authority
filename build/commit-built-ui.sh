@@ -10,7 +10,7 @@ if [ "$TRAVIS_REPO_SLUG" == "olivierlemasle/java-certificate-authority" ] && \
    npm install
    node_modules/.bin/gulp
    mkdir -p $HOME/ui-latest/ui
-   cp -R dist $HOME/ui-latest/ui
+   cp -R dist/. $HOME/ui-latest/ui
    cp ui-dockerfile $HOME/ui-latest/Dockerfile
    cd $HOME
    git config --global user.email "travis@travis-ci.org"
