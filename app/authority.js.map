@@ -1,1 +1,0 @@
-{"version":3,"sources":["authority.ts"],"names":[],"mappings":";;;;;;;YAAA;gBAAA;gBAEA,CAAC;gBAAD,gBAAC;YAAD,CAFA,AAEC,IAAA;YAFD,iCAEC,CAAA","file":"authority.js","sourcesContent":["export class Authority {\n  dn: string;\n}\n"]}
