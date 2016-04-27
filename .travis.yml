@@ -5,6 +5,7 @@ before_install:
   - sudo apt-get install -y apache2
   - sudo a2enmod ssl
   - sudo service apache2 restart
+before_script: nvm install 5.2.0
 script: mvn verify -B
 
 env:
@@ -17,6 +18,7 @@ env:
 after_success:
   - build/deploy-javadoc.sh
   - build/publish-snapshot-on-commit.sh
+  - build/commit-built-ui.sh
 
 addons:
   coverity_scan:
