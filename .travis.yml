@@ -20,6 +20,11 @@ after_success:
   - build/publish-snapshot-on-commit.sh
   - build/commit-built-ui.sh
 
+branches:
+  except:
+    - gh-pages
+    - built-ui
+
 addons:
   coverity_scan:
     project:

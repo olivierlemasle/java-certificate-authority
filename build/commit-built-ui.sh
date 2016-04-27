@@ -17,7 +17,7 @@ if [ "$TRAVIS_REPO_SLUG" == "olivierlemasle/java-certificate-authority" ] && \
 
    cd built-ui
    git rm -rf .
-   cp -Rf $HOME/ui-latest .
+   cp -Rf $HOME/ui-latest/. .
    git add -f .
    git commit -m "Lastest UI on successful travis build $TRAVIS_BUILD_NUMBER auto-pushed to built-ui"
    git push -fq origin built-ui > /dev/null
