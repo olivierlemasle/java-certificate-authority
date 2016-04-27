@@ -7,7 +7,7 @@ if [ "$TRAVIS_REPO_SLUG" == "olivierlemasle/java-certificate-authority" ] && \
 
   echo -e "Publishing maven snapshot...\n"
 
-  mvn clean source:jar deploy --settings="util/settings.xml" -DskipTests=true -Dmaven.javadoc.skip=true
+  mvn clean source:jar deploy --settings="build/settings.xml" -DskipTests=true -Dmaven.javadoc.skip=true
 
   echo -e "Published maven snapshot"
 fi

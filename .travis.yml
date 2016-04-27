@@ -15,8 +15,8 @@ env:
   - secure: "nLqo0u9s4iQbMrufKX4Mohy7LgizSs8/eKZ3pl59gbajx/PBEwZhiJQbPcpjMPNvwjh8kNnvqpFaRWmIzrfL7ZDrDM1F+DfSmNmdfk38mtbPpjaJFq5rEZISUbIrD8s9sDmz0l0zgkzUTVqegaw4a5VYzRjg6qtWBvJyb5M7W4o="
 
 after_success:
-  - util/deploy-javadoc.sh
-  - util/publish-snapshot-on-commit.sh
+  - build/deploy-javadoc.sh
+  - build/publish-snapshot-on-commit.sh
 
 addons:
   coverity_scan:
