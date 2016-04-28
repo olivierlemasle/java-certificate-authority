@@ -1,5 +1,5 @@
 # java-certificate-authority
-A Java Certificate Authority (CA), with web GUI and CLI
+A Java Certificate Authority (CA) with web GUI
 
 [![Build Status](https://travis-ci.org/olivierlemasle/java-certificate-authority.svg?branch=master)](https://travis-ci.org/olivierlemasle/java-certificate-authority)
 [![Build status](https://ci.appveyor.com/api/projects/status/nxcp20h4qlaf1bdl?svg=true)](https://ci.appveyor.com/project/olivierlemasle/java-certificate-authority)
@@ -23,7 +23,7 @@ It comes with its own abstraction layer, and uses both [Bouncy Castle](http://ww
 
 [More...](https://github.com/olivierlemasle/java-certificate-authority/blob/master/java-ca-lib/README.md)
 
-### java-ca-web ###
+### ca-api ###
 
 This will be a web application frontend to manage a Certificate Authority.
 It will use [Dropwizard](http://www.dropwizard.io/) on the server side, and
