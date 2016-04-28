@@ -1,0 +1,16 @@
+db:
+  image: redis:3-alpine
+api:
+  image: olem/ca-api
+  links:
+  - db:redis
+web:
+  image: olem/ca-web
+  links:
+  - api:api
+lb:
+  image: rancher/load-balancer-service
+  ports:
+  - 80:80
+  links:
+  - web:web
