@@ -1,14 +1,30 @@
 <form *ngIf="active" (ngSubmit)="onSubmit(dnForm.model)" #dnForm="ngForm">
-  <ul>
-    <li><label>Country Name (2 letter code) <input [(ngModel)]="model.c" ngControl="c" required /></label></li>
-    <li><label>State or Province Name (full name) <input [(ngModel)]="model.st" ngControl="st" /></label></li>
-    <li><label>Locality Name (eg, city) <input [(ngModel)]="model.l" ngControl="l" /></label></li>
-    <li><label>Organization Name (eg, company) <input [(ngModel)]="model.o" ngControl="o" /></label></li>
-    <li><label>Organizational Unit Name (eg, section) <input [(ngModel)]="model.ou" ngControl="ou" /></label></li>
-    <li><label>Common Name (eg, your name or your server's hostname) <input [(ngModel)]="model.cn" ngControl="cn" required /></label></li>
-  </ul>
-  <button (click)="clear()">
+  <fieldset class="form-group">
+    <label for="country">Country Name (2 letter code)</label>
+    <input [(ngModel)]="model.c" ngControl="c" required class="form-control" id="country" placeholder="Country">
+  </fieldset>
+  <fieldset class="form-group">
+    <label for="state">State or Province Name (full name)</label>
+    <input [(ngModel)]="model.st" ngControl="st" class="form-control" id="state" placeholder="State or Province">
+  </fieldset>
+  <fieldset class="form-group">
+    <label for="locality">Locality Name (eg, city)</label>
+    <input [(ngModel)]="model.l" ngControl="l" class="form-control" id="locality" placeholder="Locality">
+  </fieldset>
+  <fieldset class="form-group">
+    <label for="org">Organization Name (eg, company)</label>
+    <input [(ngModel)]="model.o" ngControl="o" class="form-control" id="org" placeholder="Organization">
+  </fieldset>
+  <fieldset class="form-group">
+    <label for="orgunit">Organizational Unit Name (eg, section)</label>
+    <input [(ngModel)]="model.ou" ngControl="ou" class="form-control" id="orgunit" placeholder="Organizational Unit">
+  </fieldset>
+  <fieldset class="form-group">
+    <label for="cn">Common Name (eg, your name or your server's hostname)</label>
+    <input [(ngModel)]="model.cn" ngControl="cn" required class="form-control" id="cn" placeholder="Common Name">
+  </fieldset>
+  <button (click)="clear()" class="btn btn-secondary">
     Clear
   </button>
-  <button type="submit" [disabled]="!dnForm.form.valid">Submit</button>
+  <button type="submit" [disabled]="!dnForm.form.valid" class="btn btn-primary">Submit</button>
 </form>

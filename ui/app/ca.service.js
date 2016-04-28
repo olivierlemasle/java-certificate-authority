@@ -27,7 +27,7 @@ System.register(["angular2/core", "angular2/http", "rxjs/Observable"], function(
             CaService = (function () {
                 function CaService(http) {
                     this.http = http;
-                    this._caUrl = "http://localhost:8080/certificateAuthorities";
+                    this._caUrl = "/api/certificateAuthorities";
                 }
                 CaService.prototype.getCas = function () {
                     return this.http.get(this._caUrl)
