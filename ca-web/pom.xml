@@ -21,7 +21,7 @@
   </dependencies>
 
   <build>
-    <finalName>ca-api.jar</finalName>
+    <finalName>ca-api</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
