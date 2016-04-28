@@ -5,6 +5,7 @@ const tscConfig = require('./tsconfig.json');
 const sourcemaps = require('gulp-sourcemaps');
 const browserSync = require('browser-sync');
 const reload = browserSync.reload;
+const proxy = require('http-proxy-middleware');
 
 // clean the contents of the distribution directory
 gulp.task('clean', function () {
@@ -46,7 +47,8 @@ gulp.task('copy:assets', ['clean'], function() {
 gulp.task('serve', ['build'], function() {
   browserSync({
     server: {
-      baseDir: 'dist'
+      baseDir: 'dist',
+      middleware: [proxy('/api', {target: 'http://localhost:8080'})]
     }
   });
 

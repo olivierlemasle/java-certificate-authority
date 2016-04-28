@@ -9,7 +9,7 @@ import { DnBuilder } from "./dn-builder";
 export class CaService {
   constructor (private http: Http) {}
 
-  private _caUrl = "http://localhost:8080/certificateAuthorities";
+  private _caUrl = "/api/certificateAuthorities";
 
   getCas(): Observable<Authority[]> {
     return this.http.get(this._caUrl)

@@ -12,6 +12,7 @@ if [ "$TRAVIS_REPO_SLUG" == "olivierlemasle/java-certificate-authority" ] && \
    mkdir -p $HOME/ui-latest/ui
    cp -R dist/. $HOME/ui-latest/ui
    cp ui-dockerfile $HOME/ui-latest/Dockerfile
+   cp nginx.conf $HOME/ui-latest/nginx.conf
    cd $HOME
    git config --global user.email "travis@travis-ci.org"
    git config --global user.name "travis-ci"

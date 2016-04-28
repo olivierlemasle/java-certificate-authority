@@ -1,6 +1,6 @@
 {
-  "name": "angular2-quickstart",
-  "version": "1.0.0",
+  "name": "ca-web",
+  "version": "0.0.0",
   "scripts": {
     "postinstall": "typings install",
     "tsc": "tsc",
@@ -21,6 +21,7 @@
     "gulp": "^3.9.1",
     "gulp-sourcemaps": "^2.0.0-alpha",
     "gulp-typescript": "^2.13.0",
+    "http-proxy-middleware": "^0.14.0",
     "lite-server": "^2.2.0",
     "typescript": "^1.8.10",
     "typings": "^0.7.12"
