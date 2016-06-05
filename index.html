@@ -1,36 +1,28 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en-us">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta charset="UTF-8">
     <title>Java-certificate-authority by olivierlemasle</title>
-
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="javascripts/scale.fix.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
   <body>
-    <div class="wrapper">
-      <header>
-        <h1>Java-certificate-authority</h1>
-        <p>A Java Certificate Authority (CA), with web GUI and CLI</p>
-        <p class="view"><a href="https://github.com/olivierlemasle/java-certificate-authority">View the Project on GitHub <small>olivierlemasle/java-certificate-authority</small></a></p>
-        <ul>
-          <li><a href="https://github.com/olivierlemasle/java-certificate-authority/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/olivierlemasle/java-certificate-authority/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/olivierlemasle/java-certificate-authority">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h1>
-<a id="java-certificate-authority" class="anchor" href="#java-certificate-authority" aria-hidden="true"><span class="octicon octicon-link"></span></a>java-certificate-authority</h1>
+    <section class="page-header">
+      <h1 class="project-name">Java-certificate-authority</h1>
+      <h2 class="project-tagline">A Java Certificate Authority (CA), with web GUI and CLI</h2>
+      <a href="https://github.com/olivierlemasle/java-certificate-authority" class="btn">View on GitHub</a>
+      <a href="https://github.com/olivierlemasle/java-certificate-authority/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/olivierlemasle/java-certificate-authority/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
 
-<p>A Java Certificate Authority (CA), with web GUI and CLI</p>
+    <section class="main-content">
+      <h1>
+<a id="java-certificate-authority" class="anchor" href="#java-certificate-authority" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>java-certificate-authority</h1>
+
+<p>A Java Certificate Authority (CA) with web GUI</p>
 
 <p><a href="https://travis-ci.org/olivierlemasle/java-certificate-authority"><img src="https://travis-ci.org/olivierlemasle/java-certificate-authority.svg?branch=master" alt="Build Status"></a>
 <a href="https://ci.appveyor.com/project/olivierlemasle/java-certificate-authority"><img src="https://ci.appveyor.com/api/projects/status/nxcp20h4qlaf1bdl?svg=true" alt="Build status"></a>
@@ -42,15 +34,15 @@
 </ul>
 
 <h2>
-<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Requirements</h2>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Requirements</h2>
 
-<p>This project requires Java 7 or higher.</p>
+<p>This project requires Java 8 or higher.</p>
 
 <h2>
-<a id="modules" class="anchor" href="#modules" aria-hidden="true"><span class="octicon octicon-link"></span></a>Modules</h2>
+<a id="modules" class="anchor" href="#modules" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Modules</h2>
 
 <h3>
-<a id="java-ca-lib" class="anchor" href="#java-ca-lib" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="https://github.com/olivierlemasle/java-certificate-authority/tree/master/java-ca-lib/">java-ca-lib</a>
+<a id="java-ca-lib" class="anchor" href="#java-ca-lib" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="https://github.com/olivierlemasle/java-certificate-authority/tree/master/java-ca-lib/">java-ca-lib</a>
 </h3>
 
 <p>This is a Java library providing a DSL to simplify the signing and manipulation
@@ -60,19 +52,21 @@ It comes with its own abstraction layer, and uses both <a href="http://www.bounc
 <p><a href="https://github.com/olivierlemasle/java-certificate-authority/blob/master/java-ca-lib/README.md">More...</a></p>
 
 <h3>
-<a id="java-ca-web" class="anchor" href="#java-ca-web" aria-hidden="true"><span class="octicon octicon-link"></span></a>java-ca-web</h3>
+<a id="ca-api" class="anchor" href="#ca-api" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ca-api</h3>
 
 <p>This will be a web application frontend to manage a Certificate Authority.
 It will use <a href="http://www.dropwizard.io/">Dropwizard</a> on the server side, and
-<a href="https://angularjs.org/">AngularJS</a> on the client side.</p>
-      </section>
-    </div>
-    <footer>
-      <p>Project maintained by <a href="https://github.com/olivierlemasle">olivierlemasle</a></p>
-      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
-    </footer>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-              <script type="text/javascript">
+<a href="https://angular.io/">Angular 2</a> on the client side.</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/olivierlemasle/java-certificate-authority">Java-certificate-authority</a> is maintained by <a href="https://github.com/olivierlemasle">olivierlemasle</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+            <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
           </script>
