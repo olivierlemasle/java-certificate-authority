@@ -1,14 +1,13 @@
-import { Component, OnInit } from "angular2/core";
+import { Component, OnInit } from "@angular/core";
 
 import { Authority } from "./authority";
 import { CaService } from "./ca.service";
-import { DnFormComponent } from "./dn-form.component";
 import { DnBuilder } from "./dn-builder";
+import { DnFormComponent } from "./dn-form.component";
 
 @Component({
   selector: "authorities",
-  templateUrl: "app/authorities.component.html",
-  directives: [DnFormComponent]
+  templateUrl: "app/authorities.component.html"
 })
 export class AuthoritiesComponent implements OnInit {
 
@@ -26,11 +25,13 @@ export class AuthoritiesComponent implements OnInit {
                      error =>  this.errorMessage = <any>error);
   }
 
-  addCa (subject: DnBuilder) {
+  addCa (dnForm: DnFormComponent) {
+    let subject = dnForm.model;
     if (!subject) { return; }
+    dnForm.clear();
     this._caService.addCa(subject)
                    .subscribe(
-                     hero  => this.cas.push(hero),
-                     error =>  this.errorMessage = <any>error);
+                     ca  => this.cas.push(ca),
+                     error =>  this.errorMessage = error);
   }
 }

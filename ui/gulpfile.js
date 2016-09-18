@@ -3,9 +3,10 @@ const del = require('del');
 const typescript = require('gulp-typescript');
 const tscConfig = require('./tsconfig.json');
 const sourcemaps = require('gulp-sourcemaps');
-const browserSync = require('browser-sync');
+const browserSync = require('browser-sync').create();
 const reload = browserSync.reload;
 const proxy = require('http-proxy-middleware');
+const historyApiFallback = require('connect-history-api-fallback');
 
 // clean the contents of the distribution directory
 gulp.task('clean', function () {
@@ -25,30 +26,30 @@ gulp.task('compile', ['clean'], function () {
 // copy dependencies
 gulp.task('copy:libs', ['clean'], function() {
   return gulp.src([
-      'node_modules/es6-shim/es6-shim.min.js',
-      'node_modules/systemjs/dist/system-polyfills.js',
-      'node_modules/angular2/es6/dev/src/testing/shims_for_IE.js',
-      'node_modules/angular2/bundles/angular2-polyfills.js',
+      'node_modules/core-js/client/shim.min.js',
+      'node_modules/zone.js/dist/zone.js',
+      'node_modules/reflect-metadata/Reflect.js',
       'node_modules/systemjs/dist/system.src.js',
-      'node_modules/rxjs/bundles/Rx.js',
-      'node_modules/angular2/bundles/angular2.dev.js',
-      'node_modules/angular2/bundles/router.dev.js',
-      'node_modules/angular2/bundles/http.dev.js'
-    ])
+      'node_modules/@angular/**/*.umd.js',
+      'node_modules/rxjs/**/*.js'
+    ], { base : 'node_modules' })
     .pipe(gulp.dest('dist/lib'))
 });
 
 // copy static assets - i.e. non TypeScript compiled source
 gulp.task('copy:assets', ['clean'], function() {
-  return gulp.src(['app/**/*', 'index.html', 'styles.css', '!app/**/*.ts'], { base : './' })
+  return gulp.src(['app/**/*', 'index.html', 'styles.css', '!app/**/*.ts', 'systemjs.config.js'], { base : './' })
     .pipe(gulp.dest('dist'))
 });
 
 gulp.task('serve', ['build'], function() {
-  browserSync({
+  browserSync.init({
     server: {
       baseDir: 'dist',
-      middleware: [proxy('/api', {target: 'http://localhost:8080'})]
+      middleware: [
+        proxy('/api', {target: 'http://localhost:8080'}),
+        historyApiFallback()
+      ]
     }
   });
 

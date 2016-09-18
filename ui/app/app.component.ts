@@ -1,6 +1,4 @@
-import { Component } from "angular2/core";
-import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from "angular2/router";
-import { HTTP_PROVIDERS } from "angular2/http";
+import { Component } from "@angular/core";
 
 import { AuthoritiesComponent } from "./authorities.component";
 import { CertificatesComponent } from "./certificates.component";
@@ -15,10 +13,10 @@ import { CaService } from "./ca.service";
           <h1>{{title}}</h1>
           <ul class="nav nav-tabs">
             <li class="nav-item">
-              <a [routerLink]="['Authorities']" class="nav-link">Authorities</a>
+              <a routerLink="authorities" class="nav-link" routerLinkActive="active">Authorities</a>
             </li>
             <li class="nav-item">
-              <a [routerLink]="['Certificates']" class="nav-link">Certificates</a>
+              <a routerLink="certificates" class="nav-link" routerLinkActive="active">Certificates</a>
             </li>
           </ul>
           <router-outlet></router-outlet>
@@ -26,26 +24,10 @@ import { CaService } from "./ca.service";
       </div>
     </div>
   `,
-  directives: [ ROUTER_DIRECTIVES ],
   providers: [
-    ROUTER_PROVIDERS,
-    HTTP_PROVIDERS,
     CaService
   ]
 })
-@RouteConfig([
-  {
-    path: "/authorities",
-    name: "Authorities",
-    component: AuthoritiesComponent,
-    useAsDefault: true
-  },
-  {
-    path: "/certificates",
-    name: "Certificates",
-    component: CertificatesComponent
-  }
-])
 export class AppComponent {
   title = "Certificate authority";
 }

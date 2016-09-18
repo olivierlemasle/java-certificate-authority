@@ -1,5 +1,4 @@
-import { Component } from "angular2/core";
-import { NgForm } from "angular2/common";
+import { Component } from "@angular/core";
 
 import { DnBuilder } from "./dn-builder";
 
@@ -15,9 +14,5 @@ export class DnFormComponent {
     this.model = new DnBuilder("", "", "", "", "", "");
     this.active = false;
     setTimeout(() => this.active = true, 0);
-  }
-
-  onSubmit(): void {
-    this.clear();
   }
 }
