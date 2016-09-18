@@ -28,7 +28,7 @@ System.register(["@angular/core", "./ca.service"], function(exports_1, context_1
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: "ca-app",
-                        template: "\n    <div class=\"component\">\n      <div class=\"row\">\n        <div class=\"col-md-6 col-md-offset-3\">\n          <h1>{{title}}</h1>\n          <ul class=\"nav nav-tabs\">\n            <li class=\"nav-item\">\n              <a routerLink=\"authorities\" class=\"nav-link\" routerLinkActive=\"active\">Authorities</a>\n            </li>\n            <li class=\"nav-item\">\n              <a routerLink=\"certificates\" class=\"nav-link\" routerLinkActive=\"active\">Certificates</a>\n            </li>\n          </ul>\n          <router-outlet></router-outlet>\n        </div>\n      </div>\n    </div>\n  ",
+                        template: "\n    <div class=\"container\">\n      <div class=\"row\">\n        <div class=\"col-md-6\">\n          <h1>{{title}}</h1>\n          <ul class=\"nav nav-tabs\">\n            <li class=\"nav-item\">\n              <a routerLink=\"authorities\" class=\"nav-link\" routerLinkActive=\"active\">Authorities</a>\n            </li>\n            <li class=\"nav-item\">\n              <a routerLink=\"certificates\" class=\"nav-link\" routerLinkActive=\"active\">Certificates</a>\n            </li>\n          </ul>\n          <router-outlet></router-outlet>\n        </div>\n      </div>\n    </div>\n  ",
                         providers: [
                             ca_service_1.CaService
                         ]

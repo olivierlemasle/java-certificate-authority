@@ -1,7 +1,10 @@
 <form *ngIf="active" #dnForm="ngForm">
-  <fieldset class="form-group">
-    <label for="country">Country Name (2 letter code)</label>
-    <input [(ngModel)]="model.c" name="c" required class="form-control" id="country" placeholder="Country">
+  <fieldset class="form-group row">
+    <label for="country" class="col-form-label col-xs-12">Country Name (2-letter code)</label>
+    <div class="col-md-4">
+      <input [(ngModel)]="model.c" name="c" required maxlength="2" class="form-control" id="country" placeholder="Country">
+    </div>
+    <div class="col-md-8"><p class="form-control-static form-comment">{{model.countryName}}</p></div>
   </fieldset>
   <fieldset class="form-group">
     <label for="state">State or Province Name (full name)</label>
@@ -23,8 +26,6 @@
     <label for="cn">Common Name (eg, your name or your server's hostname)</label>
     <input [(ngModel)]="model.cn" name="cn" required class="form-control" id="cn" placeholder="Common Name">
   </fieldset>
-  <button (click)="clear()" class="btn btn-secondary">
-    Clear
-  </button>
+  <button (click)="clear()" class="btn btn-secondary">Clear</button>
   <button type="submit" [disabled]="!dnForm.form.valid" class="btn btn-primary">Submit</button>
 </form>

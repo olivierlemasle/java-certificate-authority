@@ -45,13 +45,11 @@ System.register(["@angular/core", "@angular/http", "rxjs/Observable", "rxjs/add/
                         .catch(this.handleError);
                 };
                 CaService.prototype.extractData = function (res) {
-                    if (res.status < 200 || res.status >= 300) {
-                        throw new Error("Bad response status: " + res.status);
-                    }
-                    return res.json() || [];
+                    var body = res.json() || [];
                 };
                 CaService.prototype.handleError = function (error) {
-                    var errMsg = error.message || "Server error";
+                    var errMsg = (error.message) ? error.message :
+                        error.status ? error.status + " - " + error.statusText : 'Server error';
                     console.error(errMsg);
                     return Observable_1.Observable.throw(errMsg);
                 };

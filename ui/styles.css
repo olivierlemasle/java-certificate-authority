@@ -1,3 +1,7 @@
+body {
+  padding: 1em;
+}
+
 .ng-valid[required], .ng-valid.required  {
   border-left: 5px solid #42A948; /* green */
 }
@@ -8,4 +12,19 @@
 
 input, input:required {
     box-shadow:none;
+}
+
+#loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%)
+}
+#loading::after {
+  content: url("/img/loader.gif");
+}
+
+.form-comment {
+  color: #888;
 }
