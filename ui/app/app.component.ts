@@ -7,9 +7,9 @@ import { CaService } from "./ca.service";
 @Component({
   selector: "ca-app",
   template: `
-    <div class="component">
+    <div class="container">
       <div class="row">
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-6">
           <h1>{{title}}</h1>
           <ul class="nav nav-tabs">
             <li class="nav-item">

@@ -31,14 +31,12 @@ export class CaService {
   }
 
   private extractData(res: Response) {
-    if (res.status < 200 || res.status >= 300) {
-      throw new Error("Bad response status: " + res.status);
-    }
-    return res.json() || [];
+    let body = res.json() || [];
   }
 
   private handleError (error: any) {
-    let errMsg = error.message || "Server error";
+    let errMsg = (error.message) ? error.message :
+      error.status ? `${error.status} - ${error.statusText}` : 'Server error';
     console.error(errMsg);
     return Observable.throw(errMsg);
   }

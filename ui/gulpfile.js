@@ -38,7 +38,7 @@ gulp.task('copy:libs', ['clean'], function() {
 
 // copy static assets - i.e. non TypeScript compiled source
 gulp.task('copy:assets', ['clean'], function() {
-  return gulp.src(['app/**/*', 'index.html', 'styles.css', '!app/**/*.ts', 'systemjs.config.js'], { base : './' })
+  return gulp.src(['app/**/*', 'index.html', 'styles.css', '!app/**/*.ts', 'systemjs.config.js', 'img/**/*'], { base : './' })
     .pipe(gulp.dest('dist'))
 });
 
