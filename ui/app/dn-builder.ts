@@ -61,6 +61,11 @@ export class DnBuilder {
     return getCountryName(this._c) || (this._c.length < 2 ? "" : "Invalid country code");
   }
 
+  get isValidCountry(): boolean {
+    if (this._c == null) return null;
+    return getCountryName(this._c) !== null;
+  }
+
   toJSON(): any {
     return {cn: this.cn, l: this.l, st: this.st, o: this.o, ou: this.ou, c: this.c};
   }

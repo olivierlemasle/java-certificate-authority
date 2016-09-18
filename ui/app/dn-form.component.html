@@ -4,7 +4,7 @@
     <div class="col-md-4">
       <input [(ngModel)]="model.c" name="c" required maxlength="2" class="form-control" id="country" placeholder="Country">
     </div>
-    <div class="col-md-8"><p class="form-control-static form-comment">{{model.countryName}}</p></div>
+    <div class="col-md-8"><p class="form-control-static form-comment" [class.invalid]="!model.isValidCountry">{{model.countryName}}</p></div>
   </fieldset>
   <fieldset class="form-group">
     <label for="state">State or Province Name (full name)</label>
