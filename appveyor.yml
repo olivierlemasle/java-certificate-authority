@@ -14,7 +14,7 @@ install:
       Add-Type -AssemblyName System.IO.Compression.FileSystem
       if (!(Test-Path -Path "C:\maven" )) {
         (new-object System.Net.WebClient).DownloadFile(
-          'http://apache.crihan.fr/dist/maven/maven-3/3.3.1/binaries/apache-maven-3.3.1-bin.zip',
+          'http://mirrors.ircam.fr/pub/apache/maven/maven-3/3.3.9/source/apache-maven-3.3.9-src.zip',
           'C:\maven-bin.zip'
         )
         [System.IO.Compression.ZipFile]::ExtractToDirectory("C:\maven-bin.zip", "C:\maven")
