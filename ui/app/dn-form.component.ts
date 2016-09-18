@@ -7,11 +7,11 @@ import { DnBuilder } from "./dn-builder";
   templateUrl: "app/dn-form.component.html"
 })
 export class DnFormComponent {
-  model = new DnBuilder("", "", "", "", "", "");
+  model = new DnBuilder();
   active = true;
 
   clear(): void {
-    this.model = new DnBuilder("", "", "", "", "", "");
+    this.model = new DnBuilder();
     this.active = false;
     setTimeout(() => this.active = true, 0);
   }

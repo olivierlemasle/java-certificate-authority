@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 
-import 'rxjs/add/observable/throw';
+import "rxjs/add/observable/throw";
 
 import { Authority } from "./authority";
 import { CaService } from "./ca.service";
