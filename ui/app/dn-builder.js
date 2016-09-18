@@ -10,9 +10,58 @@ System.register(["./countries"], function(exports_1, context_1) {
             }],
         execute: function() {
             DnBuilder = (function () {
-                function DnBuilder(cn, l, st, o, ou, c) {
-                    this._c = c;
+                function DnBuilder() {
                 }
+                Object.defineProperty(DnBuilder.prototype, "cn", {
+                    get: function () {
+                        return this._cn;
+                    },
+                    set: function (cn) {
+                        this._cn = cn;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(DnBuilder.prototype, "l", {
+                    get: function () {
+                        return this._l;
+                    },
+                    set: function (l) {
+                        this._l = l;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(DnBuilder.prototype, "st", {
+                    get: function () {
+                        return this._st;
+                    },
+                    set: function (st) {
+                        this._st = st;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(DnBuilder.prototype, "o", {
+                    get: function () {
+                        return this._o;
+                    },
+                    set: function (o) {
+                        this._o = o;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(DnBuilder.prototype, "ou", {
+                    get: function () {
+                        return this._ou;
+                    },
+                    set: function (ou) {
+                        this._ou = ou;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 Object.defineProperty(DnBuilder.prototype, "c", {
                     get: function () {
                         return this._c;
@@ -32,6 +81,18 @@ System.register(["./countries"], function(exports_1, context_1) {
                     enumerable: true,
                     configurable: true
                 });
+                Object.defineProperty(DnBuilder.prototype, "isValidCountry", {
+                    get: function () {
+                        if (this._c == null)
+                            return null;
+                        return countries_1.getCountryName(this._c) !== null;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                DnBuilder.prototype.toJSON = function () {
+                    return { cn: this.cn, l: this.l, st: this.st, o: this.o, ou: this.ou, c: this.c };
+                };
                 return DnBuilder;
             }());
             exports_1("DnBuilder", DnBuilder);

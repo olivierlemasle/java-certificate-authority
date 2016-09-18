@@ -23,12 +23,12 @@ System.register(["@angular/core", "./dn-builder"], function(exports_1, context_1
         execute: function() {
             DnFormComponent = (function () {
                 function DnFormComponent() {
-                    this.model = new dn_builder_1.DnBuilder("", "", "", "", "", "");
+                    this.model = new dn_builder_1.DnBuilder();
                     this.active = true;
                 }
                 DnFormComponent.prototype.clear = function () {
                     var _this = this;
-                    this.model = new dn_builder_1.DnBuilder("", "", "", "", "", "");
+                    this.model = new dn_builder_1.DnBuilder();
                     this.active = false;
                     setTimeout(function () { return _this.active = true; }, 0);
                 };
