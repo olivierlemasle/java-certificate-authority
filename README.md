@@ -8,23 +8,39 @@ A Java Certificate Authority (CA) with web GUI
 * [Home Page](https://olivierlemasle.github.io/java-certificate-authority/)
 * [Javadoc](https://olivierlemasle.github.io/java-certificate-authority/javadoc/)
 
+__This is a work-in-progress!__
 
-## Requirements ##
+## Components ##
 
-This project requires Java 8 or higher.
+This work-in-progress app will be a web application to manage a Certificate Authority.
 
-## Modules ##
+This application is composed of:
+- [ca-api](https://github.com/olivierlemasle/java-certificate-authority/tree/master/ca-api/),
+  a [Dropwizard](http://www.dropwizard.io/) application on the server side;
+- [ui](https://github.com/olivierlemasle/java-certificate-authority/tree/master/ui/),
+  an [Angular 2](https://angular.io/) frontend on the client side;
+- [java-ca-lib](https://github.com/olivierlemasle/java-certificate-authority/tree/master/java-ca-lib/),
+  a Java library providing a DSL to simplify the signing and manipulation of SSL
+  certificates.
 
-### [java-ca-lib](https://github.com/olivierlemasle/java-certificate-authority/tree/master/java-ca-lib/) ###
+This last component can be used as a standalone Java library. It comes with its
+own abstraction layer, and uses both [Bouncy Castle](http://www.bouncycastle.org/)
+API and Java cryptographic APIs.
 
-This is a Java library providing a DSL to simplify the signing and manipulation
-of SSL certificates.
-It comes with its own abstraction layer, and uses both [Bouncy Castle](http://www.bouncycastle.org/) API and Java cryptographic APIs.
+[More on java-ca-lib...](https://github.com/olivierlemasle/java-certificate-authority/blob/master/java-ca-lib/README.md)
 
-[More...](https://github.com/olivierlemasle/java-certificate-authority/blob/master/java-ca-lib/README.md)
+## Using it ##
 
-### ca-api ###
+### Testing it with Docker and docker-compose###
 
-This will be a web application frontend to manage a Certificate Authority.
-It will use [Dropwizard](http://www.dropwizard.io/) on the server side, and
-[Angular 2](https://angular.io/) on the client side.
+This application comes with three Docker containers:
+- a [Redis](http://redis.io/) instance,
+- an API instance (backend),
+- a frontend instance (based on [Nginx](http://nginx.org/)).
+
+Using [docker-compose](https://docs.docker.com/compose/), you can create the
+containers with:
+
+    docker-compose up
+
+Your web application will be listening on port 80.

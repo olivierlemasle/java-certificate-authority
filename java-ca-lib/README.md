@@ -1,5 +1,9 @@
 # java-ca-lib #
 
+## Requirements ##
+
+This library requires Java 8 or higher.
+
 ## Setup ##
 
 *java-ca-lib* has not been released yet. You can test it using Sonatype's
