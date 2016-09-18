@@ -2,13 +2,13 @@
   <div class="card-block">
     <h4 class="card-title">Authorities:</h4>
     <ul>
-      <li *ngFor="#ca of cas">
+      <li *ngFor="let ca of cas">
         {{ ca.subject }}
       </li>
     </ul>
 
     <p>New Certificate Authority:</p>
-    <dn-form #dnForm (submit)="addCa(dnForm.model)"></dn-form>
+    <dn-form #dnForm (submit)="addCa(dnForm)"></dn-form>
     <div class="error" *ngIf="errorMessage">{{errorMessage}}</div>
   </div>
 </div>

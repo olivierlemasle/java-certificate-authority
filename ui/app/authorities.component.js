@@ -1,4 +1,4 @@
-System.register(["angular2/core", "./ca.service", "./dn-form.component"], function(exports_1, context_1) {
+System.register(["@angular/core", "./ca.service"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(["angular2/core", "./ca.service", "./dn-form.component"], functi
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, ca_service_1, dn_form_component_1;
+    var core_1, ca_service_1;
     var AuthoritiesComponent;
     return {
         setters:[
@@ -19,9 +19,6 @@ System.register(["angular2/core", "./ca.service", "./dn-form.component"], functi
             },
             function (ca_service_1_1) {
                 ca_service_1 = ca_service_1_1;
-            },
-            function (dn_form_component_1_1) {
-                dn_form_component_1 = dn_form_component_1_1;
             }],
         execute: function() {
             AuthoritiesComponent = (function () {
@@ -34,19 +31,20 @@ System.register(["angular2/core", "./ca.service", "./dn-form.component"], functi
                     this._caService.getCas()
                         .subscribe(function (cas) { return _this.cas = cas; }, function (error) { return _this.errorMessage = error; });
                 };
-                AuthoritiesComponent.prototype.addCa = function (subject) {
+                AuthoritiesComponent.prototype.addCa = function (dnForm) {
                     var _this = this;
+                    var subject = dnForm.model;
                     if (!subject) {
                         return;
                     }
+                    dnForm.clear();
                     this._caService.addCa(subject)
-                        .subscribe(function (hero) { return _this.cas.push(hero); }, function (error) { return _this.errorMessage = error; });
+                        .subscribe(function (ca) { return _this.cas.push(ca); }, function (error) { return _this.errorMessage = error; });
                 };
                 AuthoritiesComponent = __decorate([
                     core_1.Component({
                         selector: "authorities",
-                        templateUrl: "app/authorities.component.html",
-                        directives: [dn_form_component_1.DnFormComponent]
+                        templateUrl: "app/authorities.component.html"
                     }), 
                     __metadata('design:paramtypes', [ca_service_1.CaService])
                 ], AuthoritiesComponent);

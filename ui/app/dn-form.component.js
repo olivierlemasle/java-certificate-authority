@@ -1,4 +1,4 @@
-System.register(["angular2/core", "./dn-builder"], function(exports_1, context_1) {
+System.register(["@angular/core", "./dn-builder"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -31,9 +31,6 @@ System.register(["angular2/core", "./dn-builder"], function(exports_1, context_1
                     this.model = new dn_builder_1.DnBuilder("", "", "", "", "", "");
                     this.active = false;
                     setTimeout(function () { return _this.active = true; }, 0);
-                };
-                DnFormComponent.prototype.onSubmit = function () {
-                    this.clear();
                 };
                 DnFormComponent = __decorate([
                     core_1.Component({
