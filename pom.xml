@@ -6,7 +6,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>${project.groupId}:${project.artifactId}</name>
-  <url>https://github.com/olivierlemasle/java-certificate-authority/</url>
+  <url>https://github.com/olivierlemasle/java-certificate-authority</url>
   <description>A Java Certificate Authority (CA) with web GUI</description>
 
   <licenses>
@@ -30,7 +30,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- Versions -->
-    <dropwizard.version>1.0.0-SNAPSHOT</dropwizard.version>
+    <dropwizard.version>1.0.0</dropwizard.version>
   </properties>
 
   <scm>
@@ -42,7 +42,7 @@
   <developers>
     <developer>
       <name>Olivier Lemasle</name>
-      <organizationUrl>https://github.com/olivierlemasle/</organizationUrl>
+      <organizationUrl>https://github.com/olivierlemasle</organizationUrl>
     </developer>
   </developers>
 
@@ -88,6 +88,11 @@
         <groupId>io.dropwizard</groupId>
         <artifactId>dropwizard-core</artifactId>
         <version>${dropwizard.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>biz.paluch.redis</groupId>
+        <artifactId>lettuce</artifactId>
+        <version>4.1.2.Final</version>
       </dependency>
 
       <!-- Test -->

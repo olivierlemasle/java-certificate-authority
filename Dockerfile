@@ -9,4 +9,4 @@ COPY java-ca-lib /usr/src/java-ca-lib
 RUN mvn package -DskipTests=true
 
 EXPOSE 8080
-CMD ["java", "-jar", "ca-api/target/ca-api.jar", "server", "ca-api/example.yml"]
+CMD ["java", "-jar", "ca-api/target/ca-api.jar", "server", "ca-api/config.yml"]

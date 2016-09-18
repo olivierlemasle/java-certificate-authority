@@ -13,7 +13,7 @@ public interface Signer {
 
   public SignerWithSerial setRandomSerialNumber();
 
-  public static interface SignerWithSerial {
+  public static interface SignerWithSerial extends Signer {
     public Certificate sign();
 
     public SignerWithSerial setNotBefore(final ZonedDateTime notBefore);

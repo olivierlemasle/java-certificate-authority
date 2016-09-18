@@ -9,7 +9,3 @@ users:
   - name: admin
     email: admin@ca.local
     roles: [admin, user]
-
-keystore:
-  path: keystore.p12
-  password: password
